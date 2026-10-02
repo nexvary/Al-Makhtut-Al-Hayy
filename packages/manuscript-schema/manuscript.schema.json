@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://al-makhtut-al-hayy.local/schema/manuscript.schema.json",
+  "title": "Living Manuscript",
+  "type": "object",
+  "required": ["id", "title", "pages"],
+  "properties": {
+    "id": {"type": "string"},
+    "title": {"type": "string"},
+    "author": {"type": ["string", "null"]},
+    "date_label": {"type": ["string", "null"]},
+    "source_institution": {"type": ["string", "null"]},
+    "source_url": {"type": ["string", "null"], "format": "uri"},
+    "license": {"type": ["string", "null"]},
+    "pages": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/page"}
+    }
+  },
+  "$defs": {
+    "polygon": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "array",
+        "prefixItems": [{"type": "number"}, {"type": "number"}],
+        "items": false
+      }
+    },
+    "textLayer": {
+      "type": "object",
+      "required": ["kind", "text", "status"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "htr_raw",
+            "diplomatic_transcription",
+            "verified_transcription",
+            "normalized_arabic",
+            "simplified_arabic",
+            "translation",
+            "ai_explanation"
+          ]
+        },
+        "text": {"type": "string"},
+        "status": {"enum": ["machine", "draft", "verified"]},
+        "model": {"type": ["string", "null"]},
+        "revision": {"type": ["string", "null"]},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "region": {
+      "type": "object",
+      "required": ["id", "polygon", "layers"],
+      "properties": {
+        "id": {"type": "string"},
+        "polygon": {"$ref": "#/$defs/polygon"},
+        "layers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/textLayer"}
+        }
+      }
+    },
+    "page": {
+      "type": "object",
+      "required": ["id", "sequence", "image", "regions"],
+      "properties": {
+        "id": {"type": "string"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "folio_label": {"type": ["string", "null"]},
+        "image": {"type": "string", "format": "uri-reference"},
+        "regions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/region"}
+        }
+      }
+    }
+  }
+}
