@@ -1,0 +1,19 @@
+{
+  "name": "@al-makhtut-al-hayy/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "openseadragon": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/openseadragon": "^3.0.10",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}
