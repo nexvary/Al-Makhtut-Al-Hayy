@@ -45,5 +45,4 @@ jobs:
             until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
             until adb shell cmd package list packages >/dev/null 2>&1; do sleep 2; done
             sleep 12
-            cd apps/android
-            gradle :app:connectedDebugAndroidTest --stacktrace
+            gradle -p apps/android :app:connectedDebugAndroidTest --stacktrace
