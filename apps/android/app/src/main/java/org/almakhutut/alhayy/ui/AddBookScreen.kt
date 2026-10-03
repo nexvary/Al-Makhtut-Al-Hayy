@@ -62,6 +62,36 @@ fun AddBookScreen(
                 singleLine = true,
             )
 
+            ElevatedCard(
+                onClick = {
+                    runImport {
+                        store.importIiif(
+                            "https://gallica.bnf.fr/iiif/ark:/12148/btv1b84061750/manifest.json",
+                            title.ifBlank { "الزهراوي — التصريف" },
+                        )
+                    }
+                },
+                enabled = !busy,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Row(
+                    Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                ) {
+                    Icon(Icons.Default.Link, contentDescription = null)
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            stringResource(R.string.demo_zahrawi),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Text(
+                            stringResource(R.string.demo_zahrawi_hint),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
+                }
+            }
+
             ImportButton(
                 icon = { Icon(Icons.Default.PictureAsPdf, null) },
                 title = stringResource(R.string.import_pdf),
