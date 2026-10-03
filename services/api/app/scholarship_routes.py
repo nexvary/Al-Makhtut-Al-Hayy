@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response
 
+from .auth import Role, require_roles
 from .repository import repository
 from .scholarship import (
     VariantReading,
@@ -11,14 +12,15 @@ from .scholarship import (
 from .scholarly_export import iiif_supplementing_annotation_page, research_bundle, tei_xml
 
 router = APIRouter(prefix="/api/v1/scholarship", tags=["scholarship"])
+editor_write = Depends(require_roles(Role.REVIEWER, Role.ADMIN))
 
 
-@router.post("/works", response_model=Work)
+@router.post("/works", response_model=Work, dependencies=[editor_write])
 def put_work(item: Work) -> Work:
     return scholarship_store.put_work(item)
 
 
-@router.post("/witnesses", response_model=Witness)
+@router.post("/witnesses", response_model=Witness, dependencies=[editor_write])
 def put_witness(item: Witness) -> Witness:
     return scholarship_store.put_witness(item)
 
@@ -28,7 +30,7 @@ def witnesses(work_id: str) -> list[Witness]:
     return scholarship_store.witnesses(work_id)
 
 
-@router.post("/variants", response_model=VariantReading)
+@router.post("/variants", response_model=VariantReading, dependencies=[editor_write])
 def put_variant(item: VariantReading) -> VariantReading:
     return scholarship_store.put_variant(item)
 
@@ -38,7 +40,7 @@ def variants(work_id: str) -> list[VariantReading]:
     return scholarship_store.variants(work_id)
 
 
-@router.post("/alignments", response_model=WitnessAlignment)
+@router.post("/alignments", response_model=WitnessAlignment, dependencies=[editor_write])
 def put_alignment(item: WitnessAlignment) -> WitnessAlignment:
     return scholarship_store.put_alignment(item)
 
