@@ -1,10 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from .models import Manuscript
+from .repository import repository
 
 app = FastAPI(
     title="المخطوط الحي API",
-    version="0.1.0",
+    version="0.2.0",
     description="Source-traceable API for interactive historical Arabic manuscripts.",
 )
 
@@ -16,8 +17,15 @@ def health() -> dict[str, str]:
 
 @app.get("/api/v1/manuscripts", response_model=list[Manuscript])
 def list_manuscripts() -> list[Manuscript]:
-    # Persistence is intentionally deferred until the provenance/data model is stabilized.
-    return []
+    return repository.list()
+
+
+@app.get("/api/v1/manuscripts/{manuscript_id}", response_model=Manuscript)
+def get_manuscript(manuscript_id: str) -> Manuscript:
+    manuscript = repository.get(manuscript_id)
+    if manuscript is None:
+        raise HTTPException(status_code=404, detail="Manuscript not found")
+    return manuscript
 
 
 @app.get("/")

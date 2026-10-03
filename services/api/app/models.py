@@ -32,8 +32,8 @@ class TextLayer(BaseModel):
 
 class Region(BaseModel):
     id: str
-    polygon: list[Point]
-    layers: list[TextLayer] = []
+    polygon: list[Point] = Field(default_factory=list)
+    layers: list[TextLayer] = Field(default_factory=list)
 
 
 class Page(BaseModel):
@@ -41,7 +41,8 @@ class Page(BaseModel):
     sequence: int = Field(ge=1)
     folio_label: str | None = None
     image: str
-    regions: list[Region] = []
+    canvas_uri: str | None = None
+    regions: list[Region] = Field(default_factory=list)
 
 
 class Manuscript(BaseModel):
@@ -52,4 +53,4 @@ class Manuscript(BaseModel):
     source_institution: str | None = None
     source_url: str | None = None
     license: str | None = None
-    pages: list[Page] = []
+    pages: list[Page] = Field(default_factory=list)
