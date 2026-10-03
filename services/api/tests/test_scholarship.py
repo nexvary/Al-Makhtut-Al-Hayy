@@ -1,6 +1,5 @@
 from app.citations import CitationTarget
 from app.models import Manuscript, Page, Point, Region, TextLayer, TextLayerKind
-from app.scholarship import BibliographicMetadata, Witness, WitnessKind
 from app.scholarly_export import (
     iiif_supplementing_annotation_page,
     research_bundle,
