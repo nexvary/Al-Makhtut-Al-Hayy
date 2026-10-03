@@ -21,28 +21,72 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Accept Android SDK licenses
-        run: |
-          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
-          test -n "$SDKMANAGER"
-          yes | "$SDKMANAGER" --licenses >/dev/null || true
-
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "9.4.1"
 
-      - name: Run UI navigation smoke test on Android 15
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          target: google_apis
-          arch: x86_64
-          profile: pixel_6
-          disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -wipe-data -partition-size 2048
-          script: |
-            adb wait-for-device
-            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
-            until adb shell cmd package list packages >/dev/null 2>&1; do sleep 2; done
-            sleep 12
-            gradle -p apps/android :app:connectedDebugAndroidTest --stacktrace
+      - name: Install Android 15 emulator image
+        run: |
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          AVDMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name avdmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          test -n "$AVDMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "platform-tools" "emulator" "platforms;android-35" "system-images;android-35;default;x86_64"
+          echo "no" | "$AVDMANAGER" create avd -n api35-smoke -k "system-images;android-35;default;x86_64" --force
+
+      - name: Enable KVM
+        run: |
+          if [ -e /dev/kvm ]; then
+            sudo chmod 666 /dev/kvm
+          fi
+
+      - name: Start Android 15 emulator
+        run: |
+          "$ANDROID_HOME/emulator/emulator" -avd api35-smoke             -no-window -gpu swiftshader_indirect -no-snapshot             -noaudio -no-boot-anim -no-metrics             -camera-back none -camera-front none             > "$RUNNER_TEMP/emulator.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/emulator.pid"
+          adb start-server
+          adb wait-for-device
+
+          ready=0
+          for i in $(seq 1 240); do
+            boot="$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)"
+            package_ok="$(adb shell cmd package list packages 2>/dev/null | head -n 1 || true)"
+            if [ "$boot" = "1" ] && [ -n "$package_ok" ]; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+
+          if [ "$ready" != "1" ]; then
+            echo "Android 15 emulator did not become ready."
+            cat "$RUNNER_TEMP/emulator.log" || true
+            exit 1
+          fi
+
+          adb shell settings put global window_animation_scale 0 || true
+          adb shell settings put global transition_animation_scale 0 || true
+          adb shell settings put global animator_duration_scale 0 || true
+          adb shell wm dismiss-keyguard || true
+          adb devices -l
+
+      - name: Run navigation smoke test on Android 15
+        working-directory: apps/android
+        run: gradle :app:connectedDebugAndroidTest --stacktrace
+
+      - name: Capture emulator diagnostics on failure
+        if: failure()
+        run: |
+          adb devices -l || true
+          adb logcat -d -t 600 > "$RUNNER_TEMP/logcat.txt" || true
+          tail -n 400 "$RUNNER_TEMP/emulator.log" || true
+          tail -n 400 "$RUNNER_TEMP/logcat.txt" || true
+
+      - name: Stop emulator
+        if: always()
+        run: |
+          adb emu kill || true
+          if [ -f "$RUNNER_TEMP/emulator.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/emulator.pid")" 2>/dev/null || true
+          fi
