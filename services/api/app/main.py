@@ -2,14 +2,16 @@ from fastapi import FastAPI, HTTPException
 
 from .editorial_routes import router as editorial_router
 from .models import Manuscript
+from .qa_routes import router as qa_router
 from .repository import repository
 
 app = FastAPI(
     title="المخطوط الحي API",
-    version="0.3.0",
+    version="0.4.0",
     description="Source-traceable API for interactive historical Arabic manuscripts.",
 )
 app.include_router(editorial_router)
+app.include_router(qa_router)
 
 
 @app.get("/health")

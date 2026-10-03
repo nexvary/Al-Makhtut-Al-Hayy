@@ -39,16 +39,16 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 30. Export verified text — ✅
 
 ## Search and knowledge
-31. Arabic normalization — pending
-32. Token/search indexing — pending
-33. Page/region search — pending
-34. Citation-preserving retrieval — pending
-35. Vector search adapter — pending
-36. Hybrid retrieval — pending
-37. Grounded answer contract — pending
-38. Evidence coverage check — pending
-39. Unsupported-claim gate — pending
-40. Ask-the-manuscript API — pending
+31. Arabic normalization — ✅
+32. Token/search indexing — ✅
+33. Page/region search — ✅
+34. Citation-preserving retrieval — ✅
+35. Vector search adapter — ✅
+36. Hybrid retrieval — ✅
+37. Grounded answer contract — ✅
+38. Evidence coverage check — ✅
+39. Unsupported-claim gate — ✅
+40. Ask-the-manuscript API — ✅
 
 ## Reader experience
 41. Live API-backed regions — pending
