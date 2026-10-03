@@ -6,6 +6,7 @@ from app.scholarly_export import (
     scholarly_citation,
     tei_xml,
 )
+from app.scholarship import BibliographicMetadata, Witness, WitnessKind
 
 
 def manuscript() -> Manuscript:
