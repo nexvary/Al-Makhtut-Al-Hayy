@@ -28,7 +28,7 @@ fun AddBookScreen(
     var iiifUrl by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()\n    val iiifAccessDenied = stringResource(R.string.iiif_access_denied)
 
     fun runImport(block: suspend () -> LocalBook) {
         if (busy) return
@@ -37,7 +37,7 @@ fun AddBookScreen(
         scope.launch {
             runCatching { block() }
                 .onSuccess(onImported)
-                .onFailure { status = it.message ?: "Import failed" }
+                .onFailure { error ->\n                    status = if (error.message == "IIIF_ACCESS_DENIED") iiifAccessDenied\n                    else error.message ?: "Import failed"\n                }
             busy = false
         }
     }
