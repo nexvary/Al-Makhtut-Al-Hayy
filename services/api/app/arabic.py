@@ -5,7 +5,6 @@ import unicodedata
 
 _DIACRITICS = re.compile(r"[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]")
 _TATWEEL = "\u0640"
-_NON_WORD = re.compile(r"[^\w\u0600-\u06FF]+", re.UNICODE)
 
 
 def normalize_arabic(text: str) -> str:
@@ -27,4 +26,8 @@ def normalize_arabic(text: str) -> str:
 
 def tokenize_arabic(text: str) -> list[str]:
     normalized = normalize_arabic(text).lower()
-    return [token for token in _NON_WORD.sub(" ", normalized).split() if token]
+    cleaned = "".join(
+        char if unicodedata.category(char)[0] in {"L", "N"} or char == "_" else " "
+        for char in normalized
+    )
+    return [token for token in cleaned.split() if token]
