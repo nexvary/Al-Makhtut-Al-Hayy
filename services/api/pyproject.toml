@@ -18,5 +18,9 @@ dev = [
   "ruff>=0.8,<1"
 ]
 
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["migrations*"]
+
 [tool.ruff]
 line-length = 100
