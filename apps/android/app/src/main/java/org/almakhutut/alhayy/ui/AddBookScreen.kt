@@ -5,8 +5,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Collections
+import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -78,7 +79,7 @@ fun AddBookScreen(
                     Modifier.padding(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    Icon(Icons.Default.Link, contentDescription = null)
+                    Icon(Icons.Default.AutoStories, contentDescription = null)
                     Column(Modifier.weight(1f)) {
                         Text(
                             stringResource(R.string.demo_zahrawi),
@@ -100,7 +101,7 @@ fun AddBookScreen(
             ) { pdfPicker.launch(arrayOf("application/pdf")) }
 
             ImportButton(
-                icon = { Icon(Icons.Default.Image, null) },
+                icon = { Icon(Icons.Default.Collections, null) },
                 title = stringResource(R.string.import_images),
                 subtitle = stringResource(R.string.import_images_hint),
                 enabled = !busy,
@@ -120,7 +121,7 @@ fun AddBookScreen(
                 enabled = !busy && iiifUrl.startsWith("https://"),
                 modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
             ) {
-                Icon(Icons.Default.Link, null)
+                Icon(Icons.Default.AutoStories, null)
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(R.string.open_iiif))
             }
