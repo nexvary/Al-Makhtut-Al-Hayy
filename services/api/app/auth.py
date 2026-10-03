@@ -5,8 +5,8 @@ import hashlib
 import hmac
 import json
 import time
+from collections.abc import Callable
 from enum import StrEnum
-from typing import Callable
 
 from fastapi import Header, HTTPException
 
