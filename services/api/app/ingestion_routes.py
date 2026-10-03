@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 
+from .auth import Role, require_roles
 from .importers import manuscript_from_iiif
 from .models import Manuscript
 from .repository import repository
@@ -22,7 +23,11 @@ class IiifImportRequest(BaseModel):
     rights: str | None = None
 
 
-@router.post("/iiif", response_model=Manuscript)
+@router.post(
+    "/iiif",
+    response_model=Manuscript,
+    dependencies=[Depends(require_roles(Role.ADMIN))],
+)
 def import_iiif(request: IiifImportRequest) -> Manuscript:
     validate_public_http_url(request.manifest_url)
     manuscript = manuscript_from_iiif(

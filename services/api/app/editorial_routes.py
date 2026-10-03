@@ -1,11 +1,16 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from .auth import Role, require_roles
 from .editorial import TextRevision, editorial_store
 
 router = APIRouter(prefix="/api/v1/editorial", tags=["editorial"])
 
 
-@router.post("/revisions", response_model=TextRevision)
+@router.post(
+    "/revisions",
+    response_model=TextRevision,
+    dependencies=[Depends(require_roles(Role.TRANSCRIBER, Role.REVIEWER, Role.ADMIN))],
+)
 def create_revision(revision: TextRevision) -> TextRevision:
     try:
         return editorial_store.add_revision(revision)

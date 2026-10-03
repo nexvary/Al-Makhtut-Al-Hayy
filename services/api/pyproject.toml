@@ -1,12 +1,14 @@
 [project]
 name = "al-makhtut-al-hayy-api"
-version = "0.1.0"
+version = "0.1.0rc1"
 description = "API for Al-Makhtut-Al-Hayy / Living Manuscript"
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115,<1",
   "uvicorn[standard]>=0.32,<1",
-  "pydantic>=2.10,<3"
+  "pydantic>=2.10,<3",
+  "psycopg[binary]>=3.2,<4",
+  "redis>=5,<8"
 ]
 
 [project.optional-dependencies]

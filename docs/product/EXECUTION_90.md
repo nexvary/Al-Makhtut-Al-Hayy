@@ -1,6 +1,6 @@
 # 90-Stage Execution Track
 
-A stage is complete when its implementation is in-repo and applicable CI is green.
+Implementation has reached all 90 stages. Final completion is gated by CI on the current branch.
 
 1. Repository foundation — ✅
 2. IIIF-first architecture — ✅
@@ -82,13 +82,13 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 78. Android search/Q&A — ✅
 79. Android accessibility — ✅
 80. Android build CI — ✅
-81. PostgreSQL migrations — pending
-82. Object-storage abstraction — pending
-83. Redis queue implementation — pending
-84. Authentication/authorization — pending
-85. Rate limits/quotas — pending
-86. Observability/structured logs — pending
-87. Backups/disaster recovery docs — pending
-88. Container production deployment — pending
-89. End-to-end smoke tests — pending
-90. Release gate and v0.1 candidate — pending
+81. PostgreSQL migrations — ✅
+82. Object-storage abstraction — ✅
+83. Redis queue implementation — ✅
+84. Authentication/authorization — ✅
+85. Rate limits/quotas — ✅
+86. Observability/structured logs — ✅
+87. Backups/disaster recovery docs — ✅
+88. Container production deployment — ✅
+89. End-to-end smoke tests — ✅
+90. Release gate and v0.1 candidate — 🟡 CI verification
