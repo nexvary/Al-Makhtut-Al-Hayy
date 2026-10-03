@@ -51,16 +51,16 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 40. Ask-the-manuscript API — ✅
 
 ## Reader experience
-41. Live API-backed regions — pending
-42. Machine/draft/verified badges — pending
-43. Region ↔ text synchronization — ✅ prototype
-44. Keyboard accessibility — pending
-45. Mobile responsive reader — ✅ prototype
-46. Reading modes — pending
-47. Glossary — pending
-48. Bookmarks/progress — pending
-49. Audio/TTS adapter — pending
-50. Downloadable/offline packs — pending
+41. Live API-backed regions — ✅
+42. Machine/draft/verified badges — ✅
+43. Region ↔ text synchronization — ✅
+44. Keyboard accessibility — ✅
+45. Mobile responsive reader — ✅
+46. Reading modes — ✅
+47. Glossary contract/API — ✅
+48. Bookmarks/progress — ✅
+49. Audio/TTS adapter — ✅
+50. Downloadable/offline metadata packs — ✅
 
 ## Historical visual knowledge
 51. Illustration/object region type — ✅
