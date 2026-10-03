@@ -64,15 +64,15 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 
 ## Historical visual knowledge
 51. Illustration/object region type — ✅
-52. Object metadata — pending
-53. Instrument gallery — pending
-54. Timeline data model — pending
-55. Map/place links — pending
-56. 3D asset contract — pending
-57. Animation/story card contract — pending
-58. Historical-context warnings — pending
-59. Related-passages graph — pending
-60. Curated exhibit mode — pending
+52. Object metadata — ✅
+53. Instrument gallery API — ✅
+54. Timeline data model — ✅
+55. Map/place links — ✅
+56. 3D asset contract — ✅
+57. Animation/story card contract — ✅
+58. Historical-context warnings — ✅
+59. Related-passages graph — ✅
+60. Curated exhibit mode — ✅
 
 ## Manuscript scholarship
 61. Witness/work model — pending
