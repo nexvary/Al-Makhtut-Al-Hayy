@@ -37,7 +37,7 @@ class HtrJob(BaseModel):
     error: str | None = None
     metadata: dict[str, str] = Field(default_factory=dict)
 
-    def transition(self, target: HtrJobState) -> "HtrJob":
+    def transition(self, target: HtrJobState) -> HtrJob:
         if target not in _ALLOWED[self.state]:
             raise ValueError(f"Invalid HTR transition: {self.state} -> {target}")
         return self.model_copy(update={"state": target})
