@@ -47,4 +47,7 @@
     <string name="verified">Verifiziert</string>
     <string name="draft">Entwurf</string>
     <string name="machine">Maschinell</string>
+
+    <string name="demo_zahrawi">Al-Zahrawi-Demo öffnen</string>
+    <string name="demo_zahrawi_hint">Gallica-IIIF-Handschrift direkt für einen Schnelltest laden.</string>
 </resources>

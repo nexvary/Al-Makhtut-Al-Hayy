@@ -47,4 +47,7 @@
     <string name="verified">Doğrulandı</string>
     <string name="draft">Taslak</string>
     <string name="machine">Makine</string>
+
+    <string name="demo_zahrawi">Ez-Zehravi demosunu aç</string>
+    <string name="demo_zahrawi_hint">Hızlı test için Gallica IIIF el yazmasını doğrudan yükleyin.</string>
 </resources>

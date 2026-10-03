@@ -47,4 +47,7 @@
     <string name="verified">Verificado</string>
     <string name="draft">Borrador</string>
     <string name="machine">Automático</string>
+
+    <string name="demo_zahrawi">Abrir demo de Al-Zahrawi</string>
+    <string name="demo_zahrawi_hint">Carga el manuscrito IIIF de Gallica para una prueba rápida.</string>
 </resources>

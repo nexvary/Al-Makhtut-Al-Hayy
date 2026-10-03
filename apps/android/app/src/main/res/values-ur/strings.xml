@@ -47,4 +47,7 @@
     <string name="verified">تصدیق شدہ</string>
     <string name="draft">مسودہ</string>
     <string name="machine">خودکار</string>
+
+    <string name="demo_zahrawi">الزہراوی ڈیمو کھولیں</string>
+    <string name="demo_zahrawi_hint">فوری آزمائش کے لیے Gallica کا IIIF مخطوطہ لوڈ کریں۔</string>
 </resources>

@@ -47,4 +47,7 @@
     <string name="verified">تأییدشده</string>
     <string name="draft">پیش‌نویس</string>
     <string name="machine">خودکار</string>
+
+    <string name="demo_zahrawi">باز کردن نمونه زهراوی</string>
+    <string name="demo_zahrawi_hint">برای آزمون سریع، نسخه IIIF گالیکا را مستقیماً بارگذاری کنید.</string>
 </resources>

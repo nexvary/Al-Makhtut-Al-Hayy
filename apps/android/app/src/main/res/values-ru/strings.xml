@@ -47,4 +47,7 @@
     <string name="verified">Проверено</string>
     <string name="draft">Черновик</string>
     <string name="machine">Автоматически</string>
+
+    <string name="demo_zahrawi">Открыть демо Аль-Захрави</string>
+    <string name="demo_zahrawi_hint">Загрузите рукопись IIIF Gallica для быстрой проверки.</string>
 </resources>

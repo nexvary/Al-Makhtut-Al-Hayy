@@ -47,4 +47,7 @@
     <string name="verified">موثّق</string>
     <string name="draft">مسودة</string>
     <string name="machine">آلي</string>
+
+    <string name="demo_zahrawi">فتح نموذج الزهراوي</string>
+    <string name="demo_zahrawi_hint">حمّل مخطوط الزهراوي من Gallica مباشرة لتجربة سريعة.</string>
 </resources>
