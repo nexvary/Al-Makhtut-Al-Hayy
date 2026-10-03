@@ -1,0 +1,49 @@
+name: Android 15 UI Smoke
+
+on:
+  push:
+    branches: ["main", "dev/**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  android15:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Accept Android SDK licenses
+        run: |
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.4.1"
+
+      - name: Run UI navigation smoke test on Android 15
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -wipe-data -partition-size 2048
+          script: |
+            adb wait-for-device
+            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
+            until adb shell cmd package list packages >/dev/null 2>&1; do sleep 2; done
+            sleep 12
+            cd apps/android
+            gradle :app:connectedDebugAndroidTest --stacktrace
