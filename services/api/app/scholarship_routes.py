@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response
 
 from .auth import Role, require_roles
 from .repository import repository
+from .scholarly_export import iiif_supplementing_annotation_page, research_bundle, tei_xml
 from .scholarship import (
     VariantReading,
     Witness,
@@ -9,7 +10,6 @@ from .scholarship import (
     Work,
     scholarship_store,
 )
-from .scholarly_export import iiif_supplementing_annotation_page, research_bundle, tei_xml
 
 router = APIRouter(prefix="/api/v1/scholarship", tags=["scholarship"])
 editor_write = Depends(require_roles(Role.REVIEWER, Role.ADMIN))
