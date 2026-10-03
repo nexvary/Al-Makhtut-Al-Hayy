@@ -9,7 +9,7 @@ on:
 jobs:
   android15:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     env:
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
@@ -39,4 +39,11 @@ jobs:
           arch: x86_64
           profile: pixel_6
           disable-animations: true
-          script: cd apps/android && gradle :app:connectedDebugAndroidTest --stacktrace
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -wipe-data -partition-size 2048
+          script: |
+            adb wait-for-device
+            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
+            until adb shell cmd package list packages >/dev/null 2>&1; do sleep 2; done
+            sleep 12
+            cd apps/android
+            gradle :app:connectedDebugAndroidTest --stacktrace
