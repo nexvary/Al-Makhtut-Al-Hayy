@@ -7,10 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LibraryBooks
-import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -115,13 +115,13 @@ private fun LivingManuscriptApp() {
                     NavigationBarItem(
                         selected = true,
                         onClick = { screen = AppScreen.HOME },
-                        icon = { Icon(Icons.Default.LibraryBooks, null) },
+                        icon = { Icon(Icons.Default.Home, null) },
                         label = { Text(stringResource(R.string.home)) },
                     )
                     NavigationBarItem(
                         selected = false,
                         onClick = { screen = AppScreen.ADD_BOOK },
-                        icon = { Icon(Icons.Default.AutoStories, null) },
+                        icon = { Icon(Icons.Default.Add, null) },
                         label = { Text(stringResource(R.string.add_book)) },
                     )
                     NavigationBarItem(
@@ -133,7 +133,7 @@ private fun LivingManuscriptApp() {
                     NavigationBarItem(
                         selected = false,
                         onClick = { screen = AppScreen.SETTINGS },
-                        icon = { Icon(Icons.Default.Tune, null) },
+                        icon = { Icon(Icons.Default.Settings, null) },
                         label = { Text(stringResource(R.string.settings)) },
                     )
                 }
