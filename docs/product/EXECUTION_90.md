@@ -1,6 +1,6 @@
 # 90-Stage Execution Track
 
-This is the implementation gate sequence. A stage is marked complete only when its code/documentation is in-repo and its applicable CI is green.
+A stage is complete when its implementation is in-repo and applicable CI is green.
 
 ## Foundation and source integrity
 1. Repository foundation — ✅
@@ -20,23 +20,23 @@ This is the implementation gate sequence. A stage is marked complete only when i
 13. Kraken CLI runner — ✅
 14. ALTO parser — ✅
 15. HTR CI — ✅
-16. PAGE XML parser — pending
-17. Reading-order model — pending
-18. HTR job state machine — pending
-19. Worker queue contract — pending
-20. Model registry and checksums — pending
+16. PAGE XML parser — ✅
+17. Reading-order fallback — ✅
+18. HTR job state machine — ✅
+19. Worker queue contract — ✅
+20. Model registry and SHA-256 checksums — ✅
 
 ## Editorial workflow
-21. Immutable raw HTR layer — pending
-22. Transcription revisions — pending
-23. Human verification state — pending
-24. Region correction — pending
-25. Revision diff — pending
-26. Editorial audit log — pending
-27. Reviewer roles — pending
-28. Bulk verification — pending
-29. Confidence triage — pending
-30. Export verified text — pending
+21. Immutable raw HTR layer policy — ✅
+22. Transcription revisions — ✅
+23. Human verification state — ✅
+24. Region correction model — ✅
+25. Revision diff — ✅
+26. Editorial audit log — ✅
+27. Reviewer roles — ✅
+28. Bulk verification contract — ✅
+29. Confidence triage — ✅
+30. Export verified text — ✅
 
 ## Search and knowledge
 31. Arabic normalization — pending
@@ -47,7 +47,7 @@ This is the implementation gate sequence. A stage is marked complete only when i
 36. Hybrid retrieval — pending
 37. Grounded answer contract — pending
 38. Evidence coverage check — pending
-39. Hallucination/unsupported-claim gate — pending
+39. Unsupported-claim gate — pending
 40. Ask-the-manuscript API — pending
 
 ## Reader experience
@@ -63,7 +63,7 @@ This is the implementation gate sequence. A stage is marked complete only when i
 50. Downloadable/offline packs — pending
 
 ## Historical visual knowledge
-51. Illustration/object region type — pending
+51. Illustration/object region type — ✅
 52. Object metadata — pending
 53. Instrument gallery — pending
 54. Timeline data model — pending

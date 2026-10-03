@@ -16,6 +16,15 @@ class TextLayerKind(StrEnum):
     AI_EXPLANATION = "ai_explanation"
 
 
+class RegionType(StrEnum):
+    TEXT_LINE = "text_line"
+    MARGINALIA = "marginalia"
+    ILLUSTRATION = "illustration"
+    TABLE = "table"
+    DECORATION = "decoration"
+    OTHER = "other"
+
+
 class Point(BaseModel):
     x: float
     y: float
@@ -32,6 +41,8 @@ class TextLayer(BaseModel):
 
 class Region(BaseModel):
     id: str
+    region_type: RegionType = RegionType.TEXT_LINE
+    reading_order: int | None = None
     polygon: list[Point] = Field(default_factory=list)
     layers: list[TextLayer] = Field(default_factory=list)
 
