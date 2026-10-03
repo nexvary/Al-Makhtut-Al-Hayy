@@ -53,6 +53,8 @@ class Page(BaseModel):
     folio_label: str | None = None
     image: str
     canvas_uri: str | None = None
+    image_width: int | None = Field(default=None, gt=0)
+    image_height: int | None = Field(default=None, gt=0)
     regions: list[Region] = Field(default_factory=list)
 
 

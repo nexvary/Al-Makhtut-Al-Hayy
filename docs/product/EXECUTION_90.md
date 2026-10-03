@@ -72,16 +72,16 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 68. Bibliographic metadata — ✅
 69. Stable scholarly citations — ✅
 70. Research data export — ✅
-71. Android project foundation — pending
-72. Compose RTL design system — pending
-73. Manuscript list/detail — pending
-74. Android deep-zoom strategy — pending
-75. Android region overlays — pending
-76. Android offline cache — pending
-77. Android audio — pending
-78. Android search/Q&A — pending
-79. Android accessibility — pending
-80. Android build CI — pending
+71. Android project foundation — ✅
+72. Compose RTL design system — ✅
+73. Manuscript list/detail — ✅
+74. Android zoom/pan reader — ✅
+75. Android region overlays — ✅
+76. Android offline cache — ✅
+77. Android Arabic TTS — ✅
+78. Android search/Q&A — ✅
+79. Android accessibility — ✅
+80. Android build CI — ✅
 81. PostgreSQL migrations — pending
 82. Object-storage abstraction — pending
 83. Redis queue implementation — pending

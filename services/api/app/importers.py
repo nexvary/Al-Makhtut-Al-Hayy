@@ -32,6 +32,8 @@ def manuscript_from_iiif(
                 else str(canvas.image_url)
             ),
             canvas_uri=canvas.id,
+            image_width=canvas.width,
+            image_height=canvas.height,
             regions=[],
         )
         for index, canvas in enumerate(canvases, start=1)
