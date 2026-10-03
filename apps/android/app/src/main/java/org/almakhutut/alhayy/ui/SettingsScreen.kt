@@ -56,8 +56,8 @@ fun SettingsScreen(apiBase: String, onApiBaseChange: (String) -> Unit, onBack: (
                 value = value,
                 onValueChange = { value = it },
                 label = { Text(stringResource(R.string.api_address)) },
-                placeholder = { Text(stringResource(R.string.api_address_hint)) },
-                supportingText = { Text(stringResource(R.string.api_optional_note)) },
+                placeholder = { Text("https://your-server.example/api") },
+                supportingText = { Text("Optional server; local books and IIIF work without it.") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
