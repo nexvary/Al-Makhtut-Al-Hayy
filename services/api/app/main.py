@@ -6,17 +6,19 @@ from .knowledge_routes import router as knowledge_router
 from .models import Manuscript
 from .qa_routes import router as qa_router
 from .repository import repository
+from .scholarship_routes import router as scholarship_router
 from .visual_routes import router as visual_router
 
 app = FastAPI(
     title="المخطوط الحي API",
-    version="0.6.0",
+    version="0.7.0",
     description="Source-traceable API for interactive historical Arabic manuscripts.",
 )
 app.include_router(editorial_router)
 app.include_router(ingestion_router)
 app.include_router(knowledge_router)
 app.include_router(qa_router)
+app.include_router(scholarship_router)
 app.include_router(visual_router)
 
 

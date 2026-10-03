@@ -2,7 +2,6 @@
 
 A stage is complete when its implementation is in-repo and applicable CI is green.
 
-## Foundation and source integrity
 1. Repository foundation — ✅
 2. IIIF-first architecture — ✅
 3. Open-source technology map — ✅
@@ -13,8 +12,6 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 8. Provenance event model — ✅
 9. Citation target model — ✅
 10. Repository abstraction — ✅
-
-## HTR pipeline
 11. HTR engine protocol — ✅
 12. Kraken adapter boundary — ✅
 13. Kraken CLI runner — ✅
@@ -24,10 +21,8 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 17. Reading-order fallback — ✅
 18. HTR job state machine — ✅
 19. Worker queue contract — ✅
-20. Model registry and SHA-256 checksums — ✅
-
-## Editorial workflow
-21. Immutable raw HTR layer policy — ✅
+20. Model registry/checksums — ✅
+21. Immutable raw HTR policy — ✅
 22. Transcription revisions — ✅
 23. Human verification state — ✅
 24. Region correction model — ✅
@@ -37,8 +32,6 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 28. Bulk verification contract — ✅
 29. Confidence triage — ✅
 30. Export verified text — ✅
-
-## Search and knowledge
 31. Arabic normalization — ✅
 32. Token/search indexing — ✅
 33. Page/region search — ✅
@@ -49,8 +42,6 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 38. Evidence coverage check — ✅
 39. Unsupported-claim gate — ✅
 40. Ask-the-manuscript API — ✅
-
-## Reader experience
 41. Live API-backed regions — ✅
 42. Machine/draft/verified badges — ✅
 43. Region ↔ text synchronization — ✅
@@ -60,9 +51,7 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 47. Glossary contract/API — ✅
 48. Bookmarks/progress — ✅
 49. Audio/TTS adapter — ✅
-50. Downloadable/offline metadata packs — ✅
-
-## Historical visual knowledge
+50. Offline metadata packs — ✅
 51. Illustration/object region type — ✅
 52. Object metadata — ✅
 53. Instrument gallery API — ✅
@@ -73,20 +62,16 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 58. Historical-context warnings — ✅
 59. Related-passages graph — ✅
 60. Curated exhibit mode — ✅
-
-## Manuscript scholarship
-61. Witness/work model — pending
-62. Parallel witness viewer — pending
-63. Variant reading model — pending
-64. Alignment between witnesses — pending
-65. TEI export — pending
-66. Web Annotation/IIIF supplementing export — pending
-67. ALTO/PAGE round-trip tests — pending
-68. Bibliographic metadata — pending
-69. Stable scholarly citations — pending
-70. Research data export — pending
-
-## Android and platform
+61. Work/witness model — ✅
+62. Parallel-witness data API — ✅
+63. Variant reading model — ✅
+64. Witness alignment model — ✅
+65. TEI export — ✅
+66. IIIF supplementing export — ✅
+67. ALTO/PAGE round-trip tests — ✅
+68. Bibliographic metadata — ✅
+69. Stable scholarly citations — ✅
+70. Research data export — ✅
 71. Android project foundation — pending
 72. Compose RTL design system — pending
 73. Manuscript list/detail — pending
@@ -97,8 +82,6 @@ A stage is complete when its implementation is in-repo and applicable CI is gree
 78. Android search/Q&A — pending
 79. Android accessibility — pending
 80. Android build CI — pending
-
-## Production hardening
 81. PostgreSQL migrations — pending
 82. Object-storage abstraction — pending
 83. Redis queue implementation — pending
