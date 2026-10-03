@@ -221,7 +221,7 @@ function openPage(index: number) {
   pageCount.textContent = `${pageIndex + 1} / ${pages.length}`;
   document.querySelector<HTMLButtonElement>("#prev")!.disabled = pageIndex === 0;
   document.querySelector<HTMLButtonElement>("#next")!.disabled = pageIndex === pages.length - 1;
-  viewer.open(page.tileSource as OpenSeadragon.TileSource);
+  viewer.open(page.tileSource as unknown as OpenSeadragon.TileSource);
 }
 
 viewer.addHandler("open", () => {
