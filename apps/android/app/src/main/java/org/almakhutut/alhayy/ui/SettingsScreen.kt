@@ -15,29 +15,19 @@ import org.almakhutut.alhayy.R
 data class AppLanguage(val tag: String, val label: String)
 
 val supportedLanguages = listOf(
-    AppLanguage("ar", "العربية"),
-    AppLanguage("en", "English"),
-    AppLanguage("tr", "Türkçe"),
-    AppLanguage("es", "Español"),
-    AppLanguage("de", "Deutsch"),
-    AppLanguage("it", "Italiano"),
-    AppLanguage("fr", "Français"),
-    AppLanguage("ur", "اردو"),
-    AppLanguage("fa", "فارسی"),
-    AppLanguage("ru", "Русский"),
+    AppLanguage("ar", "العربية"), AppLanguage("en", "English"),
+    AppLanguage("tr", "Türkçe"), AppLanguage("es", "Español"),
+    AppLanguage("de", "Deutsch"), AppLanguage("it", "Italiano"),
+    AppLanguage("fr", "Français"), AppLanguage("ur", "اردو"),
+    AppLanguage("fa", "فارسی"), AppLanguage("ru", "Русский"),
 )
 
 @Composable
-fun SettingsScreen(
-    apiBase: String,
-    onApiBaseChange: (String) -> Unit,
-    onBack: () -> Unit,
-) {
+fun SettingsScreen(apiBase: String, onApiBaseChange: (String) -> Unit, onBack: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     var value by remember(apiBase) { mutableStateOf(apiBase) }
     val currentTag = AppCompatDelegate.getApplicationLocales().toLanguageTags()
-        .substringBefore(",")
-        .ifBlank { "ar" }
+        .substringBefore(",").ifBlank { "ar" }
 
     Scaffold(topBar = { AppTopBar(stringResource(R.string.settings), onBack) }) { padding ->
         Column(
@@ -46,25 +36,17 @@ fun SettingsScreen(
         ) {
             Text(stringResource(R.string.language), style = MaterialTheme.typography.titleMedium)
             Box {
-                OutlinedButton(
-                    onClick = { expanded = true },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
+                OutlinedButton(onClick = { expanded = true }, modifier = Modifier.fillMaxWidth()) {
                     Icon(Icons.Default.Language, null)
                     Spacer(Modifier.width(8.dp))
                     Text(supportedLanguages.firstOrNull { it.tag == currentTag }?.label ?: "العربية")
                 }
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     supportedLanguages.forEach { language ->
-                        DropdownMenuItem(
-                            text = { Text(language.label) },
-                            onClick = {
-                                expanded = false
-                                AppCompatDelegate.setApplicationLocales(
-                                    LocaleListCompat.forLanguageTags(language.tag),
-                                )
-                            },
-                        )
+                        DropdownMenuItem(text = { Text(language.label) }, onClick = {
+                            expanded = false
+                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language.tag))
+                        })
                     }
                 }
             }
@@ -74,16 +56,15 @@ fun SettingsScreen(
                 value = value,
                 onValueChange = { value = it },
                 label = { Text(stringResource(R.string.api_address)) },
+                placeholder = { Text(stringResource(R.string.api_address_hint)) },
+                supportingText = { Text(stringResource(R.string.api_optional_note)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
             Button(onClick = { onApiBaseChange(value) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.save))
             }
-            Text(
-                stringResource(R.string.android_compatibility_note),
-                style = MaterialTheme.typography.bodySmall,
-            )
+            Text(stringResource(R.string.android_compatibility_note), style = MaterialTheme.typography.bodySmall)
         }
     }
 }
