@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-
 from redis import Redis
 
 from .worker_contract import HtrQueueMessage, HtrQueueResult
