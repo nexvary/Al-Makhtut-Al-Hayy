@@ -25,7 +25,16 @@ jobs:
         with:
           gradle-version: "9.4.1"
 
+      - name: Prepare Android tool paths
+        run: |
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          echo "ANDROID_AVD_HOME=$RUNNER_TEMP/android-avd" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/android-avd"
+
       - name: Install Android 15 emulator image
+        env:
+          ANDROID_AVD_HOME: ${{ runner.temp }}/android-avd
         run: |
           SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort | tail -n 1)"
           AVDMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name avdmanager | sort | tail -n 1)"
@@ -33,7 +42,10 @@ jobs:
           test -n "$AVDMANAGER"
           yes | "$SDKMANAGER" --licenses >/dev/null || true
           "$SDKMANAGER" "platform-tools" "emulator" "platforms;android-35" "system-images;android-35;default;x86_64"
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/android-avd"
           echo "no" | "$AVDMANAGER" create avd -n api35-smoke -k "system-images;android-35;default;x86_64" --force
+          test -f "$ANDROID_AVD_HOME/api35-smoke.ini"
+          "$ANDROID_HOME/emulator/emulator" -list-avds
 
       - name: Enable KVM
         run: |
@@ -43,15 +55,22 @@ jobs:
 
       - name: Start Android 15 emulator
         run: |
-          "$ANDROID_HOME/emulator/emulator" -avd api35-smoke             -no-window -gpu swiftshader_indirect -no-snapshot             -noaudio -no-boot-anim -no-metrics             -camera-back none -camera-front none             > "$RUNNER_TEMP/emulator.log" 2>&1 &
+          ADB="$ANDROID_HOME/platform-tools/adb"
+          EMULATOR="$ANDROID_HOME/emulator/emulator"
+          test -x "$ADB"
+          test -x "$EMULATOR"
+          test -f "$ANDROID_AVD_HOME/api35-smoke.ini"
+
+          "$EMULATOR" -avd api35-smoke             -no-window -gpu swiftshader_indirect -no-snapshot             -noaudio -no-boot-anim -no-metrics             -camera-back none -camera-front none             > "$RUNNER_TEMP/emulator.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/emulator.pid"
-          adb start-server
-          adb wait-for-device
+
+          "$ADB" start-server
+          "$ADB" wait-for-device
 
           ready=0
           for i in $(seq 1 240); do
-            boot="$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)"
-            package_ok="$(adb shell cmd package list packages 2>/dev/null | head -n 1 || true)"
+            boot="$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)"
+            package_ok="$("$ADB" shell cmd package list packages 2>/dev/null | head -n 1 || true)"
             if [ "$boot" = "1" ] && [ -n "$package_ok" ]; then
               ready=1
               break
@@ -65,11 +84,11 @@ jobs:
             exit 1
           fi
 
-          adb shell settings put global window_animation_scale 0 || true
-          adb shell settings put global transition_animation_scale 0 || true
-          adb shell settings put global animator_duration_scale 0 || true
-          adb shell wm dismiss-keyguard || true
-          adb devices -l
+          "$ADB" shell settings put global window_animation_scale 0 || true
+          "$ADB" shell settings put global transition_animation_scale 0 || true
+          "$ADB" shell settings put global animator_duration_scale 0 || true
+          "$ADB" shell wm dismiss-keyguard || true
+          "$ADB" devices -l
 
       - name: Run navigation smoke test on Android 15
         working-directory: apps/android
@@ -78,15 +97,17 @@ jobs:
       - name: Capture emulator diagnostics on failure
         if: failure()
         run: |
-          adb devices -l || true
-          adb logcat -d -t 600 > "$RUNNER_TEMP/logcat.txt" || true
+          ADB="$ANDROID_HOME/platform-tools/adb"
+          "$ADB" devices -l || true
+          "$ADB" logcat -d -t 600 > "$RUNNER_TEMP/logcat.txt" || true
           tail -n 400 "$RUNNER_TEMP/emulator.log" || true
           tail -n 400 "$RUNNER_TEMP/logcat.txt" || true
 
       - name: Stop emulator
         if: always()
         run: |
-          adb emu kill || true
+          ADB="$ANDROID_HOME/platform-tools/adb"
+          "$ADB" emu kill || true
           if [ -f "$RUNNER_TEMP/emulator.pid" ]; then
             kill "$(cat "$RUNNER_TEMP/emulator.pid")" 2>/dev/null || true
           fi
