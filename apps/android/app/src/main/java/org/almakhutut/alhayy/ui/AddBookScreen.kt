@@ -28,7 +28,7 @@ fun AddBookScreen(
     var iiifUrl by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()\n    val iiifAccessDenied = stringResource(R.string.iiif_access_denied)
+    val scope = rememberCoroutineScope()\n    val iiifAccessDenied = "The manuscript provider refused the request. Please try again."
 
     fun runImport(block: suspend () -> LocalBook) {
         if (busy) return
