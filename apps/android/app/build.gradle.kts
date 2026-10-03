@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "org.almakhutut.alhayy"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "org.almakhutut.alhayy"
