@@ -28,6 +28,9 @@
     <string name="language">اللغة</string>
     <string name="server_settings">إعدادات الخادم</string>
     <string name="api_address">عنوان API</string>
+    <string name="api_address_hint">https://your-server.example/api</string>
+    <string name="api_optional_note">اختياري. الكتب المحلية وIIIF يعملان بدون خادم NEXVARY. العنوان 10.0.2.2 مخصص للمحاكي فقط وليس للهاتف الحقيقي.</string>
+    <string name="iiif_access_denied">رفض مصدر المخطوط الطلب. حاول مرة أخرى؛ التطبيق يعيد المحاولة تلقائيًا بطلب IIIF متوافق.</string>
     <string name="save">حفظ</string>
     <string name="saved">تم الحفظ</string>
     <string name="android_compatibility_note">مصمم للهواتف الحديثة ومتوافق مع Android 15 وما بعده.</string>
