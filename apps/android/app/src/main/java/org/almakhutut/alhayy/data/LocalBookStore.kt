@@ -18,7 +18,9 @@ class LocalBookStore(private val context: Context) {
     private val indexFile = AtomicFile(File(root, "library.json"))
 
     fun list(): List<LocalBook> = synchronized(indexLock) {
-        if (!indexFile.exists()) return@synchronized emptyList()
+        if (!indexFile.baseFile.isFile && !File(root, "library.json.bak").isFile) {
+            return@synchronized emptyList()
+        }
         runCatching {
             val array = JSONArray(String(indexFile.readFully(), Charsets.UTF_8))
             (0 until array.length()).map { array.getJSONObject(it).toBook() }
