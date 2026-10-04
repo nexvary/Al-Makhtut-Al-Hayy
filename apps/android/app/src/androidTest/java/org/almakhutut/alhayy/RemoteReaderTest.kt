@@ -2,12 +2,10 @@ package org.almakhutut.alhayy
 
 import android.graphics.Bitmap
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.core.os.LocaleListCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.almakhutut.alhayy.model.Manuscript
@@ -25,12 +23,7 @@ import java.io.File
 @RunWith(AndroidJUnit4::class)
 class RemoteReaderTest {
     companion object {
-        @JvmStatic @BeforeClass fun selectLanguage() {
-            val tag = InstrumentationRegistry.getArguments().getString("language", "en")
-            InstrumentationRegistry.getInstrumentation().runOnMainSync {
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
-            }
-        }
+        @JvmStatic @BeforeClass fun selectLanguage() { selectTestLanguage() }
     }
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
     private fun text(id: Int) = rule.activity.getString(id)

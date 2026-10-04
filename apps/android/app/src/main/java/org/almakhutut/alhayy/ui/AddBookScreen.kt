@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import org.almakhutut.alhayy.R
 import org.almakhutut.alhayy.data.LocalBook
@@ -42,6 +43,7 @@ fun AddBookScreen(
             runCatching { block() }
                 .onSuccess(onImported)
                 .onFailure {
+                    if (it is CancellationException) throw it
                     status = if (it.message == "IIIF_ACCESS_DENIED") {
                         deniedText
                     } else it.message ?: failedText

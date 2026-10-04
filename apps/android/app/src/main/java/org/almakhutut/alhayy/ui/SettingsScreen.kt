@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
@@ -29,7 +30,7 @@ fun SettingsScreen(apiBase: String, onApiBaseChange: (String) -> Unit, onBack: (
     var expanded by remember { mutableStateOf(false) }
     var value by remember(apiBase) { mutableStateOf(apiBase) }
     val currentTag = AppCompatDelegate.getApplicationLocales().toLanguageTags()
-        .substringBefore(",").ifBlank { "ar" }
+        .substringBefore(",").ifBlank { LocalConfiguration.current.locales[0].language }
 
     Scaffold(topBar = { AppTopBar(stringResource(R.string.settings), onBack) }) { padding ->
         Column(

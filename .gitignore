@@ -40,3 +40,5 @@ artifacts/
 *.ckpt
 
 *.egg-info/
+
+*.tsbuildinfo

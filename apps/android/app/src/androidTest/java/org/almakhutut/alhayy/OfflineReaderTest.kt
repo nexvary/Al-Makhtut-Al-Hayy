@@ -11,8 +11,6 @@ import kotlinx.coroutines.runBlocking
 import org.almakhutut.alhayy.data.IiifLoader
 import org.almakhutut.alhayy.data.LocalBookStore
 import org.json.JSONObject
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.BeforeClass
 import org.junit.After
@@ -25,12 +23,7 @@ import java.io.File
 @RunWith(AndroidJUnit4::class)
 class OfflineReaderTest {
     companion object {
-        @JvmStatic @BeforeClass fun selectLanguage() {
-            val tag = InstrumentationRegistry.getArguments().getString("language", "en")
-            InstrumentationRegistry.getInstrumentation().runOnMainSync {
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
-            }
-        }
+        @JvmStatic @BeforeClass fun selectLanguage() { selectTestLanguage() }
     }
 
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()

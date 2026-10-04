@@ -6,6 +6,8 @@ import android.util.AtomicFile
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -49,6 +51,7 @@ class LocalBookStore(private val context: Context) {
             pageCount = count,
             createdAt = System.currentTimeMillis(),
         )
+        currentCoroutineContext().ensureActive()
         save(book)
         saved = true
         book
@@ -91,6 +94,7 @@ class LocalBookStore(private val context: Context) {
             pageCount = pages.size,
             createdAt = System.currentTimeMillis(),
         )
+        currentCoroutineContext().ensureActive()
         save(book)
         saved = true
         book
@@ -111,6 +115,7 @@ class LocalBookStore(private val context: Context) {
             pageCount = pages.size,
             createdAt = System.currentTimeMillis(),
         )
+        currentCoroutineContext().ensureActive()
         save(book)
         book
     }
@@ -140,10 +145,11 @@ class LocalBookStore(private val context: Context) {
         }
     }
 
-    private fun copyLimited(input: java.io.InputStream, output: java.io.OutputStream) {
+    private suspend fun copyLimited(input: java.io.InputStream, output: java.io.OutputStream) {
         val buffer = ByteArray(8192)
         var total = 0L
         while (true) {
+            currentCoroutineContext().ensureActive()
             val read = input.read(buffer)
             if (read < 0) break
             total += read
