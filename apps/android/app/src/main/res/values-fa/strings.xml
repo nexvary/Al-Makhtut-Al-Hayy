@@ -50,4 +50,8 @@
 
     <string name="demo_zahrawi">باز کردن نمونه زهراوی</string>
     <string name="demo_zahrawi_hint">برای آزمون سریع، نسخه IIIF گالیکا را مستقیماً بارگذاری کنید.</string>
+    <string name="api_address_hint">https://your-server.example/api</string>
+    <string name="api_optional_note">اختیاری. کتاب‌های محلی و IIIF بدون سرور کار می‌کنند.</string>
+    <string name="iiif_access_denied">ارائه‌دهنده درخواست را رد کرد. بعداً دوباره تلاش کنید.</string>
+    <string name="page_load_failed">صفحه بارگیری نشد. فایل یا اتصال را بررسی کنید و کتاب را دوباره باز کنید.</string>
 </resources>

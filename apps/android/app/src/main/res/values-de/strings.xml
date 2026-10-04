@@ -50,4 +50,8 @@
 
     <string name="demo_zahrawi">Al-Zahrawi-Demo öffnen</string>
     <string name="demo_zahrawi_hint">Gallica-IIIF-Handschrift direkt für einen Schnelltest laden.</string>
+    <string name="api_address_hint">https://your-server.example/api</string>
+    <string name="api_optional_note">Optional. Lokale Bücher und IIIF funktionieren ohne den Server.</string>
+    <string name="iiif_access_denied">Der Anbieter hat die Anfrage abgelehnt. Versuchen Sie es später erneut.</string>
+    <string name="page_load_failed">Die Seite konnte nicht geladen werden. Prüfen Sie die Datei oder Verbindung und öffnen Sie das Buch erneut.</string>
 </resources>

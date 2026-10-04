@@ -50,4 +50,8 @@
 
     <string name="demo_zahrawi">Ez-Zehravi demosunu aç</string>
     <string name="demo_zahrawi_hint">Hızlı test için Gallica IIIF el yazmasını doğrudan yükleyin.</string>
+    <string name="api_address_hint">https://your-server.example/api</string>
+    <string name="api_optional_note">İsteğe bağlı. Yerel kitaplar ve IIIF sunucu olmadan çalışır.</string>
+    <string name="iiif_access_denied">Sağlayıcı isteği reddetti. Daha sonra tekrar deneyin.</string>
+    <string name="page_load_failed">Sayfa yüklenemedi. Dosyayı veya bağlantıyı kontrol edip kitabı yeniden açın.</string>
 </resources>

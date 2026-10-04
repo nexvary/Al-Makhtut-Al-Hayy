@@ -43,6 +43,12 @@ private fun LivingManuscriptApp() {
     val localStore = remember { LocalBookStore(context) }
     val api = remember { ApiClient() }
     val scope = rememberCoroutineScope()
+    val loadingText = stringResource(R.string.loading)
+    val emptyServerText = stringResource(R.string.no_server_books)
+    val loadedText = stringResource(R.string.loaded_ok)
+    val unavailableText = stringResource(R.string.server_unavailable)
+    val savedText = stringResource(R.string.saved)
+
 
     var screen by remember { mutableStateOf(AppScreen.HOME) }
     var selectedRemote by remember { mutableStateOf<Manuscript?>(null) }
@@ -61,19 +67,19 @@ private fun LivingManuscriptApp() {
     BackHandler(enabled = screen.hasInternalBack) { goHome() }
 
     fun refreshRemote() {
-        status = context.getString(R.string.loading)
+        status = loadingText
         scope.launch {
             runCatching { api.manuscripts(apiBase) }
                 .onSuccess {
                     remoteBooks = it
                     status = if (it.isEmpty()) {
-                        context.getString(R.string.no_server_books)
+                        emptyServerText
                     } else {
-                        context.getString(R.string.loaded_ok)
+                        loadedText
                     }
                 }
                 .onFailure {
-                    status = context.getString(R.string.server_unavailable)
+                    status = unavailableText
                 }
         }
     }
@@ -104,7 +110,7 @@ private fun LivingManuscriptApp() {
             onApiBaseChange = {
                 apiBase = it.trim()
                 preferences.apiBase = apiBase
-                status = context.getString(R.string.saved)
+                status = savedText
             },
             onBack = ::goHome,
         )

@@ -29,6 +29,8 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
     var question by remember { mutableStateOf("") }
     var answer by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
+    val searchingText = stringResource(R.string.searching)
+    val failedText = stringResource(R.string.search_failed)
     val page = manuscript.pages.getOrNull(pageIndex)
     val context = LocalContext.current
     val tts = remember { TextToSpeech(context) {} }
@@ -88,10 +90,10 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
             Button(
                 enabled = question.length >= 2,
                 onClick = {
-                    answer = context.getString(R.string.searching)
+                    answer = searchingText
                     scope.launch {
                         answer = runCatching { ApiClient().ask(apiBase, question) }
-                            .getOrElse { context.getString(R.string.search_failed) }
+                            .getOrElse { failedText }
                     }
                 },
             ) { Text(stringResource(R.string.search)) }

@@ -50,4 +50,8 @@
 
     <string name="demo_zahrawi">Открыть демо Аль-Захрави</string>
     <string name="demo_zahrawi_hint">Загрузите рукопись IIIF Gallica для быстрой проверки.</string>
+    <string name="api_address_hint">https://your-server.example/api</string>
+    <string name="api_optional_note">Необязательно. Локальные книги и IIIF работают без сервера.</string>
+    <string name="iiif_access_denied">Поставщик отклонил запрос. Повторите попытку позже.</string>
+    <string name="page_load_failed">Не удалось загрузить страницу. Проверьте файл или соединение и снова откройте книгу.</string>
 </resources>

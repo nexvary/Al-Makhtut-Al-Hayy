@@ -34,6 +34,9 @@ jobs:
         run: gradle :app:testDebugUnitTest --stacktrace
       - name: Android lint
         run: gradle :app:lintDebug --stacktrace
+      - name: Publish lint diagnostics
+        if: failure()
+        run: cat app/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt || true
       - name: Build debug APK
         run: gradle :app:assembleDebug --stacktrace
 
