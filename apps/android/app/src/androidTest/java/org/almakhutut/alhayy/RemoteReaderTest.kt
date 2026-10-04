@@ -51,8 +51,10 @@ class RemoteReaderTest {
         rule.onNodeWithText(text(R.string.next)).performScrollTo().performClick()
         rule.onNodeWithText(rule.activity.getString(R.string.page_of, 2, 2))
             .performScrollTo().assertIsDisplayed()
-        rule.onNodeWithText("Machine fixture 2").performScrollTo().assertIsDisplayed()
-        rule.onNodeWithText(text(R.string.ask_manuscript)).performScrollTo().assertIsDisplayed()
+        rule.onNodeWithTag("remote-reader-list").performScrollToNode(hasText("Machine fixture 2"))
+        rule.onNodeWithText("Machine fixture 2").assertIsDisplayed()
+        rule.onNodeWithTag("remote-reader-list").performScrollToNode(hasText(text(R.string.ask_manuscript)))
+        rule.onNodeWithText(text(R.string.ask_manuscript)).assertIsDisplayed()
         rule.onNodeWithContentDescription(text(R.string.back)).assertIsDisplayed().performClick()
         rule.onNodeWithText("reader-closed").assertIsDisplayed()
     }

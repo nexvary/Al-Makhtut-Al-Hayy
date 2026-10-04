@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -37,7 +38,8 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
     DisposableEffect(Unit) { onDispose { tts.shutdown() } }
 
     Scaffold(topBar = { AppTopBar(manuscript.title, onBack) }) { padding ->
-        LazyColumn(Modifier.fillMaxSize().padding(padding).imePadding().padding(12.dp)) {
+        LazyColumn(Modifier.fillMaxSize().padding(padding).imePadding().padding(12.dp)
+            .testTag("remote-reader-list")) {
             item {
             Text(
                 manuscript.title,
