@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, Response
 
 from .auth import Role, require_roles
@@ -15,14 +17,17 @@ router = APIRouter(prefix="/api/v1/scholarship", tags=["scholarship"])
 editor_write = Depends(require_roles(Role.REVIEWER, Role.ADMIN))
 
 
-@router.post("/works", response_model=Work, dependencies=[editor_write])
-def put_work(item: Work) -> Work:
-    return scholarship_store.put_work(item)
+@router.post("/works", response_model=Work)
+def put_work(item: Work, actor: Annotated[dict, editor_write]) -> Work:
+    return scholarship_store.put_work(item, actor=actor["sub"])
 
 
-@router.post("/witnesses", response_model=Witness, dependencies=[editor_write])
-def put_witness(item: Witness) -> Witness:
-    return scholarship_store.put_witness(item)
+@router.post("/witnesses", response_model=Witness)
+def put_witness(item: Witness, actor: Annotated[dict, editor_write]) -> Witness:
+    try:
+        return scholarship_store.put_witness(item, actor=actor["sub"])
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @router.get("/works/{work_id}/witnesses", response_model=list[Witness])
@@ -30,9 +35,12 @@ def witnesses(work_id: str) -> list[Witness]:
     return scholarship_store.witnesses(work_id)
 
 
-@router.post("/variants", response_model=VariantReading, dependencies=[editor_write])
-def put_variant(item: VariantReading) -> VariantReading:
-    return scholarship_store.put_variant(item)
+@router.post("/variants", response_model=VariantReading)
+def put_variant(item: VariantReading, actor: Annotated[dict, editor_write]) -> VariantReading:
+    try:
+        return scholarship_store.put_variant(item, actor=actor["sub"])
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @router.get("/works/{work_id}/variants", response_model=list[VariantReading])
@@ -40,9 +48,12 @@ def variants(work_id: str) -> list[VariantReading]:
     return scholarship_store.variants(work_id)
 
 
-@router.post("/alignments", response_model=WitnessAlignment, dependencies=[editor_write])
-def put_alignment(item: WitnessAlignment) -> WitnessAlignment:
-    return scholarship_store.put_alignment(item)
+@router.post("/alignments", response_model=WitnessAlignment)
+def put_alignment(item: WitnessAlignment, actor: Annotated[dict, editor_write]) -> WitnessAlignment:
+    try:
+        return scholarship_store.put_alignment(item, actor=actor["sub"])
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 def _manuscript(manuscript_id: str):

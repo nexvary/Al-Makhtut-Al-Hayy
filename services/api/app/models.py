@@ -67,3 +67,5 @@ class Manuscript(BaseModel):
     source_url: str | None = None
     license: str | None = None
     pages: list[Page] = Field(default_factory=list)
+    work_id: str | None = None
+    witness_id: str | None = None

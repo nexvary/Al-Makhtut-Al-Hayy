@@ -18,6 +18,11 @@ class Role(StrEnum):
     TRANSCRIBER = "transcriber"
     REVIEWER = "reviewer"
     ADMIN = "admin"
+    READER = "reader"
+    STUDENT = "student"
+    RESEARCHER = "researcher"
+    EDITOR = "editor"
+    ADMINISTRATOR = "admin"
 
 
 def _b64(data: bytes) -> str:
@@ -57,8 +62,10 @@ def verify_token(token: str) -> dict:
         if int(payload["exp"]) < int(time.time()):
             raise ValueError("expired")
         Role(payload["role"])
+        if not isinstance(payload.get("sub"), str) or not payload["sub"].strip():
+            raise ValueError("invalid subject")
         return payload
-    except (ValueError, KeyError, json.JSONDecodeError) as exc:
+    except (ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
         raise HTTPException(status_code=401, detail="Invalid or expired bearer token") from exc
 
 

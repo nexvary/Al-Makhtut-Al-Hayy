@@ -60,3 +60,11 @@ footer { color:#718293; font-size:.78rem; padding:12px 4px 0; text-align:center;
   .topbar { align-items:flex-start; gap:12px; }
   .source-row { align-items:stretch; flex-direction:column; }
 }
+
+#livingLayers { border-top: 1px solid #354352; margin-top: 1rem; padding-top: 1rem; }
+#livingLayers form { display: grid; gap: .75rem; }
+#livingLayers form[hidden] { display: none; }
+#livingLayers label { display: grid; gap: .35rem; }
+#livingLayers input, #livingLayers select, #livingLayers textarea { width: 100%; box-sizing: border-box; }
+#livingLayers textarea { resize: vertical; color: inherit; background: #070b12; padding: .75rem; }
+#livingLayers small { display: block; overflow-wrap: anywhere; }

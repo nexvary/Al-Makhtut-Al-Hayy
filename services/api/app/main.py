@@ -1,8 +1,12 @@
+import os
+
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from .editorial_routes import router as editorial_router
 from .ingestion_routes import router as ingestion_router
 from .knowledge_routes import router as knowledge_router
+from .living_routes import router as living_router
 from .logging_utils import RequestLogMiddleware, configure_logging
 from .models import Manuscript
 from .qa_routes import router as qa_router
@@ -21,6 +25,9 @@ app = FastAPI(
     version="0.1.0-rc1",
     description="Source-traceable API for interactive historical Arabic manuscripts.",
 )
+origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if origin.strip()]
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
+                   allow_headers=["Authorization", "Content-Type"])
 app.add_middleware(RequestLogMiddleware)
 app.add_middleware(
     RateLimitMiddleware,
@@ -32,6 +39,7 @@ app.include_router(knowledge_router)
 app.include_router(qa_router)
 app.include_router(scholarship_router)
 app.include_router(visual_router)
+app.include_router(living_router)
 
 
 @app.get("/health")

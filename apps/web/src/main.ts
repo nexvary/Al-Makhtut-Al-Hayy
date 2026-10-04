@@ -1,3 +1,4 @@
+import { LivingLayersPanel } from "./layers";
 import OpenSeadragon from "openseadragon";
 import { loadManuscript } from "./api";
 import { loadIiifManifest, type IiifPage } from "./iiif";
@@ -60,6 +61,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         </div>
         <p class="hint" id="regionHint">لا توجد طبقات نص محمّلة. اربط مخطوطًا من API لعرض HTR والنص المراجع.</p>
         <div id="regions"></div>
+        <details id="livingLayers"></details>
       </aside>
     </section>
 
@@ -85,6 +87,9 @@ let manuscript: Manuscript | null = null;
 let selectedRegion: Region | null = null;
 let overlayElements = new Map<string, HTMLElement>();
 let readingMode: ReadingMode = "general";
+const livingLayers = new LivingLayersPanel(document.querySelector<HTMLElement>("#livingLayers")!, () => ({
+  base: apiBaseInput.value.trim(), manuscript, page: currentApiPage(), region: selectedRegion,
+}));
 
 const viewer = OpenSeadragon({
   id: "viewer",
@@ -126,6 +131,7 @@ function selectRegion(region: Region | null) {
     card.classList.toggle("selected", card.dataset.regionId === region?.id);
   });
   speakButton.disabled = !region;
+  void livingLayers.refresh();
 }
 
 function bestSpeechText(region: Region): string {
@@ -271,6 +277,7 @@ document.querySelector<HTMLButtonElement>("#bookmark")!.addEventListener("click"
 });
 modeSelect.addEventListener("change", () => {
   readingMode = modeSelect.value as ReadingMode;
+  livingLayers.setMode(readingMode);
   refreshTextLayer();
 });
 speakButton.addEventListener("click", () => {

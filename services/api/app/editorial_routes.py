@@ -1,7 +1,9 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from .auth import Role, require_roles
-from .editorial import TextRevision, editorial_store
+from .editorial import ReviewState, TextRevision, editorial_store
 
 router = APIRouter(prefix="/api/v1/editorial", tags=["editorial"])
 
@@ -9,9 +11,14 @@ router = APIRouter(prefix="/api/v1/editorial", tags=["editorial"])
 @router.post(
     "/revisions",
     response_model=TextRevision,
-    dependencies=[Depends(require_roles(Role.TRANSCRIBER, Role.REVIEWER, Role.ADMIN))],
 )
-def create_revision(revision: TextRevision) -> TextRevision:
+def create_revision(
+    revision: TextRevision,
+    actor: Annotated[dict, Depends(require_roles(Role.TRANSCRIBER, Role.EDITOR, Role.REVIEWER, Role.ADMIN))],
+) -> TextRevision:
+    if revision.state == ReviewState.VERIFIED and actor["role"] not in {Role.REVIEWER, Role.ADMIN}:
+        raise HTTPException(403, "Verification requires a reviewer")
+    revision = revision.model_copy(update={"created_by": actor["sub"]})
     try:
         return editorial_store.add_revision(revision)
     except ValueError as exc:

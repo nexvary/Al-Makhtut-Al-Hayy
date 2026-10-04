@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from .auth import Role, require_roles
@@ -26,9 +26,8 @@ class IiifImportRequest(BaseModel):
 @router.post(
     "/iiif",
     response_model=Manuscript,
-    dependencies=[Depends(require_roles(Role.ADMIN))],
 )
-def import_iiif(request: IiifImportRequest) -> Manuscript:
+def import_iiif(request: IiifImportRequest, actor: Annotated[dict, Depends(require_roles(Role.ADMIN))]) -> Manuscript:
     validate_public_http_url(request.manifest_url)
     manuscript = manuscript_from_iiif(
         request.manifest,
@@ -38,4 +37,7 @@ def import_iiif(request: IiifImportRequest) -> Manuscript:
         source_institution=request.source_institution,
         rights=request.rights,
     )
-    return repository.put(manuscript)
+    try:
+        return repository.put(manuscript, actor=actor["sub"])
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc

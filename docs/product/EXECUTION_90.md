@@ -1,6 +1,8 @@
 # 90-Stage Execution Track
 
-Implementation has reached all 90 stages. Final completion is gated by CI on the current branch.
+This is a historical foundation inventory, not proof that 90 production features are complete.
+The marks below describe prior implementation claims; adapters, contracts and prototypes need
+feature-specific release gates. See `FOUNDATION_STATUS.md` for current tested scope and remaining work.
 
 1. Repository foundation — ✅
 2. IIIF-first architecture — ✅

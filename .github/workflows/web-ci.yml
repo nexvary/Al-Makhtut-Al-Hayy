@@ -19,6 +19,34 @@ jobs:
         with:
           node-version: "22"
       - name: Install
-        run: npm install
+        run: npm ci
       - name: Build
         run: npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install API and browser
+        run: |
+          pip install -e ../../services/api
+          npx playwright install --with-deps chromium
+      - name: Test mobile living layers against API
+        run: |
+          cd ../..
+          python services/api/tests/seed_browser.py
+          uvicorn app.main --app-dir services/api --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          cd apps/web
+          npm run dev -- --host 127.0.0.1 > /tmp/web.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health && curl -fsS http://127.0.0.1:5173 >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/living-layers.cjs
+      - name: Browser evidence and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: living-layers-browser-proof
+          path: |
+            apps/web/test-results/
+            /tmp/api.log
+            /tmp/web.log
