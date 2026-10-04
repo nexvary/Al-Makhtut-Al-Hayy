@@ -49,7 +49,7 @@ class OfflineReaderTest {
 
     @After fun cleanup() { ids.forEach { store().delete(it) } }
 
-    @Test fun importsPdfAndReadsBothPagesWithoutBackend() = runBlocking {
+    @Test fun importsPdfAndReadsBothPagesWithoutBackend() = runBlocking<Unit> {
         val file = File(rule.activity.cacheDir, "offline-test.pdf")
         val document = PdfDocument()
         try {
@@ -81,7 +81,7 @@ class OfflineReaderTest {
         rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
     }
 
-    @Test fun importsMultipleImagesAndSystemBackReturnsHome() = runBlocking {
+    @Test fun importsMultipleImagesAndSystemBackReturnsHome() = runBlocking<Unit> {
         val files = (1..2).map { index ->
             File(rule.activity.cacheDir, "offline-image-$index.png").also { file ->
                 val bitmap = Bitmap.createBitmap(20, 30, Bitmap.Config.ARGB_8888)
@@ -100,7 +100,7 @@ class OfflineReaderTest {
         rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
     }
 
-    @Test fun invalidPdfLeavesNoPartialBook() = runBlocking {
+    @Test fun invalidPdfLeavesNoPartialBook() = runBlocking<Unit> {
         val root = File(rule.activity.filesDir, "local-books")
         val before = root.listFiles()?.map { it.name }?.toSet().orEmpty()
         val invalid = File(rule.activity.cacheDir, "invalid.pdf").apply { writeText("not a PDF") }
