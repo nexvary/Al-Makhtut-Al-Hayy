@@ -3,6 +3,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from .ai_lab_routes import router as ai_lab_router
 from .editorial_routes import router as editorial_router
 from .ingestion_routes import router as ingestion_router
 from .knowledge_routes import router as knowledge_router
@@ -40,6 +41,7 @@ app.include_router(qa_router)
 app.include_router(scholarship_router)
 app.include_router(visual_router)
 app.include_router(living_router)
+app.include_router(ai_lab_router)
 
 
 @app.get("/health")

@@ -30,18 +30,29 @@ export class LivingLayersPanel {
         <button type="submit">حفظ مسودة جديدة</button><button type="button" data-verify>اعتماد بعد المراجعة البشرية</button>
         <p>الاعتماد يحتاج صلاحية مراجع وهوية تطابق حسابه. الكلمات غير المقروءة تبقى غير مؤكدة.</p>
       </form>`;
+    const lab = document.createElement("form");
+    lab.innerHTML = `<h3>مختبر المخطوط — سؤال موثق</h3>
+      <p>يبحث في الطبقات المحفوظة للصفحة أو المنطقة المحددة. لا يولّد قراءة بلا دليل.</p>
+      <label>المهمة <select data-task><option value="read">ما المكتوب هنا؟</option>
+      <option value="confidence">هل القراءة مؤكدة؟</option><option value="alternatives">القراءات البديلة</option>
+      <option value="explain">شرح موثق</option><option value="translate">ترجمة محفوظة</option></select></label>
+      <label>السؤال <input data-question required maxlength="2000" value="ما المكتوب هنا؟" /></label>
+      <label>لغة الترجمة <input data-target value="ar" maxlength="35" /></label>
+      <button type="submit">اسأل المصدر</button><div data-answer role="status"></div>`;
+    lab.addEventListener("submit", event => { event.preventDefault(); void this.ask(lab); });
+    root.append(lab);
     root.querySelector("[data-refresh]")!.addEventListener("click", () => void this.refresh());
     root.querySelector("form")!.addEventListener("submit", event => { event.preventDefault(); void this.save(false); });
     root.querySelector("[data-verify]")!.addEventListener("click", () => void this.save(true));
   }
   private input(name: string) { return this.root.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(`[data-${name}]`)!; }
   private message(value: string) { this.root.querySelector<HTMLElement>("[data-status]")!.textContent = value; }
-  setMode(mode: string) { this.mode = mode; this.root.querySelector<HTMLFormElement>("form")!.hidden = mode !== "researcher"; }
+  setMode(mode: string) { this.mode = mode; this.root.querySelector<HTMLFormElement>("[data-editor]")!.hidden = mode !== "researcher"; }
   async refresh() {
     const ticket = ++this.version, context = this.context();
     const list = this.root.querySelector<HTMLElement>("[data-layers]")!;
     list.replaceChildren(); this.layers = [];
-    this.root.querySelector<HTMLFormElement>("form")!.hidden = this.mode !== "researcher" || !context.page;
+    this.root.querySelector<HTMLFormElement>("[data-editor]")!.hidden = this.mode !== "researcher" || !context.page;
     if (!context.manuscript || !context.page) { this.message("اربط مخطوطًا من الخادم لعرض طبقات موثقة. القارئ الأصلي يعمل مستقلًا."); return; }
     this.message("جارٍ تحميل سجل الطبقات…");
     try {
@@ -62,6 +73,29 @@ export class LivingLayersPanel {
         article.append(heading, paragraph, meta); list.append(article);
       }
     } catch (error) { if (ticket === this.version) this.message(String(error)); }
+  }
+  private async ask(form: HTMLFormElement) {
+    const context = this.context(), answer = form.querySelector<HTMLElement>("[data-answer]")!;
+    answer.replaceChildren();
+    if (!context.manuscript || !context.page) { answer.textContent = "اربط صفحة من الخادم أولًا."; return; }
+    const button = form.querySelector<HTMLButtonElement>("button")!; button.disabled = true;
+    try {
+      const value = (name: string) => form.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-${name}]`)!.value;
+      const response = await fetch(`${context.base.replace(/\/$/, "")}/api/v1/ai-lab/ask`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: value("question"), task: value("task"), target_language: value("target"),
+          source: { manuscript_id: context.manuscript.id, page_id: context.page.id, region_id: context.region?.id ?? null } }) });
+      if (!response.ok) throw new Error(`تعذر فحص المصدر (${response.status})`);
+      const result = await response.json() as { insufficient_evidence: boolean; evidence: Layer[] };
+      const notice = document.createElement("p"); notice.textContent = result.insufficient_evidence
+        ? "لا يوجد دليل محفوظ لهذه المهمة. القراءة غير مؤكدة؛ لم يُختلق نص." : "هذه مقتطفات موثقة من الطبقات، وحالة المراجعة ظاهرة لكل قراءة.";
+      answer.append(notice);
+      for (const item of result.evidence) {
+        const p = document.createElement("p"); p.textContent = `${item.state} • ${item.text} • الثقة: ${item.provenance.confidence ?? "غير معروفة"} • ${context.manuscript.id} / ${context.page.id} / ${context.region?.id ?? "الصفحة"}`;
+        answer.append(p);
+      }
+    } catch (error) { answer.textContent = String(error); }
+    finally { button.disabled = false; }
   }
   private async save(verify: boolean) {
     const context = this.context(), token = this.input("token").value.trim(), text = this.input("text").value;

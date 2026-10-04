@@ -33,13 +33,14 @@ jobs:
         run: |
           cd ../..
           python services/api/tests/seed_browser.py
-          uvicorn app.main --app-dir services/api --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          uvicorn app.main:app --app-dir services/api --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
           cd apps/web
           npm run dev -- --host 127.0.0.1 > /tmp/web.log 2>&1 &
           for attempt in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8000/health && curl -fsS http://127.0.0.1:5173 >/dev/null; then break; fi
             sleep 1
           done
+          curl -fsS http://127.0.0.1:8000/health
           node tests/living-layers.cjs
       - name: Browser evidence and diagnostics
         if: always()

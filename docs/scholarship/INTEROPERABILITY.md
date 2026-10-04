@@ -23,3 +23,14 @@ Stable application citations target manuscript → page → optional region. Ins
 
 ## Research bundle
 JSON research bundles include the manuscript data model and optional witness metadata. Media files are not silently redistributed.
+
+## Persistent witness comparison
+
+Work, Witness, VariantReading and WitnessAlignment now use a SQLite adapter with actor/time
+metadata audit. Unknown works/witnesses and mixed-work comparisons are rejected. The endpoint
+`GET /api/v1/scholarship/works/{work}/variants/{variant}/compare?left={w1}&right={w2}`
+returns literal word operations, unchanged readings, the locus and recorded source citations.
+Insertions/deletions describe differences between selected witnesses, not a scholarly judgment
+about the archetype. No preferred critical reading is automatically selected. Page/line alignment
+remains an explicitly authored contract; automatic alignment and side-by-side image UI remain
+future work. Existing TEI and research-bundle exports remain available.

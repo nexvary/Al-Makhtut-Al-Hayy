@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Response
 
 from .auth import Role, require_roles
+from .comparison import word_differences
 from .repository import repository
 from .scholarly_export import iiif_supplementing_annotation_page, research_bundle, tei_xml
 from .scholarship import (
@@ -46,6 +47,19 @@ def put_variant(item: VariantReading, actor: Annotated[dict, editor_write]) -> V
 @router.get("/works/{work_id}/variants", response_model=list[VariantReading])
 def variants(work_id: str) -> list[VariantReading]:
     return scholarship_store.variants(work_id)
+
+
+@router.get("/works/{work_id}/variants/{variant_id}/compare")
+def compare_variant(work_id: str, variant_id: str, left: str, right: str) -> dict:
+    variant = next((v for v in scholarship_store.variants(work_id) if v.id == variant_id), None)
+    if variant is None:
+        raise HTTPException(404, "Variant not found")
+    if left == right or left not in variant.readings or right not in variant.readings:
+        raise HTTPException(422, "Choose two distinct documented witnesses of this variant")
+    return {"work_id": work_id, "locus": variant.locus, "sources": variant.sources,
+            "left_witness": left, "right_witness": right,
+            "differences": word_differences(variant.readings[left], variant.readings[right]),
+            "method": "literal-word-diff", "critical_reading": None}
 
 
 @router.post("/alignments", response_model=WitnessAlignment)

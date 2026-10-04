@@ -12,6 +12,7 @@ await page.locator('details').first().locator('summary').click();
 await page.locator('#apiBase').fill('http://127.0.0.1:8000');
 await page.locator('#manuscriptId').fill('browser-fixture');
 await page.locator('#loadApi').click();
+await page.locator('#status').filter({hasText:'تم ربط'}).waitFor();
 await page.locator('#readingMode').selectOption('researcher');
 await page.locator('#livingLayers summary').click();
 await page.locator('[data-status]').filter({hasText:'لا توجد طبقات جديدة'}).waitFor();
