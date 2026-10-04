@@ -10,6 +10,10 @@ jobs:
   android15:
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [en, ar]
     env:
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
@@ -90,9 +94,14 @@ jobs:
           "$ADB" shell wm dismiss-keyguard || true
           "$ADB" devices -l
 
+      - name: Configure compact phone
+        run: |
+          adb shell wm size 720x1280
+          adb shell wm density 320
+
       - name: Run navigation smoke test on Android 15
         working-directory: apps/android
-        run: gradle :app:connectedDebugAndroidTest --stacktrace
+        run: gradle :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.language=${{ matrix.language }} --stacktrace
 
       - name: Capture emulator diagnostics on failure
         if: failure()
@@ -102,6 +111,16 @@ jobs:
           "$ADB" logcat -d -t 600 > "$RUNNER_TEMP/logcat.txt" || true
           tail -n 400 "$RUNNER_TEMP/emulator.log" || true
           tail -n 400 "$RUNNER_TEMP/logcat.txt" || true
+
+      - name: Upload UI test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android15-compact-${{ matrix.language }}
+          path: |
+            apps/android/app/build/reports/androidTests/connected/
+            apps/android/app/build/outputs/androidTest-results/connected/
+          if-no-files-found: warn
 
       - name: Stop emulator
         if: always()

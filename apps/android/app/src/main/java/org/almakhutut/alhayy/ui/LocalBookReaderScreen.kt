@@ -5,7 +5,6 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
@@ -13,14 +12,13 @@ import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.almakhutut.alhayy.R
@@ -38,7 +36,7 @@ fun LocalBookReaderScreen(book: LocalBook, onBack: () -> Unit) {
         bottomBar = {
             Surface(tonalElevation = 4.dp) {
                 Row(
-                    Modifier.fillMaxWidth().padding(8.dp),
+                    Modifier.fillMaxWidth().navigationBarsPadding().padding(8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     IconButton(
@@ -81,31 +79,42 @@ fun LocalBookReaderScreen(book: LocalBook, onBack: () -> Unit) {
 @Composable
 private fun PdfPage(path: String, pageIndex: Int) {
     var bitmap by remember(path, pageIndex) { mutableStateOf<Bitmap?>(null) }
+    var failed by remember(path, pageIndex) { mutableStateOf(false) }
     LaunchedEffect(path, pageIndex) {
-        bitmap = withContext(Dispatchers.IO) {
-            val file = File(path)
-            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { pfd ->
-                PdfRenderer(pfd).use { renderer ->
-                    renderer.openPage(pageIndex).use { page ->
-                        val width = 1600
-                        val height = (width.toFloat() / page.width * page.height)
-                            .toInt()
-                            .coerceAtLeast(1)
-                        Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also {
-                            page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+        try {
+            bitmap = withContext(Dispatchers.IO) {
+                ParcelFileDescriptor.open(File(path), ParcelFileDescriptor.MODE_READ_ONLY).use { pfd ->
+                    PdfRenderer(pfd).use { renderer ->
+                        renderer.openPage(pageIndex).use { page ->
+                            // Bound pixels for unusual page aspect ratios on low-memory phones.
+                            val factor = minOf(1600f / page.width, 2400f / page.height)
+                            val width = (page.width * factor).toInt().coerceAtLeast(1)
+                            val height = (page.height * factor).toInt().coerceAtLeast(1)
+                            Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also {
+                                it.eraseColor(android.graphics.Color.WHITE)
+                                page.render(it, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                            }
                         }
                     }
                 }
             }
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: Exception) {
+            failed = true
         }
     }
+    if (failed) {
+        Text(stringResource(R.string.page_load_failed), Modifier.padding(24.dp))
+        return
+    }
     bitmap?.let {
-        ZoomableContent {
+        ZoomableContent("$path:$pageIndex", Modifier.fillMaxSize()) {
             Image(
                 bitmap = it.asImageBitmap(),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().testTag("page-image"),
             )
         }
     } ?: Box(Modifier.fillMaxSize()) {
@@ -116,35 +125,18 @@ private fun PdfPage(path: String, pageIndex: Int) {
 @Composable
 private fun ZoomableImage(source: String?) {
     if (source == null) return
-    ZoomableContent {
+    var failed by remember(source) { mutableStateOf(false) }
+    if (failed) {
+        Text(stringResource(R.string.page_load_failed), Modifier.padding(24.dp))
+        return
+    }
+    ZoomableContent(source, Modifier.fillMaxSize()) {
         AsyncImage(
             model = source,
+            onError = { failed = true },
             contentDescription = null,
             contentScale = ContentScale.Fit,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().testTag("page-image"),
         )
     }
-}
-
-@Composable
-private fun ZoomableContent(content: @Composable BoxScope.() -> Unit) {
-    var scale by remember { mutableFloatStateOf(1f) }
-    var offset by remember { mutableStateOf(Offset.Zero) }
-    Box(
-        Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTransformGestures { _, pan, zoom, _ ->
-                    scale = (scale * zoom).coerceIn(1f, 6f)
-                    offset += pan
-                }
-            }
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-                translationX = offset.x
-                translationY = offset.y
-            },
-        content = content,
-    )
 }

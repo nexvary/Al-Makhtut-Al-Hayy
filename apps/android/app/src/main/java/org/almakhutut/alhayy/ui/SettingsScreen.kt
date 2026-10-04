@@ -2,6 +2,8 @@ package org.almakhutut.alhayy.ui
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.*
@@ -31,7 +33,8 @@ fun SettingsScreen(apiBase: String, onApiBaseChange: (String) -> Unit, onBack: (
 
     Scaffold(topBar = { AppTopBar(stringResource(R.string.settings), onBack) }) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).padding(16.dp),
+            Modifier.fillMaxSize().padding(padding).imePadding()
+                .verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(stringResource(R.string.language), style = MaterialTheme.typography.titleMedium)
@@ -57,7 +60,7 @@ fun SettingsScreen(apiBase: String, onApiBaseChange: (String) -> Unit, onBack: (
                 onValueChange = { value = it },
                 label = { Text(stringResource(R.string.api_address)) },
                 placeholder = { Text("https://your-server.example/api") },
-                supportingText = { Text("Optional server; local books and IIIF work without it.") },
+                supportingText = { Text(stringResource(R.string.api_optional_note)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )

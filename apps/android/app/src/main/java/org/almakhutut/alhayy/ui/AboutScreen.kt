@@ -2,6 +2,8 @@ package org.almakhutut.alhayy.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.PlayArrow
@@ -23,7 +25,8 @@ fun AboutScreen(onBack: () -> Unit) {
 
     Scaffold(topBar = { AppTopBar(stringResource(R.string.about), onBack) }) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).padding(16.dp),
+            Modifier.fillMaxSize().padding(padding).imePadding()
+                .verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(stringResource(R.string.about_title), style = MaterialTheme.typography.headlineSmall)

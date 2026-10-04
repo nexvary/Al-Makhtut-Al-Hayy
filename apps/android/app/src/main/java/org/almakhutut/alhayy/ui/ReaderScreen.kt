@@ -35,7 +35,8 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
     DisposableEffect(Unit) { onDispose { tts.shutdown() } }
 
     Scaffold(topBar = { AppTopBar(manuscript.title, onBack) }) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding).padding(12.dp)) {
+        LazyColumn(Modifier.fillMaxSize().padding(padding).imePadding().padding(12.dp)) {
+            item {
             Text(
                 manuscript.title,
                 style = MaterialTheme.typography.titleLarge,
@@ -44,7 +45,7 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
 
             if (page == null) {
                 Text(stringResource(R.string.no_pages))
-                return@Column
+                return@item
             }
 
             Spacer(Modifier.height(8.dp))
@@ -62,11 +63,11 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
                 ) { Text(stringResource(R.string.next)) }
             }
 
-            LazyColumn(Modifier.weight(1f)) {
-                items(page.regions, key = { it.id }) { region ->
-                    RegionCard(region, region.id == selected?.id) { selected = region }
-                }
             }
+            items(page?.regions.orEmpty(), key = { it.id }) { region ->
+                RegionCard(region, region.id == selected?.id) { selected = region }
+            }
+            item {
 
             selected?.let { region ->
                 val speech = preferredText(region)
@@ -95,6 +96,7 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
                 },
             ) { Text(stringResource(R.string.search)) }
             if (answer.isNotBlank()) Text(answer)
+            }
         }
     }
 }

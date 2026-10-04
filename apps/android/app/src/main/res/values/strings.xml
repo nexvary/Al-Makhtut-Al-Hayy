@@ -53,4 +53,5 @@
 
     <string name="demo_zahrawi">Open Al-Zahrawi demo</string>
     <string name="demo_zahrawi_hint">Load the Gallica IIIF manuscript instantly for a quick test.</string>
+    <string name="page_load_failed">The page could not be loaded. Check the file or connection, then reopen the book.</string>
 </resources>

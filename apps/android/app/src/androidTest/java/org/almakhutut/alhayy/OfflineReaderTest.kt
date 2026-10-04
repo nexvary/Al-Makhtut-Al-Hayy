@@ -1,0 +1,111 @@
+package org.almakhutut.alhayy
+
+import android.graphics.Bitmap
+import android.graphics.pdf.PdfDocument
+import android.net.Uri
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.runBlocking
+import org.almakhutut.alhayy.data.IiifLoader
+import org.almakhutut.alhayy.data.LocalBookStore
+import org.json.JSONObject
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.BeforeClass
+import org.junit.After
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.io.File
+
+@RunWith(AndroidJUnit4::class)
+class OfflineReaderTest {
+    companion object {
+        @JvmStatic @BeforeClass fun selectLanguage() {
+            val tag = InstrumentationRegistry.getArguments().getString("language", "en")
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
+            }
+        }
+    }
+
+    @get:Rule val rule = createAndroidComposeRule<MainActivity>()
+    private val ids = mutableListOf<String>()
+    private fun text(id: Int) = rule.activity.getString(id)
+    private fun store() = LocalBookStore(rule.activity)
+
+    @After fun cleanup() { ids.forEach { store().delete(it) } }
+
+    @Test fun importsPdfAndReadsBothPagesWithoutBackend() = runBlocking {
+        val file = File(rule.activity.cacheDir, "offline-test.pdf")
+        PdfDocument().use { document ->
+            repeat(2) { index ->
+                val page = document.startPage(PdfDocument.PageInfo.Builder(200, 300, index + 1).create())
+                page.canvas.drawColor(android.graphics.Color.WHITE)
+                document.finishPage(page)
+            }
+            file.outputStream().use { document.writeTo(it) }
+        }
+        val book = store().importPdf(Uri.fromFile(file), "Offline PDF fixture")
+        ids += book.id
+        assertEquals(2, book.pageCount)
+        rule.activityRule.scenario.recreate()
+        rule.onNodeWithText(book.title).performScrollTo().performClick()
+        rule.waitUntil(10_000) { rule.onAllNodesWithTag("page-image").fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithTag("page-image").performTouchInput {
+            pinch(Offset(width * .4f, height * .4f), Offset(width * .6f, height * .6f),
+                Offset(width * .2f, height * .2f), Offset(width * .8f, height * .8f))
+        }
+        rule.onNodeWithContentDescription(text(R.string.next)).assertIsDisplayed().performClick()
+        rule.onNodeWithText(rule.activity.getString(R.string.page_of, 2, 2)).assertIsDisplayed()
+        rule.onNodeWithContentDescription(text(R.string.previous)).performClick()
+        rule.onNodeWithText(rule.activity.getString(R.string.page_of, 1, 2)).assertIsDisplayed()
+        rule.onNodeWithContentDescription(text(R.string.back)).performClick()
+        rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
+    }
+
+    @Test fun importsMultipleImagesAndSystemBackReturnsHome() = runBlocking {
+        val files = (1..2).map { index ->
+            File(rule.activity.cacheDir, "offline-image-$index.png").also { file ->
+                val bitmap = Bitmap.createBitmap(20, 30, Bitmap.Config.ARGB_8888)
+                file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                bitmap.recycle()
+            }
+        }
+        val book = store().importImages(files.map(Uri::fromFile), "Offline image fixture")
+        ids += book.id
+        assertEquals(2, LocalBookStore(rule.activity).list().first { it.id == book.id }.pages.size)
+        rule.activityRule.scenario.recreate()
+        rule.onNodeWithText(book.title).performScrollTo().performClick()
+        rule.onNodeWithContentDescription(text(R.string.next)).performClick()
+        rule.onNodeWithText(rule.activity.getString(R.string.page_of, 2, 2)).assertIsDisplayed()
+        rule.activityRule.scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
+    }
+
+    @Test fun invalidPdfLeavesNoPartialBook() = runBlocking {
+        val root = File(rule.activity.filesDir, "local-books")
+        val before = root.listFiles()?.map { it.name }?.toSet().orEmpty()
+        val invalid = File(rule.activity.cacheDir, "invalid.pdf").apply { writeText("not a PDF") }
+        assertTrue(runCatching { store().importPdf(Uri.fromFile(invalid), "Invalid fixture") }.isFailure)
+        assertEquals(before, root.listFiles()?.map { it.name }?.toSet().orEmpty())
+    }
+
+    @Test fun addBookControlsRemainReachableOnCompactPhone() {
+        rule.onAllNodesWithText(text(R.string.add_book)).onFirst().performClick()
+        rule.onNodeWithText(text(R.string.open_iiif)).performScrollTo().assertIsDisplayed()
+        rule.onNodeWithContentDescription(text(R.string.back)).assertIsDisplayed().performClick()
+        rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
+    }
+
+    @Test fun parsesBothIiifVersionsWithoutNetwork() {
+        val v2 = JSONObject("""{"sequences":[{"canvases":[{"images":[{"resource":{"@id":"https://example.org/page.jpg"}}]}]}]}""")
+        val v3 = JSONObject("""{"items":[{"items":[{"items":[{"body":{"id":"https://example.org/page.jpg"}}]}]}]}""")
+        assertEquals(listOf("https://example.org/page.jpg"), IiifLoader().parse(v2))
+        assertEquals(listOf("https://example.org/page.jpg"), IiifLoader().parse(v3))
+    }
+}

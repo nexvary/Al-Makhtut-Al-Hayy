@@ -45,3 +45,16 @@ All buttons use ACTION_VIEW and reject unsupported URI schemes.
 
 ## Automated checks
 Android CI runs unit tests for navigation contracts, social-link URI schemes, the requested language set, and then builds the debug APK.
+
+
+## Stability gate added 2026-10-04
+Android CI now requires `testDebugUnitTest`, `lintDebug` and `assembleDebug`.
+API 35 instrumentation runs on a 360×640 dp viewport in English and Arabic.
+Offline fixtures cover a two-page PDF, multiple images, persisted library, page
+navigation, pinch zoom with reachable controls, system/internal Back, invalid PDF
+cleanup, IIIF v2/v3 parsing and scrolling to the final Add Book control.
+The Storage Access Framework picker itself, provider availability, remote reader,
+network image loading and all social-link handlers still require further coverage.
+Imported files are capped at 128 MiB each; image batches at 500 pages. Failed
+imports remove partial directories; library updates use AtomicFile under a shared
+lock. Original imported files are copied, never changed.

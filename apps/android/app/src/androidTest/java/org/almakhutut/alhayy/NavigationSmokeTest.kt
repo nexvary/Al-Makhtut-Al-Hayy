@@ -9,17 +9,29 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
+import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class NavigationSmokeTest {
+    companion object {
+        @JvmStatic @BeforeClass fun selectLanguage() {
+            val tag = InstrumentationRegistry.getArguments().getString("language", "en")
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
+            }
+        }
+    }
+
     @get:Rule
     val rule = createAndroidComposeRule<MainActivity>()
 
     private fun text(id: Int): String =
-        InstrumentationRegistry.getInstrumentation().targetContext.getString(id)
+        rule.activity.getString(id)
 
     @Test
     fun opensEveryMainTabAndBackReturnsHome() {
