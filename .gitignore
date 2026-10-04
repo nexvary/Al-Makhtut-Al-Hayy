@@ -38,3 +38,5 @@ artifacts/
 *.onnx
 *.pt
 *.ckpt
+
+*.egg-info/

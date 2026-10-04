@@ -54,8 +54,8 @@ class IiifLoader {
                 val service = services?.optJSONObject(0)?.optString("id")
                     ?: body.optJSONObject("service")?.optString("id")
                 when {
+                    body.optString("id").startsWith("https://") -> body.optString("id")
                     !service.isNullOrBlank() -> service.trimEnd('/') + "/full/max/0/default.jpg"
-                    body.optString("id").startsWith("http") -> body.optString("id")
                     else -> null
                 }
             }
@@ -70,8 +70,13 @@ class IiifLoader {
                 val resource = images.optJSONObject(0)?.optJSONObject("resource") ?: return@mapNotNull null
                 val service = resource.optJSONObject("service")?.optString("@id")
                 when {
-                    !service.isNullOrBlank() -> service.trimEnd('/') + "/full/full/0/default.jpg"
-                    resource.optString("@id").startsWith("http") -> resource.optString("@id")
+                    resource.optString("@id").startsWith("https://") -> resource.optString("@id")
+                    !service.isNullOrBlank() -> {
+                        val legacy = resource.optJSONObject("service")
+                            ?.optString("@context").orEmpty().contains("/image/1/")
+                        service.trimEnd('/') + "/full/full/0/" +
+                            (if (legacy) "native.jpg" else "default.jpg")
+                    }
                     else -> null
                 }
             }

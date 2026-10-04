@@ -107,5 +107,7 @@ class OfflineReaderTest {
         val v3 = JSONObject("""{"items":[{"items":[{"items":[{"body":{"id":"https://example.org/page.jpg"}}]}]}]}""")
         assertEquals(listOf("https://example.org/page.jpg"), IiifLoader().parse(v2))
         assertEquals(listOf("https://example.org/page.jpg"), IiifLoader().parse(v3))
+        val legacy = JSONObject("""{"sequences":[{"canvases":[{"images":[{"resource":{"@id":"https://example.org/full/full/0/native.jpg","service":{"@id":"https://example.org","@context":"http://iiif.io/api/image/1/context.json"}}}]}]}]}""")
+        assertEquals(listOf("https://example.org/full/full/0/native.jpg"), IiifLoader().parse(legacy))
     }
 }

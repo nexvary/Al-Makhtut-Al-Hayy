@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.almakhutut.alhayy.R
@@ -31,6 +32,7 @@ fun AddBookScreen(
     var status by remember { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     fun runImport(block: suspend () -> LocalBook) {
         if (busy) return
@@ -39,7 +41,11 @@ fun AddBookScreen(
         scope.launch {
             runCatching { block() }
                 .onSuccess(onImported)
-                .onFailure { status = it.message ?: "Import failed" }
+                .onFailure {
+                    status = if (it.message == "IIIF_ACCESS_DENIED") {
+                        context.getString(R.string.iiif_access_denied)
+                    } else it.message ?: context.getString(R.string.page_load_failed)
+                }
             busy = false
         }
     }
@@ -120,7 +126,7 @@ fun AddBookScreen(
             )
             Button(
                 onClick = { runImport { store.importIiif(iiifUrl.trim(), title) } },
-                enabled = !busy && iiifUrl.startsWith("https://"),
+                enabled = !busy && iiifUrl.trim().startsWith("https://"),
                 modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
             ) {
                 Icon(Icons.Default.Link, null)
