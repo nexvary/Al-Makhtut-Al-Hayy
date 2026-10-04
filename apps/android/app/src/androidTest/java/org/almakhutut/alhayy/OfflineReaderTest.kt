@@ -1,5 +1,9 @@
 package org.almakhutut.alhayy
 
+import android.content.ContentValues
+import android.os.Build
+import android.provider.MediaStore
+import androidx.compose.ui.graphics.asAndroidBitmap
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
@@ -32,10 +36,28 @@ class OfflineReaderTest {
     private fun store() = LocalBookStore(rule.activity)
     private fun proof(name: String) {
         rule.waitForIdle()
-        val screenshot = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot() ?: return
-        val folder = File(rule.activity.getExternalFilesDir(null), "ui-proof").apply { mkdirs() }
-        File(folder, "$name.png").outputStream().use {
-            screenshot.compress(Bitmap.CompressFormat.PNG, 100, it)
+        val screenshot = rule.onRoot().captureToImage().asAndroidBitmap()
+        if (Build.VERSION.SDK_INT >= 29) {
+            // Public test output survives Gradle uninstalling fixture APKs after the suite.
+            val values = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, "$name.png")
+                put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/MakhtutUiProof")
+                put(MediaStore.Images.Media.IS_PENDING, 1)
+            }
+            val resolver = rule.activity.contentResolver
+            val uri = checkNotNull(resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values))
+            checkNotNull(resolver.openOutputStream(uri)).use {
+                check(screenshot.compress(Bitmap.CompressFormat.PNG, 100, it))
+            }
+            values.clear()
+            values.put(MediaStore.Images.Media.IS_PENDING, 0)
+            resolver.update(uri, values, null, null)
+        } else {
+            val folder = File(rule.activity.getExternalFilesDir(null), "ui-proof").apply { mkdirs() }
+            File(folder, "$name.png").outputStream().use {
+                check(screenshot.compress(Bitmap.CompressFormat.PNG, 100, it))
+            }
         }
         screenshot.recycle()
     }

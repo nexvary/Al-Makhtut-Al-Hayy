@@ -114,7 +114,7 @@ jobs:
 
       - name: Collect UI proof
         if: always()
-        run: adb pull /sdcard/Android/data/org.almakhutut.alhayy/files/ui-proof apps/android/ui-proof || true
+        run: adb pull /sdcard/Pictures/MakhtutUiProof apps/android/ui-proof
 
       - name: Upload UI test reports
         if: always()
