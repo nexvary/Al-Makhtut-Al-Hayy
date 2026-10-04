@@ -37,18 +37,30 @@ class OfflineReaderTest {
     private val ids = mutableListOf<String>()
     private fun text(id: Int) = rule.activity.getString(id)
     private fun store() = LocalBookStore(rule.activity)
+    private fun proof(name: String) {
+        rule.waitForIdle()
+        val screenshot = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot() ?: return
+        val folder = File(rule.activity.getExternalFilesDir(null), "ui-proof").apply { mkdirs() }
+        File(folder, "$name.png").outputStream().use {
+            screenshot.compress(Bitmap.CompressFormat.PNG, 100, it)
+        }
+        screenshot.recycle()
+    }
 
     @After fun cleanup() { ids.forEach { store().delete(it) } }
 
     @Test fun importsPdfAndReadsBothPagesWithoutBackend() = runBlocking {
         val file = File(rule.activity.cacheDir, "offline-test.pdf")
-        PdfDocument().use { document ->
+        val document = PdfDocument()
+        try {
             repeat(2) { index ->
                 val page = document.startPage(PdfDocument.PageInfo.Builder(200, 300, index + 1).create())
                 page.canvas.drawColor(android.graphics.Color.WHITE)
                 document.finishPage(page)
             }
             file.outputStream().use { document.writeTo(it) }
+        } finally {
+            document.close()
         }
         val book = store().importPdf(Uri.fromFile(file), "Offline PDF fixture")
         ids += book.id
@@ -62,6 +74,7 @@ class OfflineReaderTest {
         }
         rule.onNodeWithContentDescription(text(R.string.next)).assertIsDisplayed().performClick()
         rule.onNodeWithText(rule.activity.getString(R.string.page_of, 2, 2)).assertIsDisplayed()
+        proof("offline-pdf-page-2")
         rule.onNodeWithContentDescription(text(R.string.previous)).performClick()
         rule.onNodeWithText(rule.activity.getString(R.string.page_of, 1, 2)).assertIsDisplayed()
         rule.onNodeWithContentDescription(text(R.string.back)).performClick()
@@ -98,6 +111,7 @@ class OfflineReaderTest {
     @Test fun addBookControlsRemainReachableOnCompactPhone() {
         rule.onAllNodesWithText(text(R.string.add_book)).onFirst().performClick()
         rule.onNodeWithText(text(R.string.open_iiif)).performScrollTo().assertIsDisplayed()
+        proof("add-book-scrolled")
         rule.onNodeWithContentDescription(text(R.string.back)).assertIsDisplayed().performClick()
         rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
     }

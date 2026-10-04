@@ -112,12 +112,17 @@ jobs:
           tail -n 400 "$RUNNER_TEMP/emulator.log" || true
           tail -n 400 "$RUNNER_TEMP/logcat.txt" || true
 
+      - name: Collect UI proof
+        if: always()
+        run: adb pull /sdcard/Android/data/org.almakhutut.alhayy/files/ui-proof apps/android/ui-proof || true
+
       - name: Upload UI test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Android15-compact-${{ matrix.language }}
           path: |
+            apps/android/ui-proof/
             apps/android/app/build/reports/androidTests/connected/
             apps/android/app/build/outputs/androidTest-results/connected/
           if-no-files-found: warn
