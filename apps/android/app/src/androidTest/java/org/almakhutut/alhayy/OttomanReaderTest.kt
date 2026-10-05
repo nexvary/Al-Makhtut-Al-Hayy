@@ -25,7 +25,9 @@ class OttomanReaderTest {
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
     private fun scroll(tag: String): SemanticsNodeInteraction {
         rule.onNodeWithTag("remote-reader-list").performScrollToNode(hasTestTag(tag))
-        return rule.onNodeWithTag(tag).performScrollTo()
+        rule.onNodeWithTag(tag).performScrollTo()
+        rule.waitForIdle()
+        return rule.onNodeWithTag(tag)
     }
     @Test fun independentStagesDictionaryAndProgressivePracticeKeepOriginalAndBack() {
         val requests = CopyOnWriteArrayList<Int>()

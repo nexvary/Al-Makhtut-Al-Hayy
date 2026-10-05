@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime
 from difflib import ndiff
 from enum import StrEnum
-from threading import RLock
+from pathlib import Path
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
+from .legacy_store import LegacyRecordStore
 from .models import TextLayerKind
 
 
@@ -50,42 +52,28 @@ class AuditEntry(BaseModel):
 
 
 class EditorialStore:
-    def __init__(self) -> None:
-        self._lock = RLock()
-        self._revisions: dict[str, list[TextRevision]] = {}
-        self._audit: list[AuditEntry] = []
+    def __init__(self, path: Path | None = None):
+        self.store = LegacyRecordStore(path)
 
     @staticmethod
-    def _key(manuscript_id: str, page_id: str, region_id: str) -> str:
-        return f"{manuscript_id}:{page_id}:{region_id}"
+    def _key(manuscript_id: str, page_id: str, region_id: str):
+        return json.dumps([manuscript_id,page_id,region_id])
 
     def add_revision(self, revision: TextRevision) -> TextRevision:
-        key = self._key(revision.manuscript_id, revision.page_id, revision.region_id)
-        with self._lock:
-            previous = self._revisions.get(key, [])
-            if previous and revision.parent_revision_id != previous[-1].id:
-                raise ValueError("Revision parent must point to the current head")
-            self._revisions.setdefault(key, []).append(revision)
-            self._audit.append(
-                AuditEntry(
-                    action="revision.created",
-                    actor_id=revision.created_by,
-                    manuscript_id=revision.manuscript_id,
-                    page_id=revision.page_id,
-                    region_id=revision.region_id,
-                    revision_id=revision.id,
-                )
-            )
+        if revision.layer_kind == TextLayerKind.HTR_RAW and revision.state != ReviewState.MACHINE:
+            raise ValueError("HTR remains machine; review creates a different transcription layer")
+        audit = AuditEntry(action="revision.created",actor_id=revision.created_by,
+                           manuscript_id=revision.manuscript_id,page_id=revision.page_id,
+                           region_id=revision.region_id,revision_id=revision.id)
+        self.store.editorial_append(self._key(revision.manuscript_id,revision.page_id,revision.region_id),
+                                    revision.id,revision.parent_revision_id,revision.model_dump_json(),audit.model_dump_json())
         return revision
 
     def history(self, manuscript_id: str, page_id: str, region_id: str) -> list[TextRevision]:
-        key = self._key(manuscript_id, page_id, region_id)
-        with self._lock:
-            return list(self._revisions.get(key, []))
+        return [TextRevision.model_validate_json(row) for row in self.store.editorial_history(self._key(manuscript_id,page_id,region_id))]
 
     def audit_log(self) -> list[AuditEntry]:
-        with self._lock:
-            return list(self._audit)
+        return [AuditEntry.model_validate_json(row) for row in self.store.editorial_audit()]
 
 
 editorial_store = EditorialStore()

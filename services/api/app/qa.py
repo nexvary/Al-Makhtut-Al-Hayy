@@ -3,7 +3,7 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from .grounding import AnswerClaim, Evidence, GroundedAnswer, validate_grounded_answer
-from .search import HybridRetriever, InMemorySearchIndex, SearchDocument
+from .search import HybridRetriever, SearchDocument, SqliteSearchIndex
 
 
 class AskRequest(BaseModel):
@@ -50,7 +50,7 @@ class AskService:
         )
 
 
-search_index = InMemorySearchIndex()
+search_index = SqliteSearchIndex()
 qa_service = AskService(HybridRetriever(search_index))
 
 

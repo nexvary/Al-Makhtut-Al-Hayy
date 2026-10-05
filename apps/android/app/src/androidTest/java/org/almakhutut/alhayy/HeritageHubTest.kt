@@ -20,7 +20,9 @@ class HeritageHubTest {
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
     private fun scroll(tag:String):SemanticsNodeInteraction {
         rule.onNodeWithTag("heritage-list").performScrollToNode(hasTestTag(tag))
-        return rule.onNodeWithTag(tag).performScrollTo()
+        rule.onNodeWithTag(tag).performScrollTo()
+        rule.waitForIdle()
+        return rule.onNodeWithTag(tag)
     }
     @Test fun sourceTimeAndInterpretiveMuseumAreReachableAndBackWorks() {
         val anchor=SourceSelection("synthetic","p2","region")

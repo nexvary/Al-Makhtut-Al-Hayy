@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 
 from .auth import Role, require_roles
@@ -14,7 +16,6 @@ def list_glossary(manuscript_id: str | None = None) -> list[GlossaryTerm]:
 @router.post(
     "/glossary",
     response_model=GlossaryTerm,
-    dependencies=[Depends(require_roles(Role.REVIEWER, Role.ADMIN))],
 )
-def upsert_glossary(item: GlossaryTerm) -> GlossaryTerm:
-    return glossary_store.put(item)
+def upsert_glossary(item: GlossaryTerm, actor: Annotated[dict, Depends(require_roles(Role.REVIEWER, Role.ADMIN))]) -> GlossaryTerm:
+    return glossary_store.put(item, actor=actor["sub"])

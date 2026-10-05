@@ -2,17 +2,18 @@ import pytest
 
 from app.editorial import (
     EditorialRole,
+    EditorialStore,
     ReviewState,
     TextRevision,
     can_verify,
     confidence_bucket,
-    editorial_store,
     revision_diff,
 )
 from app.models import TextLayerKind
 
 
-def test_revision_history_and_parent_guard() -> None:
+def test_revision_history_and_parent_guard(tmp_path) -> None:
+    editorial_store = EditorialStore(tmp_path / "legacy.sqlite3")
     first = TextRevision(
         manuscript_id="mx",
         page_id="px",
@@ -35,6 +36,8 @@ def test_revision_history_and_parent_guard() -> None:
     )
     editorial_store.add_revision(second)
     assert editorial_store.history("mx", "px", "rx")[-1].id == second.id
+
+    assert EditorialStore(editorial_store.store.path).history("mx", "px", "rx")[-1].id == second.id
 
     stale = second.model_copy(update={"id": "stale", "parent_revision_id": first.id})
     with pytest.raises(ValueError):

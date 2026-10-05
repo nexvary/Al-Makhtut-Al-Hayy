@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import json
 from enum import StrEnum
-from threading import RLock
+from pathlib import Path
 
 from pydantic import BaseModel, Field
 
 from .citations import CitationTarget
+from .legacy_store import LegacyRecordStore
 
 
 class MediaKind(StrEnum):
@@ -102,52 +104,41 @@ def historical_context_warning(category: str) -> HistoricalWarning | None:
 
 
 class VisualKnowledgeStore:
-    def __init__(self) -> None:
-        self._lock = RLock()
-        self._objects: dict[str, HistoricalObject] = {}
-        self._events: dict[str, TimelineEvent] = {}
-        self._exhibits: dict[str, Exhibit] = {}
-        self._relations: list[RelatedPassage] = []
+    def __init__(self, path: Path | None = None):
+        self.store = LegacyRecordStore(path)
 
-    def put_object(self, item: HistoricalObject) -> HistoricalObject:
+    def put_object(self, item: HistoricalObject, *, actor: str = "legacy-adapter") -> HistoricalObject:
         warning = historical_context_warning(item.category)
         if warning and all(existing.code != warning.code for existing in item.warnings):
-            item = item.model_copy(update={"warnings": [*item.warnings, warning]})
-        with self._lock:
-            self._objects[item.id] = item
+            item = item.model_copy(update={"warnings":[*item.warnings,warning]})
+        self.store.put("visual-object",item.id,item.model_dump(mode="json"),actor=actor)
         return item
 
     def list_objects(self, manuscript_id: str | None = None) -> list[HistoricalObject]:
-        with self._lock:
-            values = list(self._objects.values())
+        values = [HistoricalObject.model_validate(row) for row in self.store.rows("visual-object")]
         return values if manuscript_id is None else [x for x in values if x.manuscript_id == manuscript_id]
 
-    def put_event(self, item: TimelineEvent) -> TimelineEvent:
-        with self._lock:
-            self._events[item.id] = item
+    def put_event(self, item: TimelineEvent, *, actor: str = "legacy-adapter") -> TimelineEvent:
+        self.store.put("visual-event",item.id,item.model_dump(mode="json"),actor=actor)
         return item
 
     def list_events(self) -> list[TimelineEvent]:
-        with self._lock:
-            return sorted(self._events.values(), key=lambda item: item.start_year)
+        return sorted([TimelineEvent.model_validate(row) for row in self.store.rows("visual-event")],key=lambda item:item.start_year)
 
-    def put_exhibit(self, exhibit: Exhibit) -> Exhibit:
-        with self._lock:
-            self._exhibits[exhibit.id] = exhibit
-        return exhibit
+    def put_exhibit(self, item: Exhibit, *, actor: str = "legacy-adapter") -> Exhibit:
+        self.store.put("visual-exhibit",item.id,item.model_dump(mode="json"),actor=actor)
+        return item
 
     def list_exhibits(self) -> list[Exhibit]:
-        with self._lock:
-            return list(self._exhibits.values())
+        return [Exhibit.model_validate(row) for row in self.store.rows("visual-exhibit")]
 
-    def add_relation(self, relation: RelatedPassage) -> RelatedPassage:
-        with self._lock:
-            self._relations.append(relation)
-        return relation
+    def add_relation(self, item: RelatedPassage, *, actor: str = "legacy-adapter") -> RelatedPassage:
+        identifier = json.dumps([item.source_region_id,item.target_region_id,item.relation])
+        self.store.put("visual-relation",identifier,item.model_dump(mode="json"),actor=actor)
+        return item
 
     def relations(self) -> list[RelatedPassage]:
-        with self._lock:
-            return list(self._relations)
+        return [RelatedPassage.model_validate(row) for row in self.store.rows("visual-relation")]
 
 
 visual_store = VisualKnowledgeStore()

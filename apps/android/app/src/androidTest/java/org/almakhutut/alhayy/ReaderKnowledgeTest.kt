@@ -31,7 +31,9 @@ class ReaderKnowledgeTest {
     private fun text(id: Int) = rule.activity.getString(id)
     private fun scrollTo(matcher: SemanticsMatcher): SemanticsNodeInteraction {
         rule.onNodeWithTag("remote-reader-list").performScrollToNode(matcher)
-        return rule.onNode(matcher).performScrollTo()
+        rule.onNode(matcher).performScrollTo()
+        rule.waitForIdle()
+        return rule.onNode(matcher)
     }
     private fun proof() {
         val bitmap = rule.onRoot().captureToImage().asAndroidBitmap()

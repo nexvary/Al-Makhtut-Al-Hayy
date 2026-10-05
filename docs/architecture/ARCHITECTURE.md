@@ -126,3 +126,19 @@ Every generated explanation, normalization or transcription revision should be t
 - HTR/model version.
 - processor identity (machine/editor).
 - creation timestamp.
+
+## Compatibility durability
+
+Older editorial, glossary, visual-knowledge and lexical-index contracts now use
+`LEGACY_METADATA_PATH` on the metadata volume. Current records have immutable historical
+snapshots and hash-linked audit entries; HTTP glossary/visual writes record the authenticated
+actor. Editorial revisions retain atomic head/parent checks and immutable IDs. HTR output
+cannot become verified under the same machine-reading kind. Earlier in-memory process state
+cannot be recovered after that process exited; no invented migration data is created.
+
+Compatibility schemas do not acquire verified provenance automatically. New scholarly
+editing uses living layers and museum contracts; legacy objects remain legacy objects.
+Lexical search scans at most 2,000 current documents and retains bounded top results.
+Vector-only candidates can resolve an actual stored source document; unknown IDs are skipped.
+The default vector adapter still has no external embedding service. Restart, revision-parent,
+legacy data and vector-only source-resolution tests cover these contracts.

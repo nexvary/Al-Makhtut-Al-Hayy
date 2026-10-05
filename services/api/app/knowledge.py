@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from threading import RLock
+from pathlib import Path
 
 from pydantic import BaseModel, Field
+
+from .legacy_store import LegacyRecordStore
 
 
 class GlossaryTerm(BaseModel):
@@ -16,21 +18,16 @@ class GlossaryTerm(BaseModel):
 
 
 class GlossaryStore:
-    def __init__(self) -> None:
-        self._lock = RLock()
-        self._items: dict[str, GlossaryTerm] = {}
+    def __init__(self, path: Path | None = None):
+        self.store = LegacyRecordStore(path)
 
-    def put(self, item: GlossaryTerm) -> GlossaryTerm:
-        with self._lock:
-            self._items[item.id] = item
+    def put(self, item: GlossaryTerm, *, actor: str = "legacy-adapter") -> GlossaryTerm:
+        self.store.put("glossary",item.id,item.model_dump(mode="json"),actor=actor)
         return item
 
     def list(self, manuscript_id: str | None = None) -> list[GlossaryTerm]:
-        with self._lock:
-            values = list(self._items.values())
-        if manuscript_id is None:
-            return values
-        return [item for item in values if item.manuscript_id in {None, manuscript_id}]
+        values = [GlossaryTerm.model_validate(row) for row in self.store.rows("glossary")]
+        return values if manuscript_id is None else [item for item in values if item.manuscript_id in {None,manuscript_id}]
 
 
 glossary_store = GlossaryStore()

@@ -25,7 +25,7 @@ Human verification is restricted to Reviewer/Administrator and tied to the authe
 Concurrent writes to one layer scope use parent-revision checks; stale writes return 409.
 Source, scholarly metadata and layer audit entries are committed atomically with changes.
 
-Current local validation: 63 API tests, 6 HTR tests, Ruff and web TypeScript/Vite build.
+Current local validation: 66 API tests, 6 HTR tests, Ruff and web TypeScript/Vite build.
 Web CI runs real browser tests against the API at a 390 px viewport, covering layer edits,
 permission failures, escaped text, persistence, Ottoman stage separation, dictionary/exercises,
 graph/time/map, museum labels and corpus evidence. Browser PNG evidence is retained.
@@ -43,8 +43,7 @@ web queries browse these records. The museum distinguishes evidence from reconst
 Ask the Heritage retrieves reviewed source excerpts. A bounded thumbnail fingerprint index and real image query now support visual candidate discovery in the API/web. No automatic Ottoman translation, complete academy corpus, generated 3D
 models, large-scale semantic RAG or handwriting identification is claimed. See the architecture
 documents for exact limits and remaining native Android integration.
-Legacy editorial, glossary, visual knowledge and search stores still use in-memory adapters;
-these are not durable production storage. Persistent accounts now support login, roles, disable/password reset, immediate managed-session revocation and audit; first Administrator bootstrap has no default password. Legacy manually signed tokens remain compatible and are revoked by secret rotation, not account logout. Real deployment identity and corpus onboarding remain operational work.
+Legacy editorial, glossary, visual knowledge and lexical search now persist in SQLite with append-only histories/audit. Their older schemas remain compatibility contracts; they are not automatically promoted into verified living-layer or museum records. Lexical retrieval scans at most 2,000 recent documents; semantic-only vector candidates can resolve stored source documents. Persistent accounts now support login, roles, disable/password reset, immediate managed-session revocation and audit; first Administrator bootstrap has no default password. Legacy manually signed tokens remain compatible and are revoked by secret rotation, not account logout. Real deployment identity and corpus onboarding remain operational work.
 
 ## Light operations profile
 
