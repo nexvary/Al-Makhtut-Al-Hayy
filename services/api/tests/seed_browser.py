@@ -84,3 +84,14 @@ visual_index().publish(ImageIndexRequest(image_base64=base64.b64encode(output.ge
 from app.accounts import account_repository
 
 account_repository().create('browser-owner',Role.ADMIN,'Browser QA fixture pass!',actor='fixture-bootstrap',bootstrap=True)
+
+from app.scholarship import BibliographicMetadata, VariantReading, Witness, WitnessKind, Work, scholarship_store
+scholarship_store.put_work(Work(id='browser-work', title='Synthetic comparison QA'), actor='fixture-reviewer')
+for witness_id, manuscript_id in [('browser-witness-a','browser-fixture'), ('browser-witness-b','academy-browser')]:
+    scholarship_store.put_witness(Witness(id=witness_id,work_id='browser-work',manuscript_id=manuscript_id,
+        kind=WitnessKind.MANUSCRIPT,label=witness_id,bibliography=BibliographicMetadata(title='Synthetic QA witness')),
+        actor='fixture-reviewer')
+scholarship_store.put_variant(VariantReading(id='browser-variant',work_id='browser-work',locus='Synthetic comparison locus',
+    readings={'browser-witness-a':'Synthetic original word','browser-witness-b':'Synthetic changed word'},
+    sources=[CitationTarget(manuscript_id='academy-browser',page_id='visual-source-page',region_id='visual-source-region')]),
+    actor='fixture-reviewer')

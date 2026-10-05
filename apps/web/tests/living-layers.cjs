@@ -102,6 +102,16 @@ await page.locator('#pageLabel').getByText('Synthetic visual source 2',{exact:tr
 await page.locator('#pageCount').getByText('2 / 2',{exact:true}).waitFor();
 await page.locator('#regions .selected[data-region-id="visual-source-region"]').waitFor();
 await page.screenshot({path:'test-results/visual-mobile.png',fullPage:true});
+const comparison=page.locator('#witnessComparison');await comparison.locator('summary').click();
+await comparison.locator('[data-work]').fill('browser-work');
+await comparison.getByRole('button',{name:'تحميل نسخ العمل',exact:true}).click();
+await comparison.getByRole('heading',{name:'Synthetic comparison locus',exact:true}).waitFor();
+await comparison.getByRole('button',{name:'قارن القراءتين',exact:true}).click();
+await comparison.locator('[data-comparison]').getByText('اختلاف: original ⇄ changed',{exact:true}).waitFor();
+await comparison.getByRole('button',{name:'افتح الدليل: academy-browser / visual-source-page',exact:true}).click();
+await page.locator('#pageCount').getByText('2 / 2',{exact:true}).waitFor();
+if(await page.evaluate(()=>document.documentElement.scrollWidth > window.innerWidth + 1))throw new Error('Comparison mobile overflow');
+await page.screenshot({path:'test-results/comparison-mobile.png',fullPage:true});
 const accounts=page.locator('#accounts');await accounts.locator('summary').first().click();
 await accounts.locator('[data-username]').fill('browser-owner');
 await accounts.locator('[data-password]').fill('Browser QA fixture pass!');

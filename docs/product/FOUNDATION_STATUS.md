@@ -35,7 +35,7 @@ browser download failed; browser success is from CI, not a claimed local executi
 ## Remaining release scope
 
 Existing HTR, grounded retrieval, TEI/PAGE/ALTO, visual knowledge and witness contracts are
-foundation components, not completed production labs. Scoped evidence retrieval and literal witness comparison are implemented. Ottoman Lab now stores
+foundation components, not completed production labs. Scoped evidence retrieval and literal witness comparison are implemented. The web comparison panel selects documented witnesses of one work, shows the recorded texts and word differences, and links to exact source pages/regions. It does not infer a critical reading; missing evidence is labelled explicitly. Ottoman Lab now stores
 separate source-linked stages, with web editorial UI; Academy supplies reviewed-source exercises
 and dictionary lookup. See OTTOMAN_PIPELINE.md and OTTOMAN_ACADEMY.md for verified scope.
 Historical entities/relations, time filtering and GeoJSON now use durable source-backed records;

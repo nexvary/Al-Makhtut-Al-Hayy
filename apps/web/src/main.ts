@@ -1,3 +1,4 @@
+import { ComparisonPanel } from "./comparison";
 import { AccountsPanel } from "./accounts";
 import { VisualSearchPanel } from "./visual-search";
 import { MuseumPanel } from "./museum";
@@ -73,6 +74,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <details id="heritageGraph"></details>
         <details id="livingMuseum"></details>
         <details id="visualSearch"></details>
+        <details id="witnessComparison"></details>
         <details id="accounts"></details>
       </aside>
     </section>
@@ -119,6 +121,11 @@ new HeritagePanel(document.querySelector<HTMLElement>("#heritageGraph")!, () => 
 
 new MuseumPanel(document.querySelector<HTMLElement>("#livingMuseum")!, () => apiBaseInput.value.trim());
 new VisualSearchPanel(document.querySelector<HTMLElement>("#visualSearch")!, () => ({base:apiBaseInput.value.trim(),manuscript,page:currentApiPage(),region:selectedRegion}), async source => {
+  manuscriptIdInput.value = source.manuscript_id;
+  await loadApiLayers(source.page_id, source.region_id);
+});
+
+new ComparisonPanel(document.querySelector<HTMLElement>("#witnessComparison")!, () => apiBaseInput.value.trim(), async source => {
   manuscriptIdInput.value = source.manuscript_id;
   await loadApiLayers(source.page_id, source.region_id);
 });
