@@ -31,6 +31,8 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, kn
     val defaultClient = remember { ApiClient() }
     val client = knowledgeClient ?: defaultClient
     val page = manuscript.pages.getOrNull(pageIndex)
+    val source = page?.let { SourceSelection(manuscript.id, it.id, selected?.id) }
+    val knowledge = source?.let { rememberReaderKnowledge(apiBase, it, client) }
     val context = LocalContext.current
     val tts = remember { TextToSpeech(context) {} }
     DisposableEffect(Unit) { onDispose { tts.shutdown() } }
@@ -82,7 +84,7 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, kn
             }
 
             page?.let {
-                ReaderKnowledgePanel(apiBase, SourceSelection(manuscript.id, it.id, selected?.id), client)
+                ReaderKnowledgePanel(apiBase, checkNotNull(source), checkNotNull(knowledge))
             }
             }
         }

@@ -29,6 +29,10 @@ class ReaderKnowledgeTest {
     }
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
     private fun text(id: Int) = rule.activity.getString(id)
+    private fun scrollTo(matcher: SemanticsMatcher): SemanticsNodeInteraction {
+        rule.onNodeWithTag("remote-reader-list").performScrollToNode(matcher)
+        return rule.onNode(matcher).performScrollTo()
+    }
     private fun proof() {
         val bitmap = rule.onRoot().captureToImage().asAndroidBitmap()
         val values = ContentValues().apply {
@@ -71,23 +75,24 @@ class ReaderKnowledgeTest {
                 else ReaderScreen(manuscript, "https://example.invalid", onBack = { closed = true }, knowledgeClient = client)
             }
         } }
-        rule.onNodeWithTag("living-layers-toggle").performScrollTo().performClick()
-        rule.onNodeWithText("Synthetic source p1").performScrollTo().assertIsDisplayed()
-        rule.onNodeWithText(rule.activity.getString(R.string.confidence_value, text(R.string.unknown_confidence)))
-            .performScrollTo().assertIsDisplayed()
+        scrollTo(hasTestTag("living-layers-toggle")).performClick()
+        scrollTo(hasText("Synthetic source p1")).assertIsDisplayed()
+        scrollTo(hasText(rule.activity.getString(R.string.confidence_value, text(R.string.unknown_confidence)))).assertIsDisplayed()
         proof()
-        rule.onNodeWithTag("living-layers-toggle").performScrollTo().performClick()
-        rule.onNodeWithText("Synthetic region 1").performScrollTo().performClick()
-        rule.onNodeWithTag("lab-source").performScrollTo().assertTextContains("r1")
-        rule.onNodeWithTag("lab-question").performScrollTo().performTextInput("Read this region")
-        rule.onNodeWithTag("lab-submit").performScrollTo().performClick()
+        scrollTo(hasTestTag("living-layers-toggle")).performClick()
+        scrollTo(hasText("Synthetic region 1")).performClick()
+        scrollTo(hasTestTag("lab-source")).assertTextContains("r1")
+        scrollTo(hasTestTag("lab-question")).performTextInput("Read this region")
+        scrollTo(hasText(text(R.string.next))).assertIsDisplayed()
+        scrollTo(hasTestTag("lab-question")).assertTextContains("Read this region")
+        scrollTo(hasTestTag("lab-submit")).performClick()
         rule.waitUntil(5_000) { queries.isNotEmpty() }
         assertEquals(SourceSelection("fixture", "p1", "r1"), queries.single())
-        rule.onNodeWithTag("lab-insufficient").performScrollTo().assertIsDisplayed()
-        rule.onNodeWithText(text(R.string.next)).performScrollTo().performClick()
-        rule.onNodeWithTag("lab-source").performScrollTo().assertTextContains("p2")
+        scrollTo(hasTestTag("lab-insufficient")).assertIsDisplayed()
+        scrollTo(hasText(text(R.string.next))).performClick()
+        scrollTo(hasTestTag("lab-source")).assertTextContains("p2")
         rule.onNodeWithTag("lab-insufficient").assertDoesNotExist()
-        rule.onNodeWithTag("lab-submit").performScrollTo().assertIsNotEnabled()
+        scrollTo(hasTestTag("lab-submit")).assertIsNotEnabled()
         rule.onNodeWithContentDescription(text(R.string.back)).performClick()
         rule.onNodeWithText("knowledge-reader-closed").assertIsDisplayed()
     }
