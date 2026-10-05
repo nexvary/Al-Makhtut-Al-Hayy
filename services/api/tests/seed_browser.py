@@ -85,7 +85,15 @@ from app.accounts import account_repository
 
 account_repository().create('browser-owner',Role.ADMIN,'Browser QA fixture pass!',actor='fixture-bootstrap',bootstrap=True)
 
-from app.scholarship import BibliographicMetadata, VariantReading, Witness, WitnessKind, Work, scholarship_store
+from app.scholarship import (
+    BibliographicMetadata,
+    VariantReading,
+    Witness,
+    WitnessKind,
+    Work,
+    scholarship_store,
+)
+
 scholarship_store.put_work(Work(id='browser-work', title='Synthetic comparison QA'), actor='fixture-reviewer')
 for witness_id, manuscript_id in [('browser-witness-a','browser-fixture'), ('browser-witness-b','academy-browser')]:
     scholarship_store.put_witness(Witness(id=witness_id,work_id='browser-work',manuscript_id=manuscript_id,
