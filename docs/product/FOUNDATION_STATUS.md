@@ -19,7 +19,7 @@ across restart. Original page image pointers cannot be overwritten or removed by
 updates. A new witness is required for changed source images. Editorial layers are separate
 from originals and append-only. Fifteen layer kinds are represented, with independent machine,
 draft and verified states, source anchors, confidence, model, human reviewer and evidence.
-The web reader displays layer history in learner/researcher views and allows authenticated
+The Android remote reader now displays scoped layer history and evidence-only lab results (native CI validation required for each release). Ottoman, Academy, graph and museum Android integration remains outstanding. The web reader displays layer history in learner/researcher views and allows authenticated
 creation of drafts and reviewed text. Tokens are entered explicitly and are not persisted.
 Human verification is restricted to Reviewer/Administrator and tied to the authenticated actor.
 Concurrent writes to one layer scope use parent-revision checks; stale writes return 409.

@@ -15,23 +15,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import org.almakhutut.alhayy.R
 import org.almakhutut.alhayy.data.ApiClient
+import org.almakhutut.alhayy.data.ReaderKnowledgeClient
+import org.almakhutut.alhayy.data.SourceSelection
 import org.almakhutut.alhayy.model.Manuscript
 import org.almakhutut.alhayy.model.Region
 import java.util.Locale
 
 @Composable
-fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
+fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, knowledgeClient: ReaderKnowledgeClient? = null) {
     BackHandler(onBack = onBack)
     var pageIndex by remember { mutableIntStateOf(0) }
     var selected by remember { mutableStateOf<Region?>(null) }
-    var question by remember { mutableStateOf("") }
-    var answer by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
-    val searchingText = stringResource(R.string.searching)
-    val failedText = stringResource(R.string.search_failed)
+    val defaultClient = remember { ApiClient() }
+    val client = knowledgeClient ?: defaultClient
     val page = manuscript.pages.getOrNull(pageIndex)
     val context = LocalContext.current
     val tts = remember { TextToSpeech(context) {} }
@@ -83,23 +81,9 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit) {
                 }
             }
 
-            OutlinedTextField(
-                value = question,
-                onValueChange = { question = it },
-                label = { Text(stringResource(R.string.ask_manuscript)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Button(
-                enabled = question.length >= 2,
-                onClick = {
-                    answer = searchingText
-                    scope.launch {
-                        answer = runCatching { ApiClient().ask(apiBase, question) }
-                            .getOrElse { failedText }
-                    }
-                },
-            ) { Text(stringResource(R.string.search)) }
-            if (answer.isNotBlank()) Text(answer)
+            page?.let {
+                ReaderKnowledgePanel(apiBase, SourceSelection(manuscript.id, it.id, selected?.id), client)
+            }
             }
         }
     }
