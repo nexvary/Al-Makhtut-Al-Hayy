@@ -140,3 +140,10 @@ def test_legacy_editorial_cannot_self_verify():
                    "state": "verified", "created_by": "forged-reviewer"}
         assert client.post("/api/v1/editorial/revisions", json=request,
                            headers=header(Role.TRANSCRIBER)).status_code == 403
+
+
+def test_source_coordinates_cannot_store_nonfinite_values():
+    with pytest.raises(ValidationError):
+        Point(x=float("nan"),y=1)
+    with pytest.raises(ValidationError):
+        Point(x=1,y=float("inf"))

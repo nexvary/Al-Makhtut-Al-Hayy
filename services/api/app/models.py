@@ -26,8 +26,8 @@ class RegionType(StrEnum):
 
 
 class Point(BaseModel):
-    x: float
-    y: float
+    x: float = Field(allow_inf_nan=False)
+    y: float = Field(allow_inf_nan=False)
 
 
 class TextLayer(BaseModel):

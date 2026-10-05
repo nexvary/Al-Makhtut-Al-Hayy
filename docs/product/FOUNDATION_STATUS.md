@@ -25,8 +25,12 @@ Human verification is restricted to Reviewer/Administrator and tied to the authe
 Concurrent writes to one layer scope use parent-revision checks; stale writes return 409.
 Source, scholarly metadata and layer audit entries are committed atomically with changes.
 
-Local validation: 33 API tests and web TypeScript/Vite build. Browser test runs in Web CI;
-local browser installation failed, so no local browser success is claimed.
+Current local validation: 58 API tests, 6 HTR tests, Ruff and web TypeScript/Vite build.
+Web CI runs real browser tests against the API at a 390 px viewport, covering layer edits,
+permission failures, escaped text, persistence, Ottoman stage separation, dictionary/exercises,
+graph/time/map, museum labels and corpus evidence. Browser PNG evidence is retained.
+Backend CI also builds and boots/restarts the non-root read-only Docker container. The local
+browser download failed; browser success is from CI, not a claimed local execution.
 
 ## Remaining release scope
 
