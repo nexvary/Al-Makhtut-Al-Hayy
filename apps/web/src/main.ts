@@ -1,3 +1,4 @@
+import { AcademyPanel } from "./academy";
 import { OttomanPanel } from "./ottoman";
 import { LivingLayersPanel } from "./layers";
 import OpenSeadragon from "openseadragon";
@@ -64,6 +65,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <div id="regions"></div>
         <details id="livingLayers"></details>
         <details id="ottomanLab"></details>
+        <details id="ottomanAcademy"></details>
       </aside>
     </section>
 
@@ -95,6 +97,10 @@ const livingLayers = new LivingLayersPanel(document.querySelector<HTMLElement>("
 
 const ottomanLab = new OttomanPanel(document.querySelector<HTMLElement>("#ottomanLab")!, () => ({
   base: apiBaseInput.value.trim(), manuscript, page: currentApiPage(), region: selectedRegion,
+}));
+
+const ottomanAcademy = new AcademyPanel(document.querySelector<HTMLElement>("#ottomanAcademy")!, () => ({
+  base: apiBaseInput.value.trim(), manuscript, page: currentApiPage(),
 }));
 
 const viewer = OpenSeadragon({
@@ -139,6 +145,7 @@ function selectRegion(region: Region | null) {
   speakButton.disabled = !region;
   void livingLayers.refresh();
   void ottomanLab.refresh();
+  void ottomanAcademy.refresh();
 }
 
 function bestSpeechText(region: Region): string {
