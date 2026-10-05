@@ -10,6 +10,7 @@ from .knowledge_routes import router as knowledge_router
 from .living_routes import router as living_router
 from .logging_utils import RequestLogMiddleware, configure_logging
 from .models import Manuscript
+from .ottoman_routes import router as ottoman_router
 from .qa_routes import router as qa_router
 from .ratelimit import RateLimitMiddleware
 from .repository import repository
@@ -42,6 +43,7 @@ app.include_router(scholarship_router)
 app.include_router(visual_router)
 app.include_router(living_router)
 app.include_router(ai_lab_router)
+app.include_router(ottoman_router)
 
 
 @app.get("/health")

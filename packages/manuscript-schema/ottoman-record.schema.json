@@ -1,0 +1,356 @@
+{
+  "$defs": {
+    "CitationTarget": {
+      "properties": {
+        "manuscript_id": {
+          "title": "Manuscript Id",
+          "type": "string"
+        },
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "region_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region Id"
+        },
+        "canvas_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canvas Uri"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        }
+      },
+      "required": [
+        "manuscript_id",
+        "page_id"
+      ],
+      "title": "CitationTarget",
+      "type": "object"
+    },
+    "LayerProvenance": {
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/SourceAnchor"
+        },
+        "extraction_method": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Extraction Method",
+          "type": "string"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "maxLength": 100000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewer"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/CitationTarget"
+          },
+          "maxItems": 100,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "extraction_method"
+      ],
+      "title": "LayerProvenance",
+      "type": "object"
+    },
+    "OttomanStage": {
+      "enum": [
+        "layout",
+        "htr",
+        "transcription",
+        "transliteration",
+        "modernization",
+        "translation_ar",
+        "translation_en"
+      ],
+      "title": "OttomanStage",
+      "type": "string"
+    },
+    "Point": {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Point",
+      "type": "object"
+    },
+    "ReviewState": {
+      "enum": [
+        "machine",
+        "draft",
+        "verified"
+      ],
+      "title": "ReviewState",
+      "type": "string"
+    },
+    "SourceAnchor": {
+      "properties": {
+        "manuscript_id": {
+          "title": "Manuscript Id",
+          "type": "string"
+        },
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "region_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region Id"
+        },
+        "canvas_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canvas Uri"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "witness_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Witness Id"
+        },
+        "coordinates": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 1000,
+          "title": "Coordinates",
+          "type": "array"
+        },
+        "source_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Uri"
+        }
+      },
+      "required": [
+        "manuscript_id",
+        "page_id"
+      ],
+      "title": "SourceAnchor",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Id",
+      "type": "string"
+    },
+    "stage": {
+      "$ref": "#/$defs/OttomanStage"
+    },
+    "state": {
+      "$ref": "#/$defs/ReviewState",
+      "default": "draft"
+    },
+    "text": {
+      "anyOf": [
+        {
+          "maxLength": 100000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Text"
+    },
+    "layout": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Layout"
+    },
+    "provenance": {
+      "$ref": "#/$defs/LayerProvenance"
+    },
+    "input_revision_id": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Input Revision Id"
+    },
+    "parent_revision_id": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Revision Id"
+    }
+  },
+  "required": [
+    "stage",
+    "provenance"
+  ],
+  "title": "OttomanRecord",
+  "type": "object"
+}

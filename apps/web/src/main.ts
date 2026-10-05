@@ -1,3 +1,4 @@
+import { OttomanPanel } from "./ottoman";
 import { LivingLayersPanel } from "./layers";
 import OpenSeadragon from "openseadragon";
 import { loadManuscript } from "./api";
@@ -62,6 +63,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <p class="hint" id="regionHint">لا توجد طبقات نص محمّلة. اربط مخطوطًا من API لعرض HTR والنص المراجع.</p>
         <div id="regions"></div>
         <details id="livingLayers"></details>
+        <details id="ottomanLab"></details>
       </aside>
     </section>
 
@@ -88,6 +90,10 @@ let selectedRegion: Region | null = null;
 let overlayElements = new Map<string, HTMLElement>();
 let readingMode: ReadingMode = "general";
 const livingLayers = new LivingLayersPanel(document.querySelector<HTMLElement>("#livingLayers")!, () => ({
+  base: apiBaseInput.value.trim(), manuscript, page: currentApiPage(), region: selectedRegion,
+}));
+
+const ottomanLab = new OttomanPanel(document.querySelector<HTMLElement>("#ottomanLab")!, () => ({
   base: apiBaseInput.value.trim(), manuscript, page: currentApiPage(), region: selectedRegion,
 }));
 
@@ -132,6 +138,7 @@ function selectRegion(region: Region | null) {
   });
   speakButton.disabled = !region;
   void livingLayers.refresh();
+  void ottomanLab.refresh();
 }
 
 function bestSpeechText(region: Region): string {
