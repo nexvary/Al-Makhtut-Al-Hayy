@@ -8,10 +8,11 @@ export class HeritagePanel {
       <form data-time><label>من سنة <input data-start type="number" min="-10000" max="3000" value="900" required /></label>
         <label>إلى سنة <input data-end type="number" min="-10000" max="3000" value="1300" required /></label>
         <button type="submit">افتح الفترة</button><button type="button" data-map>أماكن الفترة</button></form>
-      <div data-results role="status"></div>`;
+      <form data-ask><label>اسأل التراث — مقتطفات مراجعة <input data-question minlength="2" maxlength="2000" required /></label><button type="submit">اسأل التراث</button></form><div data-answer role="status"></div><div data-results role="status"></div>`;
     root.querySelector('[data-search]')!.addEventListener('submit',e=>{e.preventDefault();void this.load('entities?q='+encodeURIComponent(this.input('query')));});
     root.querySelector('[data-time]')!.addEventListener('submit',e=>{e.preventDefault();void this.load('time-machine?'+this.years());});
     root.querySelector('[data-map]')!.addEventListener('click',()=>void this.map());
+    root.querySelector('[data-ask]')!.addEventListener('submit',e=>{e.preventDefault();void this.ask();});
   }
   private input(name:string){return this.root.querySelector<HTMLInputElement>(`[data-${name}]`)!.value;}
   private years(){return `start=${encodeURIComponent(this.input('start'))}&end=${encodeURIComponent(this.input('end'))}`;}
@@ -36,6 +37,16 @@ export class HeritagePanel {
           }catch(error){related.textContent=String(error);}finally{button.disabled=false;}
         });article.append(title,text,button,related);output.append(article);
       }
+    }catch(error){output.textContent=String(error);}
+  }
+  private async ask(){
+    const output=this.root.querySelector('[data-answer]')!;output.textContent='جارٍ البحث في النصوص المراجعة…';
+    try{
+      const response=await fetch(this.url('ask'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:this.input('question')})});
+      if(!response.ok)throw new Error(`تعذر البحث (${response.status})`);
+      const result=await response.json() as {insufficient_evidence:boolean;evidence:{text:string;provenance:{source:{manuscript_id:string;page_id:string;region_id:string|null};confidence:number|null}}[]};output.replaceChildren();
+      const notice=document.createElement('p');notice.textContent=result.insufficient_evidence?'لا يوجد دليل مطابق في النصوص المراجعة. لم يُختلق جواب.':'مقتطفات مصدرية مراجعة، وليست استنتاجًا آليًا عن التاريخ.';output.append(notice);
+      for(const hit of result.evidence){const p=document.createElement('p');p.textContent=`${hit.text} • المصدر: ${hit.provenance.source.manuscript_id} / ${hit.provenance.source.page_id} / ${hit.provenance.source.region_id??'الصفحة'} • الثقة: ${hit.provenance.confidence??'غير معروفة'}`;output.append(p);}
     }catch(error){output.textContent=String(error);}
   }
   private async map(){

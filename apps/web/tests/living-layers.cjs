@@ -82,6 +82,15 @@ await heritage.getByRole('heading',{name:'Synthetic historical place'}).waitFor(
 await heritage.getByRole('button',{name:'أماكن الفترة'}).click();
 await heritage.getByRole('link').filter({hasText:'Synthetic historical place'}).waitFor();
 await page.screenshot({path:'test-results/heritage-mobile.png',fullPage:true});
-console.log('PASS: living layers, Ottoman stages, academy, dictionary, time period and map coordinates');
+await heritage.locator('[data-question]').fill('verified corpus');
+await heritage.getByRole('button',{name:'اسأل التراث',exact:true}).click();
+await heritage.locator('[data-answer]').getByText(/Synthetic verified corpus excerpt/).waitFor();
+const museum=page.locator('#livingMuseum');await museum.locator('summary').click();
+await museum.getByRole('button',{name:'تحميل المعارض'}).click();
+await museum.getByRole('button',{name:'ادخل المعرض'}).click();
+await museum.getByRole('heading').filter({hasText:'Synthetic museum object'}).waitFor();
+await museum.getByText(/إعادة بناء تفسيرية/).waitFor();
+await page.screenshot({path:'test-results/museum-mobile.png',fullPage:true});
+console.log('PASS: living layers, Ottoman stages, academy, graph, time/map, museum and verified heritage excerpts');
 await browser.close();
 })().catch(error=>{console.error(error);process.exit(1)});

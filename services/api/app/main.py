@@ -6,12 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from .academy_routes import router as academy_router
 from .ai_lab_routes import router as ai_lab_router
 from .editorial_routes import router as editorial_router
+from .heritage_qa_routes import router as heritage_qa_router
 from .heritage_routes import router as heritage_router
 from .ingestion_routes import router as ingestion_router
 from .knowledge_routes import router as knowledge_router
 from .living_routes import router as living_router
 from .logging_utils import RequestLogMiddleware, configure_logging
 from .models import Manuscript
+from .museum_routes import router as museum_router
 from .ottoman_routes import router as ottoman_router
 from .qa_routes import router as qa_router
 from .ratelimit import RateLimitMiddleware
@@ -48,6 +50,8 @@ app.include_router(ai_lab_router)
 app.include_router(ottoman_router)
 app.include_router(academy_router)
 app.include_router(heritage_router)
+app.include_router(museum_router)
+app.include_router(heritage_qa_router)
 
 
 @app.get("/health")

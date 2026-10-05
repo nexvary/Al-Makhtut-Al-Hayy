@@ -99,3 +99,20 @@ class SqliteLayerRepository:
         with self.connect() as connection:
             connection.row_factory = sqlite3.Row
             return [dict(row) for row in connection.execute("SELECT * FROM living_audit")]
+
+    def verified_candidates(self, manuscript_ids: list[str] | None = None, *, limit: int = 2000) -> list[LivingLayer]:
+        """Current reviewed representations only; later adapters can provide indexed retrieval."""
+        sql = ("SELECT payload FROM living_revisions WHERE sequence IN "
+               "(SELECT MAX(sequence) FROM living_revisions GROUP BY manuscript_id,page_id,scope) "
+               "AND json_extract(payload,'$.state')='verified'")
+        values: list = []
+        if manuscript_ids is not None:
+            if not manuscript_ids:
+                return []
+            sql += " AND manuscript_id IN (" + ",".join("?" for _ in manuscript_ids) + ")"
+            values.extend(manuscript_ids)
+        sql += " ORDER BY sequence DESC LIMIT ?"
+        values.append(limit)
+        with self.connect() as connection:
+            rows = connection.execute(sql, values).fetchall()
+        return [LivingLayer.model_validate_json(row[0]) for row in rows]

@@ -23,3 +23,16 @@ confidence remains null. The UI exposes task/source/results alongside the origin
 An AIService protocol separates external/GPU providers from the application process; no large
 model or synthetic answer is run on the VPS. Future generated answers need independent
 claim/evidence validation; citing a source alone does not prove factual entailment.
+
+## Ask the Heritage foundation
+
+POST /api/v1/heritage/ask retrieves current reviewed text representations from the durable
+living-layer store across manuscripts. Work, manuscript and language filters are available.
+The response carries full page/region/witness provenance, revision, confidence and an explicit
+retrieval score. Retrieval score is not scholarly confidence. No unsupported generated synthesis
+is returned; no matching evidence gives insufficient_evidence. Previous versions replaced by a
+new current revision are not silently used as the latest reading. Original manuscript text stays
+unchanged. This initial bounded lexical adapter examines at most 2,000 recent current verified
+representations; complete large-corpus retrieval requires an indexed/vector adapter. EvidenceCorpus
+provides that boundary. Ottoman pipeline records must be deliberately published as reviewed living
+representations before entering this corpus; machine records are never auto-promoted.

@@ -1,3 +1,4 @@
+import { MuseumPanel } from "./museum";
 import { HeritagePanel } from "./heritage";
 import { AcademyPanel } from "./academy";
 import { OttomanPanel } from "./ottoman";
@@ -68,6 +69,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <details id="ottomanLab"></details>
         <details id="ottomanAcademy"></details>
         <details id="heritageGraph"></details>
+        <details id="livingMuseum"></details>
       </aside>
     </section>
 
@@ -106,6 +108,8 @@ const ottomanAcademy = new AcademyPanel(document.querySelector<HTMLElement>("#ot
 }));
 
 new HeritagePanel(document.querySelector<HTMLElement>("#heritageGraph")!, () => apiBaseInput.value.trim());
+
+new MuseumPanel(document.querySelector<HTMLElement>("#livingMuseum")!, () => apiBaseInput.value.trim());
 
 const viewer = OpenSeadragon({
   id: "viewer",

@@ -41,3 +41,20 @@ graph_repository().append(HistoricalEntity(entity_id='browser-heritage', name='S
     kind=EntityKind.PLACE, interval=HistoricalInterval(start_year=1000, end_year=1050),
     location=HistoricalLocation(latitude=20, longitude=30, label='Synthetic QA coordinates'),
     provenance=prov), actor='fixture-editor')
+
+from app.citations import CitationTarget
+from app.living import LayerKind, LivingLayer
+from app.living_routes import layer_repository
+from app.models import Region
+from app.museum import EvidenceClass, Exhibition, MuseumObject
+from app.museum_routes import museum_repository
+
+repository.put(Manuscript(id='museum-browser',title='Synthetic museum QA fixture',pages=[
+    Page(id='museum-page',sequence=1,image='https://example.org/page.png',regions=[Region(id='museum-drawing')])]))
+museum_prov=LayerProvenance(source=SourceAnchor(manuscript_id='museum-browser',page_id='museum-page',region_id='museum-drawing'),
+    extraction_method='manual',reviewer='fixture-reviewer',evidence=[CitationTarget(manuscript_id='museum-browser',page_id='museum-page',region_id='museum-drawing')])
+museum_repository().append(MuseumObject(object_id='museum-browser-object',name='Synthetic museum object',description='Synthetic interpretive example',
+    evidence_class=EvidenceClass.INTERPRETIVE,original_illustration_region='museum-drawing',interpretation_notes='Synthetic assumptions for QA only',provenance=museum_prov),actor='fixture-reviewer')
+museum_repository().append(Exhibition(exhibition_id='museum-browser-exhibition',title='Synthetic museum exhibition',theme='engineering',
+    description='QA fixture, not a historical claim',object_ids=['museum-browser-object'],provenance=museum_prov),actor='fixture-reviewer')
+layer_repository().append(LivingLayer(kind=LayerKind.VERIFIED,state=ReviewState.VERIFIED,text='Synthetic verified corpus excerpt',language='en',provenance=prov),actor='fixture-reviewer')
