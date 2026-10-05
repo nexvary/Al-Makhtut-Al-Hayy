@@ -18,7 +18,10 @@ from app.ottoman_routes import ottoman_repository
 
 # Only synthetic QA fixtures; never represented as historical scholarship.
 repository.put(Manuscript(id='academy-browser', title='Synthetic academy QA fixture', license='test-only',
-                         pages=[Page(id='academy-page', sequence=1, image='https://example.org/page.png')]))
+                         pages=[Page(id='academy-page', sequence=1, image='https://example.org/page.png'),
+                                Page(id='visual-source-page', sequence=2, folio_label='Synthetic visual source 2',
+                                     image='https://example.org/visual-source.png',
+                                     regions=[Region(id='visual-source-region')])]))
 prov = LayerProvenance(source=SourceAnchor(manuscript_id='academy-browser', page_id='academy-page'),
                        extraction_method='manual', reviewer='fixture-reviewer')
 original = OttomanRecord(stage=OttomanStage.TRANSCRIPTION, state=ReviewState.VERIFIED,
@@ -72,7 +75,9 @@ image.putdata([255 if x % 20 < 10 else 0 for y in range(80) for x in range(90)])
 output = io.BytesIO(); image.save(output, format='PNG')
 Path('/tmp/visual-fixture.png').write_bytes(output.getvalue())
 visual_prov = prov.model_copy(deep=True)
-visual_prov.source.source_uri = 'https://example.org/page.png'
+visual_prov.source.page_id = 'visual-source-page'
+visual_prov.source.region_id = 'visual-source-region'
+visual_prov.source.source_uri = 'https://example.org/visual-source.png'
 visual_index().publish(ImageIndexRequest(image_base64=base64.b64encode(output.getvalue()).decode(),
  source_license='test-only', rights_note='Synthetic QA rights only', provenance=visual_prov), actor='fixture-reviewer')
 

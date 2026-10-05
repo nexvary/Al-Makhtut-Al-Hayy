@@ -97,6 +97,8 @@ let pages: IiifPage[] = [];
 let pageIndex = 0;
 let manuscript: Manuscript | null = null;
 let selectedRegion: Region | null = null;
+let sourceRequest = 0;
+let pendingRegionId: string | null = null;
 let overlayElements = new Map<string, HTMLElement>();
 let readingMode: ReadingMode = "general";
 const livingLayers = new LivingLayersPanel(document.querySelector<HTMLElement>("#livingLayers")!, () => ({
@@ -116,7 +118,10 @@ new AccountsPanel(document.querySelector<HTMLElement>("#accounts")!, () => apiBa
 new HeritagePanel(document.querySelector<HTMLElement>("#heritageGraph")!, () => apiBaseInput.value.trim());
 
 new MuseumPanel(document.querySelector<HTMLElement>("#livingMuseum")!, () => apiBaseInput.value.trim());
-new VisualSearchPanel(document.querySelector<HTMLElement>("#visualSearch")!, () => ({base:apiBaseInput.value.trim(),manuscript,page:currentApiPage(),region:selectedRegion}));
+new VisualSearchPanel(document.querySelector<HTMLElement>("#visualSearch")!, () => ({base:apiBaseInput.value.trim(),manuscript,page:currentApiPage(),region:selectedRegion}), async source => {
+  manuscriptIdInput.value = source.manuscript_id;
+  await loadApiLayers(source.page_id, source.region_id);
+});
 
 const viewer = OpenSeadragon({
   id: "viewer",
@@ -135,7 +140,7 @@ function currentApiPage() {
   if (!manuscript) return null;
   const iiif = pages[pageIndex];
   return (
-    manuscript.pages.find((page) => page.canvas_uri === iiif?.id) ??
+    manuscript.pages.find((page) => page.id === iiif?.id || page.canvas_uri === iiif?.id) ??
     manuscript.pages.find((page) => page.sequence === pageIndex + 1) ??
     null
   );
@@ -245,7 +250,7 @@ function refreshTextLayer() {
   const regions = currentApiPage()?.regions ?? [];
   renderRegionCards(regions);
   if (viewer.world.getItemCount()) addRegionOverlays(regions);
-  selectRegion(null);
+  selectRegion(regions.find(region => region.id === pendingRegionId) ?? null);
 }
 
 function openPage(index: number) {
@@ -261,40 +266,64 @@ function openPage(index: number) {
 
 viewer.addHandler("open", () => {
   refreshTextLayer();
-  setStatus(manuscript ? "تم فتح الصفحة وربط طبقات النص من API." : "تم فتح الصفحة من IIIF.");
+  pendingRegionId = null;
+  setStatus(manuscript ? `تم ربط ${manuscript.title} بطبقات النص وفتح الصفحة الأصلية.` : "تم فتح الصفحة من IIIF.");
 });
 viewer.addHandler("open-failed", (event: OpenSeadragon.OpenFailedEvent) => {
   setStatus(`تعذر فتح الصورة: ${event.message ?? "خطأ غير معروف"}`, true);
 });
 
 async function loadManifest() {
+  const ticket = ++sourceRequest;
   setStatus("جارٍ قراءة IIIF Manifest…");
   try {
-    pages = await loadIiifManifest(manifestInput.value.trim());
+    const loaded = await loadIiifManifest(manifestInput.value.trim());
+    if (ticket !== sourceRequest) return;
+    pages = loaded;
+    pendingRegionId = null;
     if (!pages.length) throw new Error("المخطوط لا يحتوي صفحات قابلة للعرض.");
     manuscript = null;
     offlineButton.disabled = true;
     openPage(0);
   } catch (error) {
+    if (ticket !== sourceRequest) return;
     setStatus(`تعذر تحميل المخطوط: ${error instanceof Error ? error.message : String(error)}`, true);
   }
 }
 
-async function loadApiLayers() {
+async function loadApiLayers(pageId?: string, regionId: string | null = null) {
+  const ticket = ++sourceRequest;
   try {
-    manuscript = await loadManuscript(apiBaseInput.value.trim(), manuscriptIdInput.value.trim());
+    const loaded = await loadManuscript(apiBaseInput.value.trim(), manuscriptIdInput.value.trim());
+    if (ticket !== sourceRequest) return;
+    const ordered = [...loaded.pages].sort((left, right) => left.sequence - right.sequence);
+    if (!ordered.length) throw new Error("المخطوط لا يحتوي صفحات قابلة للعرض.");
+    const index = pageId ? ordered.findIndex(page => page.id === pageId) : 0;
+    if (index < 0) throw new Error("صفحة الدليل غير موجودة في هذا المخطوط.");
+    if (regionId && !ordered[index].regions.some(region => region.id === regionId)) {
+      throw new Error("منطقة الدليل غير موجودة في هذه الصفحة.");
+    }
+    manuscript = loaded;
+    pages = ordered.map(page => ({id: page.id, label: page.folio_label || `صفحة ${page.sequence}`,
+      imageUrl: page.image, tileSource: {type: "image", url: page.image}}));
+    pendingRegionId = regionId;
     offlineButton.disabled = false;
+    // Clear old text immediately; only the selected source page can supply overlays.
+    regionsRoot.replaceChildren(); viewer.clearOverlays(); overlayElements.clear();
+    selectedRegion = null; speakButton.disabled = true;
+    openPage(index);
     refreshTextLayer();
     setStatus(`تم ربط ${manuscript.title} بطبقات النص.`);
   } catch (error) {
+    if (ticket !== sourceRequest) return;
     setStatus(`تعذر ربط API: ${error instanceof Error ? error.message : String(error)}`, true);
   }
 }
 
 document.querySelector<HTMLButtonElement>("#load")!.addEventListener("click", () => void loadManifest());
 document.querySelector<HTMLButtonElement>("#loadApi")!.addEventListener("click", () => void loadApiLayers());
-document.querySelector<HTMLButtonElement>("#prev")!.addEventListener("click", () => openPage(pageIndex - 1));
-document.querySelector<HTMLButtonElement>("#next")!.addEventListener("click", () => openPage(pageIndex + 1));
+document.querySelector<HTMLButtonElement>("#prev")!.addEventListener("click", () => { pendingRegionId = null; openPage(pageIndex - 1); });
+document.querySelector<HTMLButtonElement>("#next")!.addEventListener("click", () => { pendingRegionId = null; openPage(pageIndex + 1); });
 document.querySelector<HTMLButtonElement>("#bookmark")!.addEventListener("click", () => {
   saveBookmark({
     source: manifestInput.value.trim(),

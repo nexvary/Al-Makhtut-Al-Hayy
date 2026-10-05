@@ -4,7 +4,7 @@ type Match = {index_id:string; similarity:number; source_license:string; provena
 
 export class VisualSearchPanel {
   private version=0;
-  constructor(private root:HTMLElement,private context:()=>Context) {
+  constructor(private root:HTMLElement,private context:()=>Context, private openSource:(source:Match["provenance"]["source"])=>Promise<void>) {
     root.innerHTML=`<summary>اكتشاف التشابه البصري</summary>
       <p>قارن صورة أو رسمًا بصور صغيرة مفهرسة. التشابه ليس إثباتًا لهوية المخطوط أو ناسخه، ولا يحلل الخط أو معنى الصورة.</p>
       <form><label>صورة PNG أو JPEG، حتى 1 ميجابايت و1 ميجابكسل <input data-image type="file" accept="image/png,image/jpeg" required /></label>
@@ -60,8 +60,7 @@ export class VisualSearchPanel {
         }
         const open=document.createElement('button');open.type='button';open.textContent='افتح المخطوط الأصلي';
         open.addEventListener('click',()=>{
-          document.querySelector<HTMLInputElement>('#manuscriptId')!.value=anchor.manuscript_id;
-          document.querySelector<HTMLButtonElement>('#loadApi')!.click();
+          void this.openSource(anchor);
         });article.append(open);results.append(article);
       }
     } catch(error){if(ticket===this.version)status.textContent=String(error);}
