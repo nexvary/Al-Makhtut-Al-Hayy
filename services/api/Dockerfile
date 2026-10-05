@@ -7,7 +7,16 @@ COPY pyproject.toml /app/pyproject.toml
 COPY app /app/app
 RUN pip install --no-cache-dir .
 
-RUN useradd --create-home --uid 10001 appuser
+RUN useradd --create-home --uid 10001 appuser && mkdir -p /data/metadata /data/objects && chown -R appuser:appuser /data
+
+ENV MANUSCRIPT_METADATA_PATH=/data/metadata/manuscripts.sqlite3 \
+    SCHOLARSHIP_METADATA_PATH=/data/metadata/scholarship.sqlite3 \
+    LIVING_METADATA_PATH=/data/metadata/living.sqlite3 \
+    OTTOMAN_METADATA_PATH=/data/metadata/ottoman.sqlite3 \
+    ACADEMY_METADATA_PATH=/data/metadata/academy.sqlite3 \
+    HERITAGE_METADATA_PATH=/data/metadata/heritage.sqlite3 \
+    MUSEUM_METADATA_PATH=/data/metadata/museum.sqlite3 \
+    OBJECT_STORE_PATH=/data/objects
 USER appuser
 
 EXPOSE 8000

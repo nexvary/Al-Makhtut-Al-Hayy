@@ -28,3 +28,23 @@ jobs:
 
       - name: Test
         run: pytest -q
+
+      - name: Build and boot non-root light deployment
+        run: |
+          docker build -t makhtut-api-ci .
+          export AUTH_SECRET="$(python -c 'import secrets; print(secrets.token_hex(32))')"
+          docker run -d --name makhtut-api-ci --env AUTH_SECRET --env APP_ENV=production --env DEPLOYMENT_PROFILE=light --read-only --tmpfs /tmp -v makhtut-ci-metadata:/data/metadata -p 127.0.0.1:8000:8000 makhtut-api-ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/health
+          docker restart makhtut-api-ci
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/api/v1/manuscripts; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/api/v1/manuscripts
+      - name: Container diagnostics
+        if: always()
+        run: docker logs makhtut-api-ci || true

@@ -18,6 +18,7 @@ from .ottoman_routes import router as ottoman_router
 from .qa_routes import router as qa_router
 from .ratelimit import RateLimitMiddleware
 from .repository import repository
+from .request_limits import MetadataSafetyMiddleware
 from .scholarship_routes import router as scholarship_router
 from .settings import settings, validate_production_settings
 from .visual_routes import router as visual_router
@@ -39,6 +40,7 @@ app.add_middleware(
     RateLimitMiddleware,
     requests_per_minute=app_settings.rate_limit_per_minute,
 )
+app.add_middleware(MetadataSafetyMiddleware)
 app.include_router(editorial_router)
 app.include_router(ingestion_router)
 app.include_router(knowledge_router)

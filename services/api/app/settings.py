@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Settings:
+    deployment_profile: str = os.getenv("DEPLOYMENT_PROFILE", "standard")
     environment: str = os.getenv("APP_ENV", "development")
     auth_secret: str = os.getenv(
         "AUTH_SECRET",
@@ -25,8 +26,10 @@ def settings() -> Settings:
 
 
 def validate_production_settings(value: Settings) -> None:
+    if value.deployment_profile not in {"standard", "light"}:
+        raise RuntimeError("DEPLOYMENT_PROFILE must be standard or light")
     if value.environment == "production":
         if value.auth_secret.startswith("development-") or len(value.auth_secret) < 32:
             raise RuntimeError("Production AUTH_SECRET must be a strong secret of at least 32 characters")
-        if "makhtut:makhtut@" in value.database_url:
+        if value.deployment_profile == "standard" and "makhtut:makhtut@" in value.database_url:
             raise RuntimeError("Production DATABASE_URL must not use development credentials")

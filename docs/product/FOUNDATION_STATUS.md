@@ -34,8 +34,18 @@ Existing HTR, grounded retrieval, TEI/PAGE/ALTO, visual knowledge and witness co
 foundation components, not completed production labs. Scoped evidence retrieval and literal witness comparison are implemented. Ottoman Lab now stores
 separate source-linked stages, with web editorial UI; Academy supplies reviewed-source exercises
 and dictionary lookup. See OTTOMAN_PIPELINE.md and OTTOMAN_ACADEMY.md for verified scope.
-No automatic Ottoman translation, complete academy corpus, historical graph, 3D model, external
-AI provider or visual similarity service is claimed as operational. Phases H–L remain outstanding.
+Historical entities/relations, time filtering and GeoJSON now use durable source-backed records;
+web queries browse these records. The museum distinguishes evidence from reconstruction and
+Ask the Heritage retrieves reviewed source excerpts. The visual similarity provider remains
+explicitly disabled. No automatic Ottoman translation, complete academy corpus, generated 3D
+models, large-scale RAG or operational visual similarity engine is claimed. See the architecture
+documents for exact limits and remaining native Android integration.
 Legacy editorial, glossary, visual knowledge and search stores still use in-memory adapters;
 these are not durable production storage. API authentication currently uses signed bearer tokens;
 account lifecycle and deployment identity integration remain to be implemented.
+
+## Light operations profile
+
+Single-worker, non-root Docker profile with durable metadata volumes, bounded requests and
+streaming storage is provided for the 1 GB VPS. SQLite backup/restore fixture tests run locally;
+Docker startup/restart is checked by Backend CI. The real VPS has not been deployed or load tested.
