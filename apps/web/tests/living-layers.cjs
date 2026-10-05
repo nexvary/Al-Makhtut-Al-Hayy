@@ -72,6 +72,16 @@ await academy.getByText('transcription: Synthetic original exercise',{exact:true
 await academy.getByRole('button',{name:'اكشف المرحلة التالية'}).click();
 await academy.getByText('transliteration: Synthetic Latin exercise',{exact:true}).waitFor();
 await page.screenshot({path:'test-results/academy-mobile.png',fullPage:true});
-console.log('PASS: living layers, Ottoman stages, dictionary lookup and source-backed exercise reveal');
+const heritage = page.locator('#heritageGraph');
+await heritage.locator('summary').click();
+await heritage.locator('[data-query]').fill('Synthetic historical');
+await heritage.getByRole('button',{name:'ابحث في المعرفة'}).click();
+await heritage.getByRole('heading',{name:'Synthetic historical place'}).waitFor();
+await heritage.getByRole('button',{name:'افتح الفترة'}).click();
+await heritage.getByRole('heading',{name:'Synthetic historical place'}).waitFor();
+await heritage.getByRole('button',{name:'أماكن الفترة'}).click();
+await heritage.getByRole('link').filter({hasText:'Synthetic historical place'}).waitFor();
+await page.screenshot({path:'test-results/heritage-mobile.png',fullPage:true});
+console.log('PASS: living layers, Ottoman stages, academy, dictionary, time period and map coordinates');
 await browser.close();
 })().catch(error=>{console.error(error);process.exit(1)});

@@ -61,10 +61,15 @@ footer { color:#718293; font-size:.78rem; padding:12px 4px 0; text-align:center;
   .source-row { align-items:stretch; flex-direction:column; }
 }
 
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) { border-top: 1px solid #354352; margin-top: 1rem; padding-top: 1rem; }
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) form { display: grid; gap: .75rem; }
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) form[hidden] { display: none; }
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) label { display: grid; gap: .35rem; }
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) input, :is(#livingLayers, #ottomanLab, #ottomanAcademy) select, :is(#livingLayers, #ottomanLab, #ottomanAcademy) textarea { width: 100%; box-sizing: border-box; }
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) textarea { resize: vertical; color: inherit; background: #070b12; padding: .75rem; }
-:is(#livingLayers, #ottomanLab, #ottomanAcademy) small { display: block; overflow-wrap: anywhere; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) { border-top: 1px solid #354352; margin-top: 1rem; padding-top: 1rem; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) form { display: grid; gap: .75rem; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) form[hidden] { display: none; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) label { display: grid; gap: .35rem; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) input, :is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) select, :is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) textarea { width: 100%; box-sizing: border-box; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) textarea { resize: vertical; color: inherit; background: #070b12; padding: .75rem; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) small { display: block; overflow-wrap: anywhere; }
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) :is(input, select, textarea) {
+  color: var(--text, #e9e2cf); background: #101823; border: 1px solid #354352;
+  border-radius: 8px; padding: .65rem; font: inherit;
+}
+:is(#livingLayers, #ottomanLab, #ottomanAcademy, #heritageGraph) p { overflow-wrap: anywhere; }

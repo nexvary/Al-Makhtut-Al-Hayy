@@ -36,6 +36,8 @@ class DictionaryEntry(BaseModel):
     def evidence_required(self):
         if self.linguistic_origin and (self.state != ReviewState.VERIFIED or not self.provenance.evidence):
             raise ValueError("Etymology requires human verification and explicit documentary evidence")
+        if self.state == ReviewState.MACHINE and not self.provenance.model:
+            raise ValueError("Machine dictionary output requires model identity")
         if self.state == ReviewState.VERIFIED and not self.provenance.reviewer:
             raise ValueError("Verified dictionary entry requires a reviewer")
         return self

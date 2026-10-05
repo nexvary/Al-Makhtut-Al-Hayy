@@ -33,3 +33,11 @@ academy_repository().put_exercise(ReadingExercise(title='Synthetic browser exerc
     'academy-browser', 'academy-page', actor='fixture-reviewer')
 academy_repository().append_entry(DictionaryEntry(entry_id='browser-fixture-word', spelling='Synthetic dictionary fixture',
     arabic='Synthetic meaning', provenance=prov), actor='fixture-editor')
+
+from app.heritage_graph import EntityKind, HistoricalEntity, HistoricalInterval, HistoricalLocation
+from app.heritage_routes import graph_repository
+
+graph_repository().append(HistoricalEntity(entity_id='browser-heritage', name='Synthetic historical place',
+    kind=EntityKind.PLACE, interval=HistoricalInterval(start_year=1000, end_year=1050),
+    location=HistoricalLocation(latitude=20, longitude=30, label='Synthetic QA coordinates'),
+    provenance=prov), actor='fixture-editor')
