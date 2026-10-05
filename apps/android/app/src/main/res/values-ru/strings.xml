@@ -80,4 +80,26 @@
     <string name="not_reviewed">Не проверено</string>
     <string name="witness_value">Свидетель: %1$s</string>
     <string name="revision_value">Редакция: %1$s</string>
+    <string name="ottoman_lab">Османская лаборатория</string>
+    <string name="ottoman_layout">Макет страницы</string>
+    <string name="ottoman_htr">Машинное чтение (HTR)</string>
+    <string name="ottoman_transcription">Исходная транскрипция</string>
+    <string name="ottoman_transliteration">Латинская транслитерация</string>
+    <string name="ottoman_modern_turkish">Современный турецкий</string>
+    <string name="ottoman_arabic">Арабский перевод</string>
+    <string name="ottoman_english">Английский перевод</string>
+    <string name="ottoman_separation">Чтение, транскрипция, транслитерация, модернизация и перевод — отдельные этапы.</string>
+    <string name="ottoman_upstream">Входная редакция: %1$s</string>
+    <string name="ottoman_dictionary">Османский словарь с источниками</string>
+    <string name="ottoman_word">Османское слово</string>
+    <string name="ottoman_origin">Языковое происхождение: %1$s</string>
+    <string name="ottoman_academy">Османская академия</string>
+    <string name="ottoman_practice_notice">Результат упражнения не является научной проверкой. Смотрите оригинал и открывайте проверенные этапы.</string>
+    <string name="ottoman_no_exercises">Для этой страницы нет проверенных упражнений.</string>
+    <string name="ottoman_choose_exercise">Выберите упражнение</string>
+    <string name="ottoman_attempt">Ваша попытка чтения</string>
+    <string name="ottoman_check">Проверить попытку</string>
+    <string name="ottoman_reveal">Открыть следующий этап</string>
+    <string name="ottoman_match">Совпадает с проверенным текстом. Только учебный результат.</string>
+    <string name="ottoman_not_match">Нет точного совпадения. Сравните с проверенным чтением.</string>
 </resources>

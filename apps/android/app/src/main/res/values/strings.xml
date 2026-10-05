@@ -80,4 +80,26 @@
     <string name="not_reviewed">Not reviewed</string>
     <string name="witness_value">Witness: %1$s</string>
     <string name="revision_value">Revision: %1$s</string>
+    <string name="ottoman_lab">Ottoman Lab</string>
+    <string name="ottoman_layout">Layout</string>
+    <string name="ottoman_htr">Machine reading (HTR)</string>
+    <string name="ottoman_transcription">Original transcription</string>
+    <string name="ottoman_transliteration">Latin transliteration</string>
+    <string name="ottoman_modern_turkish">Modern Turkish</string>
+    <string name="ottoman_arabic">Arabic translation</string>
+    <string name="ottoman_english">English translation</string>
+    <string name="ottoman_separation">Reading, transcription, transliteration, modernization and translation remain separate.</string>
+    <string name="ottoman_upstream">Input revision: %1$s</string>
+    <string name="ottoman_dictionary">Sourced Ottoman dictionary</string>
+    <string name="ottoman_word">Ottoman word</string>
+    <string name="ottoman_origin">Linguistic origin: %1$s</string>
+    <string name="ottoman_academy">Ottoman Academy</string>
+    <string name="ottoman_practice_notice">Practice feedback is not scholarly verification. Look at the original, then reveal reviewed stages.</string>
+    <string name="ottoman_no_exercises">No reviewed exercises for this page.</string>
+    <string name="ottoman_choose_exercise">Choose an exercise</string>
+    <string name="ottoman_attempt">Your reading attempt</string>
+    <string name="ottoman_check">Check attempt</string>
+    <string name="ottoman_reveal">Reveal next stage</string>
+    <string name="ottoman_match">Matches the reviewed text. Practice feedback only.</string>
+    <string name="ottoman_not_match">No exact match. Compare with the reviewed reading.</string>
 </resources>

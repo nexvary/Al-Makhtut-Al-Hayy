@@ -80,4 +80,26 @@
     <string name="not_reviewed">بازبینی نشده</string>
     <string name="witness_value">نسخه شاهد: %1$s</string>
     <string name="revision_value">بازبینی: %1$s</string>
+    <string name="ottoman_lab">آزمایشگاه عثمانی</string>
+    <string name="ottoman_layout">چیدمان صفحه</string>
+    <string name="ottoman_htr">خوانش ماشینی (HTR)</string>
+    <string name="ottoman_transcription">رونویسی اصلی</string>
+    <string name="ottoman_transliteration">نویسه‌گردانی لاتین</string>
+    <string name="ottoman_modern_turkish">ترکی امروزی</string>
+    <string name="ottoman_arabic">ترجمه عربی</string>
+    <string name="ottoman_english">ترجمه انگلیسی</string>
+    <string name="ottoman_separation">خوانش، رونویسی، نویسه‌گردانی، نوسازی و ترجمه مراحل جداگانه هستند.</string>
+    <string name="ottoman_upstream">بازبینی ورودی: %1$s</string>
+    <string name="ottoman_dictionary">واژه‌نامه مستند عثمانی</string>
+    <string name="ottoman_word">واژه عثمانی</string>
+    <string name="ottoman_origin">ریشه زبانی: %1$s</string>
+    <string name="ottoman_academy">آکادمی عثمانی</string>
+    <string name="ottoman_practice_notice">نتیجه تمرین تأیید علمی نیست. اصل را ببینید و مراحل بازبینی‌شده را آشکار کنید.</string>
+    <string name="ottoman_no_exercises">برای این صفحه تمرین بازبینی‌شده وجود ندارد.</string>
+    <string name="ottoman_choose_exercise">یک تمرین انتخاب کنید</string>
+    <string name="ottoman_attempt">تلاش شما برای خواندن</string>
+    <string name="ottoman_check">بررسی تلاش</string>
+    <string name="ottoman_reveal">نمایش مرحله بعد</string>
+    <string name="ottoman_match">با متن بازبینی‌شده مطابقت دارد؛ فقط نتیجه تمرین.</string>
+    <string name="ottoman_not_match">مطابقت دقیق ندارد؛ با خوانش بازبینی‌شده مقایسه کنید.</string>
 </resources>

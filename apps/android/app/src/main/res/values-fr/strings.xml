@@ -80,4 +80,26 @@
     <string name="not_reviewed">Non révisé</string>
     <string name="witness_value">Témoin : %1$s</string>
     <string name="revision_value">Révision : %1$s</string>
+    <string name="ottoman_lab">Laboratoire ottoman</string>
+    <string name="ottoman_layout">Mise en page</string>
+    <string name="ottoman_htr">Lecture automatique (HTR)</string>
+    <string name="ottoman_transcription">Transcription originale</string>
+    <string name="ottoman_transliteration">Translittération latine</string>
+    <string name="ottoman_modern_turkish">Turc moderne</string>
+    <string name="ottoman_arabic">Traduction arabe</string>
+    <string name="ottoman_english">Traduction anglaise</string>
+    <string name="ottoman_separation">Lecture, transcription, translittération, modernisation et traduction restent distinctes.</string>
+    <string name="ottoman_upstream">Révision source : %1$s</string>
+    <string name="ottoman_dictionary">Dictionnaire ottoman sourcé</string>
+    <string name="ottoman_word">Mot ottoman</string>
+    <string name="ottoman_origin">Origine linguistique : %1$s</string>
+    <string name="ottoman_academy">Académie ottomane</string>
+    <string name="ottoman_practice_notice">Le résultat pédagogique ne vaut pas vérification scientifique. Consultez l’original puis révélez les étapes révisées.</string>
+    <string name="ottoman_no_exercises">Aucun exercice révisé pour cette page.</string>
+    <string name="ottoman_choose_exercise">Choisir un exercice</string>
+    <string name="ottoman_attempt">Votre tentative de lecture</string>
+    <string name="ottoman_check">Vérifier la tentative</string>
+    <string name="ottoman_reveal">Révéler l’étape suivante</string>
+    <string name="ottoman_match">Correspond au texte révisé. Résultat pédagogique uniquement.</string>
+    <string name="ottoman_not_match">Pas de correspondance exacte. Comparez avec la lecture révisée.</string>
 </resources>

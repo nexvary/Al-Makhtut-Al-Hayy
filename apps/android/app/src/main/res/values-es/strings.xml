@@ -80,4 +80,26 @@
     <string name="not_reviewed">Sin revisar</string>
     <string name="witness_value">Testimonio: %1$s</string>
     <string name="revision_value">Revisión: %1$s</string>
+    <string name="ottoman_lab">Laboratorio otomano</string>
+    <string name="ottoman_layout">Diseño de página</string>
+    <string name="ottoman_htr">Lectura automática (HTR)</string>
+    <string name="ottoman_transcription">Transcripción original</string>
+    <string name="ottoman_transliteration">Transliteración latina</string>
+    <string name="ottoman_modern_turkish">Turco moderno</string>
+    <string name="ottoman_arabic">Traducción al árabe</string>
+    <string name="ottoman_english">Traducción al inglés</string>
+    <string name="ottoman_separation">Lectura, transcripción, transliteración, modernización y traducción son etapas separadas.</string>
+    <string name="ottoman_upstream">Revisión de entrada: %1$s</string>
+    <string name="ottoman_dictionary">Diccionario otomano con fuentes</string>
+    <string name="ottoman_word">Palabra otomana</string>
+    <string name="ottoman_origin">Origen lingüístico: %1$s</string>
+    <string name="ottoman_academy">Academia otomana</string>
+    <string name="ottoman_practice_notice">El resultado del ejercicio no es verificación científica. Consulte el original y revele las etapas revisadas.</string>
+    <string name="ottoman_no_exercises">No hay ejercicios revisados para esta página.</string>
+    <string name="ottoman_choose_exercise">Elija un ejercicio</string>
+    <string name="ottoman_attempt">Su intento de lectura</string>
+    <string name="ottoman_check">Comprobar intento</string>
+    <string name="ottoman_reveal">Revelar siguiente etapa</string>
+    <string name="ottoman_match">Coincide con el texto revisado. Solo práctica.</string>
+    <string name="ottoman_not_match">No coincide exactamente. Compare con la lectura revisada.</string>
 </resources>

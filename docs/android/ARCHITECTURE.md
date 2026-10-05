@@ -16,3 +16,12 @@ The Android client is a native Kotlin/Jetpack Compose reader.
 - Local PDF/image/IIIF readers continue without a backend. Living layers and the lab require a configured backend; their controls do not imply offline inference.
 - Instrumentation protocol fixtures use Android JSON parsing; compact-phone UI fixtures exercise layer history, unknown confidence, region selection, missing evidence, page reset and Back. These complement the real API/browser integration tests; they do not claim a native live-server or physical-device test.
 - Accessibility uses content descriptions, native controls, RTL-capable layouts and semantic headings.
+
+## Ottoman reader and Academy
+
+The remote reader has a collapsed Ottoman Lab panel with separately selectable layout, HTR,
+transcription, transliteration, modernization and Arabic/English translation histories.
+Dictionary results retain review/source metadata; unverifiable etymology is rejected by the client.
+Reviewed, rights-recorded exercises support an attempt followed by progressive reveal. Exercise
+feedback is explicitly educational, not scholarly verification. No automatic translator or full
+curriculum is bundled. Native fixtures test stage display, dictionary and zero/one-step reveal.

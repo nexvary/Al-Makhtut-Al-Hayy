@@ -80,4 +80,26 @@
     <string name="not_reviewed">İncelenmedi</string>
     <string name="witness_value">Nüsha: %1$s</string>
     <string name="revision_value">Sürüm: %1$s</string>
+    <string name="ottoman_lab">Osmanlı Laboratuvarı</string>
+    <string name="ottoman_layout">Sayfa düzeni</string>
+    <string name="ottoman_htr">Makine okuması (HTR)</string>
+    <string name="ottoman_transcription">Özgün metin çevriyazısı</string>
+    <string name="ottoman_transliteration">Latin harflerine aktarım</string>
+    <string name="ottoman_modern_turkish">Modern Türkçe</string>
+    <string name="ottoman_arabic">Arapça çeviri</string>
+    <string name="ottoman_english">İngilizce çeviri</string>
+    <string name="ottoman_separation">Okuma, çevriyazı, harf aktarımı, modernleştirme ve çeviri ayrı aşamalardır.</string>
+    <string name="ottoman_upstream">Girdi sürümü: %1$s</string>
+    <string name="ottoman_dictionary">Kaynaklı Osmanlı sözlüğü</string>
+    <string name="ottoman_word">Osmanlıca kelime</string>
+    <string name="ottoman_origin">Dil kökeni: %1$s</string>
+    <string name="ottoman_academy">Osmanlı Akademisi</string>
+    <string name="ottoman_practice_notice">Alıştırma sonucu bilimsel doğrulama değildir. Aslına bakın, ardından incelenen aşamaları açın.</string>
+    <string name="ottoman_no_exercises">Bu sayfa için incelenmiş alıştırma yok.</string>
+    <string name="ottoman_choose_exercise">Bir alıştırma seçin</string>
+    <string name="ottoman_attempt">Okuma denemeniz</string>
+    <string name="ottoman_check">Denemeyi kontrol et</string>
+    <string name="ottoman_reveal">Sonraki aşamayı aç</string>
+    <string name="ottoman_match">İncelenen metinle eşleşiyor. Yalnızca alıştırma sonucu.</string>
+    <string name="ottoman_not_match">Tam eşleşme yok. İncelenen okumayla karşılaştırın.</string>
 </resources>

@@ -80,4 +80,26 @@
     <string name="not_reviewed">Ungeprüft</string>
     <string name="witness_value">Textzeuge: %1$s</string>
     <string name="revision_value">Version: %1$s</string>
+    <string name="ottoman_lab">Osmanisches Labor</string>
+    <string name="ottoman_layout">Seitenlayout</string>
+    <string name="ottoman_htr">Maschinelle Lesung (HTR)</string>
+    <string name="ottoman_transcription">Originaltranskription</string>
+    <string name="ottoman_transliteration">Lateinische Transliteration</string>
+    <string name="ottoman_modern_turkish">Modernes Türkisch</string>
+    <string name="ottoman_arabic">Arabische Übersetzung</string>
+    <string name="ottoman_english">Englische Übersetzung</string>
+    <string name="ottoman_separation">Lesung, Transkription, Transliteration, Modernisierung und Übersetzung bleiben getrennt.</string>
+    <string name="ottoman_upstream">Eingaberevision: %1$s</string>
+    <string name="ottoman_dictionary">Osmanisches Wörterbuch mit Quellen</string>
+    <string name="ottoman_word">Osmanisches Wort</string>
+    <string name="ottoman_origin">Sprachlicher Ursprung: %1$s</string>
+    <string name="ottoman_academy">Osmanische Akademie</string>
+    <string name="ottoman_practice_notice">Übungsfeedback ist keine wissenschaftliche Prüfung. Betrachten Sie das Original und öffnen Sie geprüfte Stufen.</string>
+    <string name="ottoman_no_exercises">Keine geprüften Übungen für diese Seite.</string>
+    <string name="ottoman_choose_exercise">Übung auswählen</string>
+    <string name="ottoman_attempt">Ihr Leseversuch</string>
+    <string name="ottoman_check">Versuch prüfen</string>
+    <string name="ottoman_reveal">Nächste Stufe zeigen</string>
+    <string name="ottoman_match">Entspricht dem geprüften Text. Nur Übungsfeedback.</string>
+    <string name="ottoman_not_match">Keine genaue Übereinstimmung. Mit der geprüften Lesung vergleichen.</string>
 </resources>

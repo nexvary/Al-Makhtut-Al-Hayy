@@ -80,4 +80,26 @@
     <string name="not_reviewed">لم يُراجع</string>
     <string name="witness_value">النسخة: %1$s</string>
     <string name="revision_value">المراجعة: %1$s</string>
+    <string name="ottoman_lab">المختبر العثماني</string>
+    <string name="ottoman_layout">تحليل التخطيط</string>
+    <string name="ottoman_htr">القراءة الآلية (HTR)</string>
+    <string name="ottoman_transcription">تفريغ الخط الأصلي</string>
+    <string name="ottoman_transliteration">النقل إلى الحروف اللاتينية</string>
+    <string name="ottoman_modern_turkish">التركية الحديثة</string>
+    <string name="ottoman_arabic">الترجمة العربية</string>
+    <string name="ottoman_english">الترجمة الإنجليزية</string>
+    <string name="ottoman_separation">القراءة والتفريغ والنقل والتحديث والترجمة مراحل مستقلة.</string>
+    <string name="ottoman_upstream">مراجعة المدخل: %1$s</string>
+    <string name="ottoman_dictionary">القاموس العثماني الموثق</string>
+    <string name="ottoman_word">الكلمة العثمانية</string>
+    <string name="ottoman_origin">الأصل اللغوي: %1$s</string>
+    <string name="ottoman_academy">أكاديمية العثمانية</string>
+    <string name="ottoman_practice_notice">نتيجة التدريب ليست تحقيقًا علميًا. انظر إلى الأصل ثم اكشف المراحل المراجعة.</string>
+    <string name="ottoman_no_exercises">لا توجد تمارين مراجعة لهذه الصفحة.</string>
+    <string name="ottoman_choose_exercise">اختر تمرينًا</string>
+    <string name="ottoman_attempt">محاولتك لقراءة النص</string>
+    <string name="ottoman_check">فحص المحاولة</string>
+    <string name="ottoman_reveal">كشف المرحلة التالية</string>
+    <string name="ottoman_match">مطابقة للنص المراجع؛ نتيجة تدريب فقط.</string>
+    <string name="ottoman_not_match">لا توجد مطابقة حرفية؛ قارن بالقراءة المراجعة.</string>
 </resources>

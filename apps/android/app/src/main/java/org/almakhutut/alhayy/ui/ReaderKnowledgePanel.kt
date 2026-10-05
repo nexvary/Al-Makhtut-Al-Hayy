@@ -139,13 +139,13 @@ internal fun ReaderKnowledgePanel(base: String, source: SourceSelection, state: 
 }
 
 @Composable
-private fun SourcedTextCard(item: SourcedRepresentation) {
+internal fun SourcedTextCard(item: SourcedRepresentation, title: String? = null) {
     val stateLabel = when (item.state) {
         "verified" -> stringResource(R.string.verified)
         "draft" -> stringResource(R.string.draft)
         else -> stringResource(R.string.machine)
     }
-    val kindLabel = when (item.kind) {
+    val kindLabel = title ?: when (item.kind) {
         "machine_reading" -> stringResource(R.string.lab_read)
         "draft_transcription" -> stringResource(R.string.draft)
         "verified_transcription" -> stringResource(R.string.verified)

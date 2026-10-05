@@ -80,4 +80,26 @@
     <string name="not_reviewed">نظرثانی نہیں ہوئی</string>
     <string name="witness_value">نسخہ: %1$s</string>
     <string name="revision_value">نظرثانی: %1$s</string>
+    <string name="ottoman_lab">عثمانی تجربہ گاہ</string>
+    <string name="ottoman_layout">صفحے کی ترتیب</string>
+    <string name="ottoman_htr">مشینی قرأت (HTR)</string>
+    <string name="ottoman_transcription">اصل متن کی نقل</string>
+    <string name="ottoman_transliteration">لاطینی حرف نویسی</string>
+    <string name="ottoman_modern_turkish">جدید ترکی</string>
+    <string name="ottoman_arabic">عربی ترجمہ</string>
+    <string name="ottoman_english">انگریزی ترجمہ</string>
+    <string name="ottoman_separation">قرأت، نقل، حرف نویسی، جدید صورت اور ترجمہ الگ مراحل ہیں۔</string>
+    <string name="ottoman_upstream">ماخذ کی نظرثانی: %1$s</string>
+    <string name="ottoman_dictionary">حوالہ دار عثمانی لغت</string>
+    <string name="ottoman_word">عثمانی لفظ</string>
+    <string name="ottoman_origin">لسانی اصل: %1$s</string>
+    <string name="ottoman_academy">عثمانی اکیڈمی</string>
+    <string name="ottoman_practice_notice">مشق کا نتیجہ علمی تصدیق نہیں۔ اصل دیکھیں، پھر نظرثانی شدہ مراحل کھولیں۔</string>
+    <string name="ottoman_no_exercises">اس صفحے کی نظرثانی شدہ مشقیں موجود نہیں۔</string>
+    <string name="ottoman_choose_exercise">مشق منتخب کریں</string>
+    <string name="ottoman_attempt">آپ کی قرأت کی کوشش</string>
+    <string name="ottoman_check">کوشش جانچیں</string>
+    <string name="ottoman_reveal">اگلا مرحلہ دکھائیں</string>
+    <string name="ottoman_match">نظرثانی شدہ متن سے مطابقت؛ صرف مشق کا نتیجہ۔</string>
+    <string name="ottoman_not_match">عین مطابقت نہیں؛ نظرثانی شدہ قرأت سے مقابلہ کریں۔</string>
 </resources>

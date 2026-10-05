@@ -16,6 +16,8 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import org.almakhutut.alhayy.R
+import org.almakhutut.alhayy.data.OttomanApiClient
+import org.almakhutut.alhayy.data.OttomanReaderClient
 import org.almakhutut.alhayy.data.ApiClient
 import org.almakhutut.alhayy.data.ReaderKnowledgeClient
 import org.almakhutut.alhayy.data.SourceSelection
@@ -24,7 +26,7 @@ import org.almakhutut.alhayy.model.Region
 import java.util.Locale
 
 @Composable
-fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, knowledgeClient: ReaderKnowledgeClient? = null) {
+fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, knowledgeClient: ReaderKnowledgeClient? = null, ottomanClient: OttomanReaderClient? = null) {
     BackHandler(onBack = onBack)
     var pageIndex by remember { mutableIntStateOf(0) }
     var selected by remember { mutableStateOf<Region?>(null) }
@@ -33,6 +35,8 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, kn
     val page = manuscript.pages.getOrNull(pageIndex)
     val source = page?.let { SourceSelection(manuscript.id, it.id, selected?.id) }
     val knowledge = source?.let { rememberReaderKnowledge(apiBase, it, client) }
+    val defaultOttoman = remember { OttomanApiClient() }
+    val ottoman = source?.let { rememberOttomanReader(apiBase, it, ottomanClient ?: defaultOttoman) }
     val context = LocalContext.current
     val tts = remember { TextToSpeech(context) {} }
     DisposableEffect(Unit) { onDispose { tts.shutdown() } }
@@ -68,6 +72,9 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, kn
             }
 
             }
+            item {
+                if (selected != null) TextButton(onClick = { selected = null }) { Text(stringResource(R.string.whole_page)) }
+            }
             items(page?.regions.orEmpty(), key = { it.id }) { region ->
                 RegionCard(region, region.id == selected?.id) { selected = region }
             }
@@ -85,6 +92,8 @@ fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, kn
 
             page?.let {
                 ReaderKnowledgePanel(apiBase, checkNotNull(source), checkNotNull(knowledge))
+                Spacer(Modifier.height(12.dp))
+                OttomanReaderPanel(apiBase, checkNotNull(ottoman))
             }
             }
         }
