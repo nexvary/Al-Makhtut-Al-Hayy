@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CancellationException
+import org.almakhutut.alhayy.data.SourceSelection
 import org.almakhutut.alhayy.data.ApiClient
 import org.almakhutut.alhayy.data.AppPreferences
 import org.almakhutut.alhayy.data.LocalBook
@@ -50,8 +52,11 @@ private fun LivingManuscriptApp() {
     val savedText = stringResource(R.string.saved)
 
 
+    val heritageState = remember(preferences.apiBase) { HeritageHubState() }
     var screen by remember { mutableStateOf(AppScreen.HOME) }
     var selectedRemote by remember { mutableStateOf<Manuscript?>(null) }
+    var heritageSource by remember { mutableStateOf<SourceSelection?>(null) }
+    var sourceRequestVersion by remember { mutableIntStateOf(0) }
     var selectedLocal by remember { mutableStateOf<LocalBook?>(null) }
     var localBooks by remember { mutableStateOf(localStore.list()) }
     var remoteBooks by remember { mutableStateOf<List<Manuscript>>(emptyList()) }
@@ -59,6 +64,8 @@ private fun LivingManuscriptApp() {
     var status by remember { mutableStateOf("") }
 
     fun goHome() {
+        sourceRequestVersion++
+        heritageSource = null
         selectedRemote = null
         selectedLocal = null
         screen = AppScreen.HOME
@@ -86,7 +93,10 @@ private fun LivingManuscriptApp() {
 
     when (screen) {
         AppScreen.REMOTE_READER -> selectedRemote?.let { manuscript ->
-            ReaderScreen(manuscript, apiBase, onBack = ::goHome)
+            ReaderScreen(manuscript, apiBase, onBack = {
+                if (heritageSource != null) { selectedRemote = null; heritageSource = null; screen = AppScreen.HERITAGE }
+                else goHome()
+            }, initialPageId = heritageSource?.pageId, initialRegionId = heritageSource?.regionId)
         } ?: goHome()
 
         AppScreen.LOCAL_READER -> selectedLocal?.let { book ->
@@ -102,6 +112,22 @@ private fun LivingManuscriptApp() {
                 screen = AppScreen.LOCAL_READER
             },
         )
+
+        AppScreen.HERITAGE -> HeritageHubScreen(apiBase, onBack = ::goHome, sourceStatus = status, retainedState = heritageState, onSource = { source ->
+            val ticket = ++sourceRequestVersion
+            val requestBase = apiBase
+            status = loadingText
+            scope.launch {
+                try {
+                    val manuscript = api.manuscript(requestBase, source.manuscriptId)
+                    require(manuscript.pages.any { it.id == source.pageId && (source.regionId == null || it.regions.any { r -> r.id == source.regionId }) })
+                    if (ticket == sourceRequestVersion && screen == AppScreen.HERITAGE) {
+                        selectedRemote = manuscript; heritageSource = source; status = ""; screen = AppScreen.REMOTE_READER
+                    }
+                } catch (cancelled: CancellationException) { throw cancelled }
+                catch (_: Exception) { if (ticket == sourceRequestVersion) status = unavailableText }
+            }
+        })
 
         AppScreen.ABOUT -> AboutScreen(onBack = ::goHome)
 
@@ -151,6 +177,7 @@ private fun LivingManuscriptApp() {
                     remoteBooks = remoteBooks,
                     status = status,
                     onRefresh = ::refreshRemote,
+                    onHeritage = { status = ""; screen = AppScreen.HERITAGE },
                     onAddBook = { screen = AppScreen.ADD_BOOK },
                     onOpenLocal = {
                         selectedLocal = it

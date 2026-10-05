@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">Sonraki aşamayı aç</string>
     <string name="ottoman_match">İncelenen metinle eşleşiyor. Yalnızca alıştırma sonucu.</string>
     <string name="ottoman_not_match">Tam eşleşme yok. İncelenen okumayla karşılaştırın.</string>
+    <string name="heritage_hub">Mirası keşfet</string>
+    <string name="heritage_notice">Bilgi ve müze kayıtları kaynak, inceleme ve belirsizliği korur. Sorular incelenmiş alıntılar getirir.</string>
+    <string name="heritage_query">Ad veya araştırma sorusu</string>
+    <string name="heritage_ask">Mirasa sor</string>
+    <string name="heritage_start">Başlangıç yılı (Miladi)</string>
+    <string name="heritage_end">Bitiş yılı (Miladi)</string>
+    <string name="heritage_time">Bilgi zaman makinesi</string>
+    <string name="heritage_museum">Yaşayan Müze</string>
+    <string name="heritage_interpretive">Yorumsal yeniden yapım; özgün eser değildir.</string>
+    <string name="heritage_enter">Sergiye gir</string>
+    <string name="heritage_original">Özgün kaynağı aç</string>
+    <string name="heritage_map">Konumu haritada aç</string>
 </resources>

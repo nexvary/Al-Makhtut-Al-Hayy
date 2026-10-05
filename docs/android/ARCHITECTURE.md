@@ -25,3 +25,12 @@ Dictionary results retain review/source metadata; unverifiable etymology is reje
 Reviewed, rights-recorded exercises support an attempt followed by progressive reveal. Exercise
 feedback is explicitly educational, not scholarly verification. No automatic translator or full
 curriculum is bundled. Native fixtures test stage display, dictionary and zero/one-step reveal.
+
+## Heritage hub
+
+Home links to a native source-backed knowledge hub: entity search, reviewed corpus excerpts,
+Gregorian time filtering and museum exhibitions/objects. Reconstruction carries an explicit
+interpretive label and assumptions. Geographic points can open OpenStreetMap; no embedded
+historical basemap is claimed. Source links resolve the actual manuscript/page/region and
+open the original reader; Back returns to the hub. Missing source/network errors are visible.
+The reader source may be a fixture in instrumentation; live server journeys run in web CI.

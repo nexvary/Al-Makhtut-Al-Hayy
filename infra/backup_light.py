@@ -10,7 +10,7 @@ from pathlib import Path
 def backup(source: Path, destination: Path) -> None:
     if destination.exists():
         raise ValueError("Backup destination already exists; preserve existing backup")
-    destination.mkdir(parents=True)
+    destination.mkdir(parents=True, mode=0o700)
     manifest = {}
     for path in sorted(source.glob("*.sqlite3")):
         target = destination / path.name

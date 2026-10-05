@@ -2,6 +2,7 @@ package org.almakhutut.alhayy
 
 enum class AppScreen {
     HOME,
+    HERITAGE,
     ADD_BOOK,
     ABOUT,
     SETTINGS,

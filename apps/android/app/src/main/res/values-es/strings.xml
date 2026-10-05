@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">Revelar siguiente etapa</string>
     <string name="ottoman_match">Coincide con el texto revisado. Solo práctica.</string>
     <string name="ottoman_not_match">No coincide exactamente. Compare con la lectura revisada.</string>
+    <string name="heritage_hub">Explorar el patrimonio</string>
+    <string name="heritage_notice">Los registros conservan fuente, revisión e incertidumbre. Las preguntas devuelven fragmentos revisados.</string>
+    <string name="heritage_query">Nombre o pregunta</string>
+    <string name="heritage_ask">Preguntar al patrimonio</string>
+    <string name="heritage_start">Año inicial (gregoriano)</string>
+    <string name="heritage_end">Año final (gregoriano)</string>
+    <string name="heritage_time">Máquina del tiempo</string>
+    <string name="heritage_museum">Museo vivo</string>
+    <string name="heritage_interpretive">Reconstrucción interpretativa; no es el objeto original.</string>
+    <string name="heritage_enter">Entrar a la exposición</string>
+    <string name="heritage_original">Abrir fuente original</string>
+    <string name="heritage_map">Abrir ubicación en el mapa</string>
 </resources>

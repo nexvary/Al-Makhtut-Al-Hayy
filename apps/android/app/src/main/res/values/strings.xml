@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">Reveal next stage</string>
     <string name="ottoman_match">Matches the reviewed text. Practice feedback only.</string>
     <string name="ottoman_not_match">No exact match. Compare with the reviewed reading.</string>
+    <string name="heritage_hub">Explore heritage</string>
+    <string name="heritage_notice">Knowledge and museum records retain source, review and uncertainty. Questions return reviewed excerpts, not invented answers.</string>
+    <string name="heritage_query">Name or research question</string>
+    <string name="heritage_ask">Ask heritage</string>
+    <string name="heritage_start">Start year (Gregorian)</string>
+    <string name="heritage_end">End year (Gregorian)</string>
+    <string name="heritage_time">Time Machine</string>
+    <string name="heritage_museum">Living Museum</string>
+    <string name="heritage_interpretive">Interpretive reconstruction; not an original artifact.</string>
+    <string name="heritage_enter">Enter exhibition</string>
+    <string name="heritage_original">Open original source</string>
+    <string name="heritage_map">Open location on map</string>
 </resources>

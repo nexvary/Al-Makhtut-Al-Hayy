@@ -1,3 +1,5 @@
+import { AccountsPanel } from "./accounts";
+import { VisualSearchPanel } from "./visual-search";
 import { MuseumPanel } from "./museum";
 import { HeritagePanel } from "./heritage";
 import { AcademyPanel } from "./academy";
@@ -70,6 +72,8 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <details id="ottomanAcademy"></details>
         <details id="heritageGraph"></details>
         <details id="livingMuseum"></details>
+        <details id="visualSearch"></details>
+        <details id="accounts"></details>
       </aside>
     </section>
 
@@ -107,9 +111,12 @@ const ottomanAcademy = new AcademyPanel(document.querySelector<HTMLElement>("#ot
   base: apiBaseInput.value.trim(), manuscript, page: currentApiPage(),
 }));
 
+new AccountsPanel(document.querySelector<HTMLElement>("#accounts")!, () => apiBaseInput.value.trim());
+
 new HeritagePanel(document.querySelector<HTMLElement>("#heritageGraph")!, () => apiBaseInput.value.trim());
 
 new MuseumPanel(document.querySelector<HTMLElement>("#livingMuseum")!, () => apiBaseInput.value.trim());
+new VisualSearchPanel(document.querySelector<HTMLElement>("#visualSearch")!, () => ({base:apiBaseInput.value.trim(),manuscript,page:currentApiPage(),region:selectedRegion}));
 
 const viewer = OpenSeadragon({
   id: "viewer",

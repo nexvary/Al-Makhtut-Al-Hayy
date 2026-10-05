@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">Nächste Stufe zeigen</string>
     <string name="ottoman_match">Entspricht dem geprüften Text. Nur Übungsfeedback.</string>
     <string name="ottoman_not_match">Keine genaue Übereinstimmung. Mit der geprüften Lesung vergleichen.</string>
+    <string name="heritage_hub">Kulturerbe entdecken</string>
+    <string name="heritage_notice">Wissen und Museumsdaten bewahren Quelle, Prüfung und Unsicherheit. Fragen liefern geprüfte Auszüge.</string>
+    <string name="heritage_query">Name oder Forschungsfrage</string>
+    <string name="heritage_ask">Kulturerbe fragen</string>
+    <string name="heritage_start">Anfangsjahr (gregorianisch)</string>
+    <string name="heritage_end">Endjahr (gregorianisch)</string>
+    <string name="heritage_time">Zeitmaschine</string>
+    <string name="heritage_museum">Lebendiges Museum</string>
+    <string name="heritage_interpretive">Interpretative Rekonstruktion; kein Originalobjekt.</string>
+    <string name="heritage_enter">Ausstellung öffnen</string>
+    <string name="heritage_original">Originalquelle öffnen</string>
+    <string name="heritage_map">Ort auf Karte öffnen</string>
 </resources>

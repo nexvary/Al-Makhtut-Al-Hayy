@@ -58,3 +58,24 @@ museum_repository().append(MuseumObject(object_id='museum-browser-object',name='
 museum_repository().append(Exhibition(exhibition_id='museum-browser-exhibition',title='Synthetic museum exhibition',theme='engineering',
     description='QA fixture, not a historical claim',object_ids=['museum-browser-object'],provenance=museum_prov),actor='fixture-reviewer')
 layer_repository().append(LivingLayer(kind=LayerKind.VERIFIED,state=ReviewState.VERIFIED,text='Synthetic verified corpus excerpt',language='en',provenance=prov),actor='fixture-reviewer')
+
+import base64
+import io
+
+from PIL import Image
+
+from app.visual_index import ImageIndexRequest
+from app.visual_index_routes import visual_index
+
+image = Image.new('L', (90,80))
+image.putdata([255 if x % 20 < 10 else 0 for y in range(80) for x in range(90)])
+output = io.BytesIO(); image.save(output, format='PNG')
+Path('/tmp/visual-fixture.png').write_bytes(output.getvalue())
+visual_prov = prov.model_copy(deep=True)
+visual_prov.source.source_uri = 'https://example.org/page.png'
+visual_index().publish(ImageIndexRequest(image_base64=base64.b64encode(output.getvalue()).decode(),
+ source_license='test-only', rights_note='Synthetic QA rights only', provenance=visual_prov), actor='fixture-reviewer')
+
+from app.accounts import account_repository
+
+account_repository().create('browser-owner',Role.ADMIN,'Browser QA fixture pass!',actor='fixture-bootstrap',bootstrap=True)

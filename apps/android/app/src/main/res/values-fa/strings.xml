@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">نمایش مرحله بعد</string>
     <string name="ottoman_match">با متن بازبینی‌شده مطابقت دارد؛ فقط نتیجه تمرین.</string>
     <string name="ottoman_not_match">مطابقت دقیق ندارد؛ با خوانش بازبینی‌شده مقایسه کنید.</string>
+    <string name="heritage_hub">کاوش میراث</string>
+    <string name="heritage_notice">داده‌ها منبع، بازبینی و عدم قطعیت را حفظ می‌کنند. پرسش‌ها گزیده‌های بازبینی‌شده را بازیابی می‌کنند.</string>
+    <string name="heritage_query">نام یا پرسش پژوهشی</string>
+    <string name="heritage_ask">از میراث بپرس</string>
+    <string name="heritage_start">سال آغاز (میلادی)</string>
+    <string name="heritage_end">سال پایان (میلادی)</string>
+    <string name="heritage_time">ماشین زمان دانش</string>
+    <string name="heritage_museum">موزه زنده</string>
+    <string name="heritage_interpretive">بازسازی تفسیری؛ شیء اصلی نیست.</string>
+    <string name="heritage_enter">ورود به نمایشگاه</string>
+    <string name="heritage_original">باز کردن منبع اصلی</string>
+    <string name="heritage_map">باز کردن مکان روی نقشه</string>
 </resources>

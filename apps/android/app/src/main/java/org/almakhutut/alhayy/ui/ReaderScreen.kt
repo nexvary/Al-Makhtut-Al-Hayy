@@ -26,10 +26,10 @@ import org.almakhutut.alhayy.model.Region
 import java.util.Locale
 
 @Composable
-fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, knowledgeClient: ReaderKnowledgeClient? = null, ottomanClient: OttomanReaderClient? = null) {
+fun ReaderScreen(manuscript: Manuscript, apiBase: String, onBack: () -> Unit, knowledgeClient: ReaderKnowledgeClient? = null, ottomanClient: OttomanReaderClient? = null, initialPageId: String? = null, initialRegionId: String? = null) {
     BackHandler(onBack = onBack)
-    var pageIndex by remember { mutableIntStateOf(0) }
-    var selected by remember { mutableStateOf<Region?>(null) }
+    var pageIndex by remember(manuscript.id, initialPageId) { mutableIntStateOf(manuscript.pages.indexOfFirst { it.id == initialPageId }.coerceAtLeast(0)) }
+    var selected by remember(manuscript.id, initialPageId, initialRegionId) { mutableStateOf(manuscript.pages.getOrNull(pageIndex)?.regions?.firstOrNull { it.id == initialRegionId }) }
     val defaultClient = remember { ApiClient() }
     val client = knowledgeClient ?: defaultClient
     val page = manuscript.pages.getOrNull(pageIndex)

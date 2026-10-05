@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">Открыть следующий этап</string>
     <string name="ottoman_match">Совпадает с проверенным текстом. Только учебный результат.</string>
     <string name="ottoman_not_match">Нет точного совпадения. Сравните с проверенным чтением.</string>
+    <string name="heritage_hub">Изучить наследие</string>
+    <string name="heritage_notice">Данные сохраняют источник, проверку и неопределённость. Вопросы возвращают проверенные отрывки.</string>
+    <string name="heritage_query">Имя или исследовательский вопрос</string>
+    <string name="heritage_ask">Спросить наследие</string>
+    <string name="heritage_start">Начальный год (григорианский)</string>
+    <string name="heritage_end">Конечный год (григорианский)</string>
+    <string name="heritage_time">Машина времени</string>
+    <string name="heritage_museum">Живой музей</string>
+    <string name="heritage_interpretive">Интерпретационная реконструкция; не оригинальный предмет.</string>
+    <string name="heritage_enter">Открыть выставку</string>
+    <string name="heritage_original">Открыть оригинальный источник</string>
+    <string name="heritage_map">Открыть место на карте</string>
 </resources>

@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">اگلا مرحلہ دکھائیں</string>
     <string name="ottoman_match">نظرثانی شدہ متن سے مطابقت؛ صرف مشق کا نتیجہ۔</string>
     <string name="ottoman_not_match">عین مطابقت نہیں؛ نظرثانی شدہ قرأت سے مقابلہ کریں۔</string>
+    <string name="heritage_hub">ورثہ دریافت کریں</string>
+    <string name="heritage_notice">ریکارڈ ماخذ، نظرثانی اور غیر یقینی صورت محفوظ رکھتے ہیں۔ سوالات نظرثانی شدہ اقتباسات دکھاتے ہیں۔</string>
+    <string name="heritage_query">نام یا تحقیقی سوال</string>
+    <string name="heritage_ask">ورثے سے پوچھیں</string>
+    <string name="heritage_start">ابتدائی سال (عیسوی)</string>
+    <string name="heritage_end">آخری سال (عیسوی)</string>
+    <string name="heritage_time">علم کی ٹائم مشین</string>
+    <string name="heritage_museum">زندہ عجائب گھر</string>
+    <string name="heritage_interpretive">تشریحی تعمیر؛ اصل چیز نہیں۔</string>
+    <string name="heritage_enter">نمائش کھولیں</string>
+    <string name="heritage_original">اصل ماخذ کھولیں</string>
+    <string name="heritage_map">نقشے پر مقام کھولیں</string>
 </resources>

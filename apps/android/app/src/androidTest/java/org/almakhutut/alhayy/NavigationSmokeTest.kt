@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -42,6 +43,11 @@ class NavigationSmokeTest {
 
         rule.onAllNodesWithText(text(R.string.add_book)).onFirst().performClick()
         rule.onNodeWithText(text(R.string.import_pdf)).assertIsDisplayed()
+        rule.onNodeWithContentDescription(text(R.string.back)).performClick()
+        rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
+
+        rule.onNodeWithTag("heritage-home").performScrollTo().performClick()
+        rule.onNodeWithTag("heritage-query").assertIsDisplayed()
         rule.onNodeWithContentDescription(text(R.string.back)).performClick()
         rule.onNodeWithText(text(R.string.app_name)).assertIsDisplayed()
 

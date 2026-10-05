@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from .academy_routes import router as academy_router
+from .account_routes import router as account_router
 from .ai_lab_routes import router as ai_lab_router
 from .editorial_routes import router as editorial_router
 from .heritage_qa_routes import router as heritage_qa_router
@@ -21,6 +22,7 @@ from .repository import repository
 from .request_limits import MetadataSafetyMiddleware
 from .scholarship_routes import router as scholarship_router
 from .settings import settings, validate_production_settings
+from .visual_index_routes import router as visual_index_router
 from .visual_routes import router as visual_router
 
 app_settings = settings()
@@ -33,7 +35,7 @@ app = FastAPI(
     description="Source-traceable API for interactive historical Arabic manuscripts.",
 )
 origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if origin.strip()]
-app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PATCH"],
                    allow_headers=["Authorization", "Content-Type"])
 app.add_middleware(RequestLogMiddleware)
 app.add_middleware(
@@ -41,12 +43,14 @@ app.add_middleware(
     requests_per_minute=app_settings.rate_limit_per_minute,
 )
 app.add_middleware(MetadataSafetyMiddleware)
+app.include_router(account_router)
 app.include_router(editorial_router)
 app.include_router(ingestion_router)
 app.include_router(knowledge_router)
 app.include_router(qa_router)
 app.include_router(scholarship_router)
 app.include_router(visual_router)
+app.include_router(visual_index_router)
 app.include_router(living_router)
 app.include_router(ai_lab_router)
 app.include_router(ottoman_router)

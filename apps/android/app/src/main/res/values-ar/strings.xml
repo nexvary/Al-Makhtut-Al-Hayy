@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">كشف المرحلة التالية</string>
     <string name="ottoman_match">مطابقة للنص المراجع؛ نتيجة تدريب فقط.</string>
     <string name="ottoman_not_match">لا توجد مطابقة حرفية؛ قارن بالقراءة المراجعة.</string>
+    <string name="heritage_hub">اكتشف التراث</string>
+    <string name="heritage_notice">المعرفة والمعروضات مرتبطة بالمصدر وحالة المراجعة وعدم اليقين. الأسئلة تسترجع مقتطفات مراجعة دون اختلاق إجابات.</string>
+    <string name="heritage_query">اسم أو سؤال بحثي</string>
+    <string name="heritage_ask">اسأل التراث</string>
+    <string name="heritage_start">سنة البدء (ميلادية)</string>
+    <string name="heritage_end">سنة النهاية (ميلادية)</string>
+    <string name="heritage_time">آلة الزمن المعرفية</string>
+    <string name="heritage_museum">المتحف الحي</string>
+    <string name="heritage_interpretive">إعادة بناء تفسيرية؛ ليست الأداة الأصلية.</string>
+    <string name="heritage_enter">ادخل المعرض</string>
+    <string name="heritage_original">افتح المصدر الأصلي</string>
+    <string name="heritage_map">افتح الموقع على الخريطة</string>
 </resources>

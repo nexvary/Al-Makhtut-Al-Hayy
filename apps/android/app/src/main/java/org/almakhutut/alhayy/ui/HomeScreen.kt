@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.TravelExplore
+import androidx.compose.ui.platform.testTag
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Refresh
@@ -27,6 +29,7 @@ fun HomeScreen(
     onAddBook: () -> Unit,
     onOpenLocal: (LocalBook) -> Unit,
     onOpenRemote: (Manuscript) -> Unit,
+    onHeritage: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -55,6 +58,13 @@ fun HomeScreen(
                 Icon(Icons.Default.Add, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(R.string.add_book))
+            }
+        }
+        item {
+            OutlinedButton(onClick = onHeritage, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("heritage-home")) {
+                Icon(Icons.Default.TravelExplore, null)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.heritage_hub))
             }
         }
         if (status.isNotBlank()) item { Text(status, style = MaterialTheme.typography.bodySmall) }

@@ -102,4 +102,16 @@
     <string name="ottoman_reveal">Révéler l’étape suivante</string>
     <string name="ottoman_match">Correspond au texte révisé. Résultat pédagogique uniquement.</string>
     <string name="ottoman_not_match">Pas de correspondance exacte. Comparez avec la lecture révisée.</string>
+    <string name="heritage_hub">Explorer le patrimoine</string>
+    <string name="heritage_notice">Les données conservent source, révision et incertitude. Les questions renvoient des extraits révisés.</string>
+    <string name="heritage_query">Nom ou question de recherche</string>
+    <string name="heritage_ask">Interroger le patrimoine</string>
+    <string name="heritage_start">Année de début (grégorienne)</string>
+    <string name="heritage_end">Année de fin (grégorienne)</string>
+    <string name="heritage_time">Machine temporelle</string>
+    <string name="heritage_museum">Musée vivant</string>
+    <string name="heritage_interpretive">Reconstruction interprétative ; ce n’est pas l’objet original.</string>
+    <string name="heritage_enter">Entrer dans l’exposition</string>
+    <string name="heritage_original">Ouvrir la source originale</string>
+    <string name="heritage_map">Ouvrir le lieu sur la carte</string>
 </resources>
