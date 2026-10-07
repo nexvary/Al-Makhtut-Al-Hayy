@@ -16,12 +16,13 @@ internal class IiifHttpClient(
 ) {
     private val cooldowns = mutableMapOf<String, Long>()
     private val locks = mutableMapOf<String, Any>()
-    fun get(url: String, limit: Int): ByteArray {
+    fun get(url: String, limit: Int, checkActive: () -> Unit = {}): ByteArray {
         val uri = URI(url)
         require(uri.scheme == "https" && !uri.host.isNullOrBlank() && uri.userInfo == null) { "IIIF URL must use HTTPS" }
         val host = uri.host.lowercase()
         val lock = synchronized(locks) { locks.getOrPut(host) { Any() } }
         return synchronized(lock) {
+            checkActive()
             val blocked = synchronized(cooldowns) { cooldowns[host] ?: 0L }
             if (blocked > now()) throw IiifRequestException(429, blocked)
             val response = transport(url, limit)

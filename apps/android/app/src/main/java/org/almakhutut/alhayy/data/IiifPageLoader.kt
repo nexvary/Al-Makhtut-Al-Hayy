@@ -16,8 +16,9 @@ internal class IiifPageLoader(context: Context, private val client: IiifHttpClie
         val preview = IiifNetwork.preview(original)
         val key = MessageDigest.getInstance("SHA-256").digest(preview.toByteArray()).joinToString("") { "%02x".format(it) }
         val target = File(cache, key)
-        currentCoroutineContext().ensureActive()
-        val bytes = if (target.isFile) target.readBytes() else client.get(preview, 16 * 1024 * 1024)
+        val requestContext = currentCoroutineContext()
+        requestContext.ensureActive()
+        val bytes = if (target.isFile) target.readBytes() else client.get(preview, 16 * 1024 * 1024) { requestContext.ensureActive() }
         currentCoroutineContext().ensureActive()
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
