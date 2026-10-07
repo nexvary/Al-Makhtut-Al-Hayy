@@ -1,0 +1,446 @@
+{
+  "$defs": {
+    "CitationTarget": {
+      "properties": {
+        "manuscript_id": {
+          "title": "Manuscript Id",
+          "type": "string"
+        },
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "region_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region Id"
+        },
+        "canvas_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canvas Uri"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        }
+      },
+      "required": [
+        "manuscript_id",
+        "page_id"
+      ],
+      "title": "CitationTarget",
+      "type": "object"
+    },
+    "EntityKind": {
+      "enum": [
+        "person",
+        "author",
+        "scholar",
+        "book",
+        "manuscript",
+        "work",
+        "city",
+        "country",
+        "historical_place",
+        "event",
+        "instrument",
+        "medicine",
+        "plant",
+        "scientific_concept",
+        "institution"
+      ],
+      "title": "EntityKind",
+      "type": "string"
+    },
+    "HistoricalInterval": {
+      "properties": {
+        "start_year": {
+          "maximum": 3000,
+          "minimum": -10000,
+          "title": "Start Year",
+          "type": "integer"
+        },
+        "end_year": {
+          "maximum": 3000,
+          "minimum": -10000,
+          "title": "End Year",
+          "type": "integer"
+        },
+        "circa": {
+          "default": false,
+          "title": "Circa",
+          "type": "boolean"
+        },
+        "calendar": {
+          "default": "proleptic-gregorian",
+          "title": "Calendar",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_year",
+        "end_year"
+      ],
+      "title": "HistoricalInterval",
+      "type": "object"
+    },
+    "HistoricalLocation": {
+      "properties": {
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "approximate": {
+          "default": true,
+          "title": "Approximate",
+          "type": "boolean"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude",
+        "label"
+      ],
+      "title": "HistoricalLocation",
+      "type": "object"
+    },
+    "LayerProvenance": {
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/SourceAnchor"
+        },
+        "extraction_method": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Extraction Method",
+          "type": "string"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "maxLength": 100000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewer"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/CitationTarget"
+          },
+          "maxItems": 100,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "extraction_method"
+      ],
+      "title": "LayerProvenance",
+      "type": "object"
+    },
+    "Point": {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Point",
+      "type": "object"
+    },
+    "ReviewState": {
+      "enum": [
+        "machine",
+        "draft",
+        "verified"
+      ],
+      "title": "ReviewState",
+      "type": "string"
+    },
+    "SourceAnchor": {
+      "properties": {
+        "manuscript_id": {
+          "title": "Manuscript Id",
+          "type": "string"
+        },
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "region_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Region Id"
+        },
+        "canvas_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canvas Uri"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "witness_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Witness Id"
+        },
+        "coordinates": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "maxItems": 1000,
+          "title": "Coordinates",
+          "type": "array"
+        },
+        "source_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Uri"
+        }
+      },
+      "required": [
+        "manuscript_id",
+        "page_id"
+      ],
+      "title": "SourceAnchor",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "state": {
+      "$ref": "#/$defs/ReviewState",
+      "default": "draft"
+    },
+    "provenance": {
+      "$ref": "#/$defs/LayerProvenance"
+    },
+    "id": {
+      "maxLength": 100,
+      "title": "Id",
+      "type": "string"
+    },
+    "entity_id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Entity Id",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/EntityKind"
+    },
+    "alternate_names": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 100,
+      "title": "Alternate Names",
+      "type": "array"
+    },
+    "interval": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HistoricalInterval"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "location": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HistoricalLocation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "description": {
+      "anyOf": [
+        {
+          "maxLength": 5000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "parent_revision_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Revision Id"
+    }
+  },
+  "required": [
+    "provenance",
+    "entity_id",
+    "name",
+    "kind"
+  ],
+  "title": "HistoricalEntity",
+  "type": "object"
+}

@@ -1,0 +1,81 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "maxLength": 100,
+      "title": "Id",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "transcription_revision": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Transcription Revision",
+      "type": "string"
+    },
+    "transliteration_revision": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Transliteration Revision"
+    },
+    "modernization_revision": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Modernization Revision"
+    },
+    "arabic_revision": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Arabic Revision"
+    },
+    "rights_note": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Rights Note",
+      "type": "string"
+    },
+    "source_license": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Source License",
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "transcription_revision",
+    "rights_note",
+    "source_license"
+  ],
+  "title": "ReadingExercise",
+  "type": "object"
+}
