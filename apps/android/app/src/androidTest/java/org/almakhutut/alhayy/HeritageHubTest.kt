@@ -19,9 +19,17 @@ class HeritageHubTest {
     companion object { @JvmStatic @BeforeClass fun selectLanguage() { selectTestLanguage() } }
     @get:Rule val rule = createAndroidComposeRule<MainActivity>()
     private fun scroll(tag:String):SemanticsNodeInteraction {
-        rule.onNodeWithTag("heritage-list").performScrollToNode(hasTestTag(tag))
-        rule.onNodeWithTag(tag).performScrollTo()
-        rule.waitForIdle()
+        // Async results can change LazyColumn item positions after the first scroll.
+        // Wait for a fresh, visible node rather than retaining a disposed semantics node.
+        rule.waitUntil(5000) {
+            try {
+                rule.onNodeWithTag("heritage-list").performScrollToNode(hasTestTag(tag))
+                rule.waitForIdle()
+                rule.onNodeWithTag(tag).performScrollTo()
+                rule.onNodeWithTag(tag).assertIsDisplayed()
+                true
+            } catch (_: AssertionError) { false }
+        }
         return rule.onNodeWithTag(tag)
     }
     @Test fun sourceTimeAndInterpretiveMuseumAreReachableAndBackWorks() {
