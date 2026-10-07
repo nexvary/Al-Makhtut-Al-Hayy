@@ -52,7 +52,7 @@
     <string name="demo_zahrawi_hint">Gallica-IIIF-Handschrift direkt für einen Schnelltest laden.</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">Optional. Lokale Bücher und IIIF funktionieren ohne den Server.</string>
-    <string name="iiif_access_denied">Der Anbieter hat die Anfrage abgelehnt. Versuchen Sie es später erneut.</string>
+    <string name="iiif_access_denied">Die Quelle verweigert den Zugriff. Zugangsbedingungen prüfen oder später versuchen.</string>
     <string name="page_load_failed">Die Seite konnte nicht geladen werden. Prüfen Sie die Datei oder Verbindung und öffnen Sie das Buch erneut.</string>
     <string name="original_preserved">Das Originalbild bleibt verfügbar.</string>
     <string name="living_layer_history">Lebendige Ebenen und Versionsverlauf</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">Ausstellung öffnen</string>
     <string name="heritage_original">Originalquelle öffnen</string>
     <string name="heritage_map">Ort auf Karte öffnen</string>
+    <string name="retry_page">Seite erneut laden</string>
+    <string name="iiif_wait_seconds">Die Quelle begrenzt Anfragen. In %1$d Sekunden erneut versuchen.</string>
+    <string name="iiif_rate_limited">Die Quelle begrenzt Anfragen. Bitte vor dem nächsten Versuch warten.</string>
 </resources>

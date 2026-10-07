@@ -52,7 +52,7 @@
     <string name="demo_zahrawi_hint">Hızlı test için Gallica IIIF el yazmasını doğrudan yükleyin.</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">İsteğe bağlı. Yerel kitaplar ve IIIF sunucu olmadan çalışır.</string>
-    <string name="iiif_access_denied">Sağlayıcı isteği reddetti. Daha sonra tekrar deneyin.</string>
+    <string name="iiif_access_denied">Kaynak erişimi reddetti. Erişim koşullarını kontrol edin veya daha sonra deneyin.</string>
     <string name="page_load_failed">Sayfa yüklenemedi. Dosyayı veya bağlantıyı kontrol edip kitabı yeniden açın.</string>
     <string name="original_preserved">Özgün yazma görüntüsü her zaman erişilebilir.</string>
     <string name="living_layer_history">Yaşayan katmanlar ve sürüm geçmişi</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">Sergiye gir</string>
     <string name="heritage_original">Özgün kaynağı aç</string>
     <string name="heritage_map">Konumu haritada aç</string>
+    <string name="retry_page">Sayfayı yeniden yükle</string>
+    <string name="iiif_wait_seconds">Kaynak istekleri sınırlıyor. %1$d saniye sonra tekrar deneyin.</string>
+    <string name="iiif_rate_limited">Kaynak istekleri sınırlıyor. Tekrar denemeden önce bekleyin.</string>
 </resources>

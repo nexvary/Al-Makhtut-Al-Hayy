@@ -52,7 +52,7 @@
     <string name="demo_zahrawi_hint">فوری آزمائش کے لیے Gallica کا IIIF مخطوطہ لوڈ کریں۔</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">اختیاری۔ مقامی کتابیں اور IIIF سرور کے بغیر کام کرتے ہیں۔</string>
-    <string name="iiif_access_denied">فراہم کنندہ نے درخواست مسترد کر دی۔ بعد میں دوبارہ کوشش کریں۔</string>
+    <string name="iiif_access_denied">ماخذ نے رسائی مسترد کر دی۔ شرائط دیکھیں یا بعد میں کوشش کریں۔</string>
     <string name="page_load_failed">صفحہ لوڈ نہیں ہو سکا۔ فائل یا رابطہ چیک کریں اور کتاب دوبارہ کھولیں۔</string>
     <string name="original_preserved">اصل مخطوطے کی تصویر ہمیشہ دستیاب ہے۔</string>
     <string name="living_layer_history">مخطوطے کی تہیں اور نظرثانی کی تاریخ</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">نمائش کھولیں</string>
     <string name="heritage_original">اصل ماخذ کھولیں</string>
     <string name="heritage_map">نقشے پر مقام کھولیں</string>
+    <string name="retry_page">صفحہ دوبارہ لوڈ کریں</string>
+    <string name="iiif_wait_seconds">ماخذ درخواستیں محدود کر رہا ہے۔ %1$d سیکنڈ بعد کوشش کریں۔</string>
+    <string name="iiif_rate_limited">ماخذ درخواستیں محدود کر رہا ہے۔ دوبارہ کوشش سے پہلے انتظار کریں۔</string>
 </resources>

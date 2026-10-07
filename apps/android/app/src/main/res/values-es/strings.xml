@@ -52,7 +52,7 @@
     <string name="demo_zahrawi_hint">Carga el manuscrito IIIF de Gallica para una prueba rápida.</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">Opcional. Los libros locales y IIIF funcionan sin el servidor.</string>
-    <string name="iiif_access_denied">El proveedor ha rechazado la solicitud. Inténtalo de nuevo más tarde.</string>
+    <string name="iiif_access_denied">El proveedor rechazó el acceso. Revise sus condiciones o inténtelo más tarde.</string>
     <string name="page_load_failed">No se pudo cargar la página. Comprueba el archivo o la conexión y vuelve a abrir el libro.</string>
     <string name="original_preserved">La imagen original permanece disponible.</string>
     <string name="living_layer_history">Capas vivas e historial de revisiones</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">Entrar a la exposición</string>
     <string name="heritage_original">Abrir fuente original</string>
     <string name="heritage_map">Abrir ubicación en el mapa</string>
+    <string name="retry_page">Reintentar página</string>
+    <string name="iiif_wait_seconds">El proveedor limita las solicitudes. Reintente en %1$d segundos.</string>
+    <string name="iiif_rate_limited">El proveedor limita las solicitudes. Espere antes de reintentar.</string>
 </resources>

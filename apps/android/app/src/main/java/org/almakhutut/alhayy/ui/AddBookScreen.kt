@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import org.almakhutut.alhayy.data.IiifRequestException
 import org.almakhutut.alhayy.R
 import org.almakhutut.alhayy.data.LocalBook
 import org.almakhutut.alhayy.data.LocalBookStore
@@ -33,6 +34,7 @@ fun AddBookScreen(
     var busy by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val deniedText = stringResource(R.string.iiif_access_denied)
+    val waitText = stringResource(R.string.iiif_rate_limited)
     val failedText = stringResource(R.string.page_load_failed)
 
     fun runImport(block: suspend () -> LocalBook) {
@@ -44,7 +46,9 @@ fun AddBookScreen(
                 .onSuccess(onImported)
                 .onFailure {
                     if (it is CancellationException) throw it
-                    status = if (it.message == "IIIF_ACCESS_DENIED") {
+                    status = if ((it as? IiifRequestException)?.status in listOf(429, 503)) {
+                        waitText
+                    } else if ((it as? IiifRequestException)?.status == 403 || it.message == "IIIF_ACCESS_DENIED") {
                         deniedText
                     } else it.message ?: failedText
                 }

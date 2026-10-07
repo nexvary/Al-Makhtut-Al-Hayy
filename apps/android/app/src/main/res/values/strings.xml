@@ -30,7 +30,7 @@
     <string name="api_address">API address</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">Optional. Local books and IIIF work without the NEXVARY backend. 10.0.2.2 is only for the Android emulator.</string>
-    <string name="iiif_access_denied">The manuscript provider refused the request. Try again; the app will retry with a compatible IIIF request.</string>
+    <string name="iiif_access_denied">The provider refused access. Check its access conditions or try later.</string>
     <string name="save">Save</string>
     <string name="saved">Saved</string>
     <string name="android_compatibility_note">Designed for modern Android phones and compatible with Android 15 and later.</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">Enter exhibition</string>
     <string name="heritage_original">Open original source</string>
     <string name="heritage_map">Open location on map</string>
+    <string name="retry_page">Retry page</string>
+    <string name="iiif_wait_seconds">The provider is temporarily limiting requests. Retry in %1$d seconds.</string>
+    <string name="iiif_rate_limited">The provider is limiting requests. Wait before trying again.</string>
 </resources>

@@ -30,7 +30,7 @@
     <string name="api_address">عنوان API</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">اختياري. الكتب المحلية وIIIF يعملان بدون خادم NEXVARY. العنوان 10.0.2.2 مخصص للمحاكي فقط وليس للهاتف الحقيقي.</string>
-    <string name="iiif_access_denied">رفض مصدر المخطوط الطلب. حاول مرة أخرى؛ التطبيق يعيد المحاولة تلقائيًا بطلب IIIF متوافق.</string>
+    <string name="iiif_access_denied">المصدر رفض الوصول. راجع شروط الوصول أو حاول لاحقًا.</string>
     <string name="save">حفظ</string>
     <string name="saved">تم الحفظ</string>
     <string name="android_compatibility_note">مصمم للهواتف الحديثة ومتوافق مع Android 15 وما بعده.</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">ادخل المعرض</string>
     <string name="heritage_original">افتح المصدر الأصلي</string>
     <string name="heritage_map">افتح الموقع على الخريطة</string>
+    <string name="retry_page">إعادة تحميل الصفحة</string>
+    <string name="iiif_wait_seconds">المصدر يحدّ الطلبات مؤقتًا. أعد المحاولة بعد %1$d ثانية.</string>
+    <string name="iiif_rate_limited">المصدر يحدّ الطلبات مؤقتًا. انتظر قبل إعادة المحاولة.</string>
 </resources>

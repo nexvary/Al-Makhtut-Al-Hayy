@@ -52,7 +52,7 @@
     <string name="demo_zahrawi_hint">برای آزمون سریع، نسخه IIIF گالیکا را مستقیماً بارگذاری کنید.</string>
     <string name="api_address_hint">https://your-server.example/api</string>
     <string name="api_optional_note">اختیاری. کتاب‌های محلی و IIIF بدون سرور کار می‌کنند.</string>
-    <string name="iiif_access_denied">ارائه‌دهنده درخواست را رد کرد. بعداً دوباره تلاش کنید.</string>
+    <string name="iiif_access_denied">منبع دسترسی را رد کرده است. شرایط دسترسی را بررسی کنید یا بعداً تلاش کنید.</string>
     <string name="page_load_failed">صفحه بارگیری نشد. فایل یا اتصال را بررسی کنید و کتاب را دوباره باز کنید.</string>
     <string name="original_preserved">تصویر اصلی نسخه همیشه در دسترس است.</string>
     <string name="living_layer_history">لایه‌های نسخه و تاریخچه بازبینی</string>
@@ -114,4 +114,7 @@
     <string name="heritage_enter">ورود به نمایشگاه</string>
     <string name="heritage_original">باز کردن منبع اصلی</string>
     <string name="heritage_map">باز کردن مکان روی نقشه</string>
+    <string name="retry_page">بارگذاری دوباره صفحه</string>
+    <string name="iiif_wait_seconds">منبع درخواست‌ها را محدود کرده است. پس از %1$d ثانیه دوباره تلاش کنید.</string>
+    <string name="iiif_rate_limited">منبع درخواست‌ها را محدود کرده است. پیش از تلاش دوباره صبر کنید.</string>
 </resources>

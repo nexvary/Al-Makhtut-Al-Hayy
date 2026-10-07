@@ -58,3 +58,12 @@ network image loading and all social-link handlers still require further coverag
 Imported files are capped at 128 MiB each; image batches at 500 pages. Failed
 imports remove partial directories; library updates use AtomicFile under a shared
 lock. Original imported files are copied, never changed.
+
+
+## IIIF recovery correction — 0.1.5
+
+Phone screenshots showed HTTP 429 on import and blank/failed Gallica page images despite a valid 245-page library record. Manifest loading previously issued an immediate second request after 429/403, and image rendering had no progress or retry controls. The new shared metadata/image client stops at 403, respects Retry-After seconds/date (60-second fallback), and prevents requests to the same host during cooldown. A three-entry/15-minute in-memory manifest cache and reuse of existing IIIF imports avoid repeated metadata requests.
+
+IIIF full-image display requests use a 1600-pixel-wide preview while the stored original URL remains unchanged. Images use the same identifiable client headers, bounded 16 MiB transfers and sampled decoding, with a 64 MiB app-cache limit. Failed pages show HTTP status, a localized explanation and a retry control/countdown. Successful cached pages can be reopened without the network. Local PDF/image readers remain separate.
+
+On 2026-10-07, live GET of the supplied Gallica manifest returned 200 with 245 pages. Standard IIIF preview GETs for f1, f6 and f11 returned 200/image-jpeg and valid images (934765, 132130, 505526 bytes). An earlier request returned 403, demonstrating that availability is not guaranteed for every request/device/network. This check does not prove the user's mobile network is unblocked. Android regression tests cover 429 -> cooldown -> manual retry -> rendered image, offline cache reuse and explicit 403 UI; current release CI must pass before delivery.

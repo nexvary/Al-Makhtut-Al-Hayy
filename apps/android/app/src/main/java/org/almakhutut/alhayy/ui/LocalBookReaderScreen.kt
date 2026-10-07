@@ -12,6 +12,8 @@ import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -21,9 +23,12 @@ import coil3.compose.AsyncImage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.delay
 import org.almakhutut.alhayy.R
 import org.almakhutut.alhayy.data.LocalBook
 import org.almakhutut.alhayy.data.LocalBookKind
+import org.almakhutut.alhayy.data.IiifPageLoader
+import org.almakhutut.alhayy.data.IiifRequestException
 import java.io.File
 
 @Composable
@@ -68,7 +73,10 @@ fun LocalBookReaderScreen(book: LocalBook, onBack: () -> Unit) {
         Box(Modifier.fillMaxSize().padding(padding)) {
             when (book.kind) {
                 LocalBookKind.PDF -> PdfPage(book.source, pageIndex)
-                LocalBookKind.IMAGES, LocalBookKind.IIIF -> {
+                LocalBookKind.IIIF -> {
+                    IiifPageImage(book.pages.getOrNull(pageIndex))
+                }
+                LocalBookKind.IMAGES -> {
                     ZoomableImage(book.pages.getOrNull(pageIndex))
                 }
             }
@@ -138,5 +146,53 @@ private fun ZoomableImage(source: String?) {
             contentScale = ContentScale.Fit,
             modifier = Modifier.fillMaxSize().testTag("page-image"),
         )
+    }
+}
+
+
+@Composable
+internal fun IiifPageImage(source: String?, loader: IiifPageLoader = IiifPageLoader(LocalContext.current)) {
+    var attempt by remember(source) { mutableIntStateOf(0) }
+    var bitmap by remember(source, attempt) { mutableStateOf<Bitmap?>(null) }
+    var error by remember(source, attempt) { mutableStateOf<Exception?>(null) }
+    var remaining by remember(source, attempt) { mutableLongStateOf(0) }
+    LaunchedEffect(source, attempt) {
+        if (source == null) return@LaunchedEffect
+        try { bitmap = loader.load(source) }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) { error = failure }
+    }
+    LaunchedEffect(error) {
+        val deadline = (error as? IiifRequestException)?.retryAt ?: 0
+        do {
+            remaining = ((deadline - System.currentTimeMillis() + 999) / 1000).coerceAtLeast(0)
+            if (remaining > 0) delay(1000)
+        } while (remaining > 0)
+    }
+    val image = bitmap
+    if (image != null) {
+        ZoomableContent("$source:$attempt", Modifier.fillMaxSize()) {
+            Image(image.asImageBitmap(), null, Modifier.fillMaxSize().testTag("page-image"), contentScale = ContentScale.Fit)
+        }
+    } else {
+        Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center) {
+            if (error == null && source != null) {
+                CircularProgressIndicator(Modifier.testTag("iiif-page-loading"))
+                Text(stringResource(R.string.loading), Modifier.padding(top = 12.dp))
+            } else {
+                val failure = error as? IiifRequestException
+                Text(when (failure?.status) {
+                    429, 503 -> stringResource(R.string.iiif_wait_seconds, remaining)
+                    403 -> stringResource(R.string.iiif_access_denied)
+                    else -> stringResource(R.string.page_load_failed)
+                }, Modifier.testTag("iiif-page-error"))
+                if (failure != null) Text("HTTP ${failure.status}", style = MaterialTheme.typography.bodySmall)
+                Button(onClick = { attempt++ }, enabled = remaining == 0L && source != null,
+                    modifier = Modifier.padding(top = 16.dp).testTag("iiif-page-retry")) {
+                    Text(stringResource(R.string.retry_page))
+                }
+            }
+        }
     }
 }

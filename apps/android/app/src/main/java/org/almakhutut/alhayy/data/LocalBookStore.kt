@@ -104,6 +104,7 @@ class LocalBookStore(private val context: Context) {
     }
 
     suspend fun importIiif(url: String, title: String): LocalBook = withContext(Dispatchers.IO) {
+        list().firstOrNull { it.kind == LocalBookKind.IIIF && it.source == url }?.let { return@withContext it }
         val pages = IiifLoader().load(url)
         require(pages.isNotEmpty()) { "IIIF manifest contains no image pages" }
         val book = LocalBook(
